@@ -8,7 +8,7 @@ module.exports = (robot) => {
     const changedFiles = [...head_commit.added, ...head_commit.modified]
     const files = await changedFiles.reduce(async (prev, file) => {
       const contents = await getContents(context, file)
-      return Object.assign({}, prev, { [file]: contents })
+      return {...prev, [file]: contents}
     }, {})
 
     const issues = await context.github.issues.getForRepo(context.issue())
