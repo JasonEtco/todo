@@ -20,7 +20,7 @@ function logger() {
 
 `todo` would create a new issue:
 
-<IMG>
+![image](https://user-images.githubusercontent.com/10660468/30997742-e3517896-a497-11e7-972d-8ac1fe756a74.png)
 
 ## Configuring for your project
 
