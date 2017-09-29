@@ -1,4 +1,6 @@
-const {defaultConfig, getContents, generateBody} = require('./helpers')
+const defaultConfig = require('./lib/default-config')
+const getContents = require('./lib/get-file-contents')
+const generateBody = require('./lib/generate-body')
 
 module.exports = (robot) => {
   robot.on('push', async context => {
