@@ -35,7 +35,7 @@ module.exports = (robot) => {
 
         // :TODO: Reopen existing but closed issues if the same todo is introduced
 
-        const body = generateBody(cfg, title, file, contents, author, head_commit.id)
+        const body = generateBody(context, cfg, title, file, contents, author, head_commit.id)
 
         // Generate an issue object
         // :TODO: Add labels
