@@ -1,6 +1,6 @@
 # todo
 
-> a GitHub App built with [probot](https://github.com/probot/probot) that creates new issues based on actionable comments in your code.
+> a GitHub App built with [Probot](https://github.com/probot/probot) that creates new issues based on actionable comments in your code.
 
 ## Usage
 
