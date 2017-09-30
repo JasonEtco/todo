@@ -23,9 +23,12 @@ module.exports = (robot) => {
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
-        if (commits[i + 1] && commits[i + 1].modified.indexOf(file) !== -1) return
-        const contents = await getContents(context, commit.id, file)
-        mappedFiles.set(file, contents)
+        const sliced = commits.slice(c + 1)
+
+        if (sliced.every(com => com.modified.indexOf(file) === -1)) {
+          const contents = await getContents(context, commit.id, file)
+          mappedFiles.set(file, contents)
+        }
       }
 
       commitsByFiles.set(commit.id, mappedFiles)

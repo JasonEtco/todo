@@ -15,13 +15,8 @@ exports.basic = {
       author: { username: 'JasonEtco' }
     },
     repository: {
-      id: 98814489,
       name: 'test',
-      full_name: 'JasonEtco/test',
-      owner: {
-        name: 'JasonEtco',
-        login: 'JasonEtco'
-      }
+      owner: { login: 'JasonEtco' }
     },
     installation: {
       id: 55850
@@ -48,6 +43,18 @@ exports.complex = {
       },
       {
         id: 's7d286aa6381bbb5045288496403d9427b0746e2',
+        added: [],
+        removed: [],
+        modified: ['index.js']
+      },
+      {
+        id: 's7d286aa6381bbb5045288496403d9427b0746e2',
+        added: [],
+        removed: [],
+        modified: ['index.js']
+      },
+      {
+        id: 's7d286aa6381bbb5045288496403d9427b0746e2',
         added: ['index.js'],
         removed: [],
         modified: []
@@ -58,13 +65,8 @@ exports.complex = {
       author: { username: 'JasonEtco' }
     },
     repository: {
-      id: 98814489,
       name: 'test',
-      full_name: 'JasonEtco/test',
-      owner: {
-        name: 'JasonEtco',
-        login: 'JasonEtco'
-      }
+      owner: { login: 'JasonEtco' }
     },
     installation: {
       id: 55850
