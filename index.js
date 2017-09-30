@@ -35,9 +35,10 @@ module.exports = (robot) => {
       files.forEach(async (contents, file) => {
         // Get issue titles
         const re = new RegExp(`${cfg.keyword}\\s(.*)`, cfg.caseSensitive ? 'g' : 'gi')
-        const titles = contents.match(re).map(title => title.replace(`${cfg.keyword} `, ''))
-        if (titles.length === 0) return
+        const matches = contents.match(re)
+        if (!matches) return
 
+        const titles = matches.map(title => title.replace(`${cfg.keyword} `, ''))
         titles.forEach(async title => {
           // Check if an issue with that title exists
           if (issues.data.some(issue => issue.title === title && issue.state === 'open')) return
