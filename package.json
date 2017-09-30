@@ -8,7 +8,7 @@
   "scripts": {
     "start": "nodemon --exec \"probot\" run ./index.js",
     "serve": "probot run ./index.js",
-    "test": "jest --covergae && standard"
+    "test": "jest --coverage && standard"
   },
   "standard": {
     "env": {
