@@ -1,6 +1,7 @@
 const defaultConfig = require('./lib/default-config')
 const getContents = require('./lib/get-file-contents')
 const generateBody = require('./lib/generate-body')
+const commitIsInPR = require('./lib/commit-is-in-pr')
 
 module.exports = (robot) => {
   robot.on('push', async context => {
@@ -35,7 +36,8 @@ module.exports = (robot) => {
 
         // :TODO: Reopen existing but closed issues if the same todo is introduced
 
-        const body = generateBody(context, cfg, title, file, contents, author, head_commit.id)
+        const pr = await commitIsInPR(head_commit.id)
+        const body = generateBody(context, cfg, title, file, contents, author, head_commit.id, pr)
 
         // Generate an issue object
         // :TODO: Add labels
