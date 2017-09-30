@@ -36,7 +36,7 @@ module.exports = (robot) => {
 
         // :TODO: Reopen existing but closed issues if the same todo is introduced
 
-        const pr = await commitIsInPR(head_commit.id)
+        const pr = await commitIsInPR(context, head_commit.id)
         const body = generateBody(context, cfg, title, file, contents, author, head_commit.id, pr)
 
         // Generate an issue object
