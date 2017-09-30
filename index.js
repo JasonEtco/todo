@@ -8,7 +8,7 @@ module.exports = (robot) => {
     const cfg = await context.config('todo.yml', defaultConfig)
 
     // Get array of issue objects in the current repo
-    const issues = await context.github.issues.getForRepo(context.issue())
+    const issues = await context.github.issues.getForRepo(context.repo())
 
     const {head_commit, commits} = context.payload
     const author = head_commit.author.username
