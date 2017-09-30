@@ -1,6 +1,6 @@
-# todo
+# 🤖✅ todo
 
-> a GitHub App built with [Probot](https://github.com/probot/probot) that creates new issues based on actionable comments in your code.
+> A GitHub App built with [Probot](https://github.com/probot/probot) that creates new issues based on actionable comments in your code.
 
 ## Usage
 
@@ -10,17 +10,17 @@ If I pushed this:
 
 ```js
 /**
- * Logs a message to the console
- * @todo Change console.log to console.warn
+ * @todo Take over the world
+ * @body Humans are weak; Robots are strong. We must cleans the world of the virus that is humanity.
  */
-function logger() {
-  console.log('Hi!');
+function ruleOverPunyHumans () {
+  // We must strategize beep boop
 }
 ```
 
 `todo` would create a new issue:
 
-![image](https://user-images.githubusercontent.com/10660468/30997742-e3517896-a497-11e7-972d-8ac1fe756a74.png)
+![todo](https://user-images.githubusercontent.com/10660468/31048765-83569c30-a5f2-11e7-933a-a119d43ad029.png)
 
 ## Configuring for your project
 
