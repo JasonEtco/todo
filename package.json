@@ -8,15 +8,29 @@
   "scripts": {
     "start": "nodemon --exec \"probot\" run ./index.js",
     "serve": "probot run ./index.js",
-    "test": "mocha && standard"
+    "test": "jest && codecov && standard"
+  },
+  "standard": {
+    "env": {
+      "jest": true
+    }
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/__tests__/fixtures/"
+    ],
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   },
   "dependencies": {
     "probot": "probot/probot"
   },
   "devDependencies": {
-    "expect": "^1.20.2",
+    "codecov": "^2.3.0",
+    "expect": "^21.2.1",
+    "jest": "^21.2.1",
     "localtunnel": "^1.8.2",
-    "mocha": "^3.2.0",
+    "mocha": "^3.5.3",
     "nodemon": "^1.12.1",
     "standard": "^10.0.3"
   },

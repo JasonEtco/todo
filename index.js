@@ -23,9 +23,12 @@ module.exports = (robot) => {
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
-        if (commits[i + 1] && commits[i + 1].modified.indexOf(file) !== -1) return
-        const contents = await getContents(context, commit.id, file)
-        mappedFiles.set(file, contents)
+        const sliced = commits.slice(c + 1)
+
+        if (sliced.every(com => com.modified.indexOf(file) === -1)) {
+          const contents = await getContents(context, commit.id, file)
+          mappedFiles.set(file, contents)
+        }
       }
 
       commitsByFiles.set(commit.id, mappedFiles)
@@ -35,9 +38,10 @@ module.exports = (robot) => {
       files.forEach(async (contents, file) => {
         // Get issue titles
         const re = new RegExp(`${cfg.keyword}\\s(.*)`, cfg.caseSensitive ? 'g' : 'gi')
-        const titles = contents.match(re).map(title => title.replace(`${cfg.keyword} `, ''))
-        if (titles.length === 0) return
+        const matches = contents.match(re)
+        if (!matches) return
 
+        const titles = matches.map(title => title.replace(`${cfg.keyword} `, ''))
         titles.forEach(async title => {
           // Check if an issue with that title exists
           if (issues.data.some(issue => issue.title === title && issue.state === 'open')) return
