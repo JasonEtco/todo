@@ -18,7 +18,9 @@
   "jest": {
     "modulePathIgnorePatterns": [
       "<rootDir>/__tests__/fixtures/"
-    ]
+    ],
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   },
   "dependencies": {
     "probot": "probot/probot"
