@@ -65,4 +65,13 @@ describe('generate-body', () => {
     expect(typeof body).toBe('string')
     expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'with-body.txt'), 'utf8'))
   })
+
+  it('generates a body string with a custom message but no blob', () => {
+    const config = { keyword: '@todo', blobLines: false }
+
+    const body = generateBody(context, config, title, file, contentsBody, author, sha)
+
+    expect(typeof body).toBe('string')
+    expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'with-body-no-blob.txt'), 'utf8'))
+  })
 })
