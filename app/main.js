@@ -68,7 +68,7 @@ class App extends Component {
 
         <div className="container-md p-responsive mt-4 py-6 text-center">
           <h2 className="alt-h2">Install it</h2>
-          <p className="lead">You can install <strong>todo</strong> in your repos right now. Because its built on <a href="https://github.com/probot/probot">Probot</a>, it is a fully integrated GitHub App.</p>
+          <p className="lead">You can install <strong>todo</strong> in your repos right now. Because its built on <a href="https://github.com/probot/probot">Probot</a>, it is a fully integrated GitHub App and works without any additional setup.</p>
           <a href={c.app} className="btn btn-primary btn-large f3">Install <strong>todo</strong></a>
         </div>
       </div>,
