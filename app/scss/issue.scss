@@ -1,4 +1,3 @@
-
 .octicon { fill: currentColor }
 
 .issue {
@@ -77,6 +76,13 @@
   float: left;
   margin-left: -60px;
   border-radius: 3px;
+}
+
+.gh-header-title {
+  margin-bottom: 0;
+  font-weight: normal;
+  line-height: 1.125;
+  word-wrap: break-word;
 }
 
 .timeline-comment-header {
