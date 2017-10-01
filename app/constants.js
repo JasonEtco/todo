@@ -17,7 +17,7 @@ export default {
   cfg: {
     keyword: '@todo',
     blobLines: 3,
-    sha: '4363c1',
+    sha: '45c96e1',
     author: '@JasonEtco'
   }
 }
