@@ -26,7 +26,13 @@ function ruleOverPunyHumans () {
 
 There are a couple of configuration options in case you need to change the default behaviour. Note that the defaults are likely fine for most projects, so you might not need to change them.
 
-Add a file called `todo.yml` in the `.github` folder at the root of your project.
+Add a `todo` object in your `.github/config.yml` file like this:
+
+```yml
+todo:
+  keyword: "@makeAnIssue"
+
+```
 
 ### Available options
 

@@ -1,0 +1,5 @@
+todo:
+  keyword: "@todo"
+  autoAssign:
+    - "JasonEtco"
+    - "matchai"

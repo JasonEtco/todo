@@ -5,7 +5,8 @@ const commitIsInPR = require('./lib/commit-is-in-pr')
 
 module.exports = (robot) => {
   robot.on('push', async context => {
-    const cfg = await context.config('todo.yml', defaultConfig)
+    const config = await context.config('config.yml')
+    const cfg = {...defaultConfig, ...config.todo}
 
     // Get array of issue objects in the current repo
     const issues = await context.github.issues.getForRepo(context.repo())
