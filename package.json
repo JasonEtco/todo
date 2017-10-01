@@ -7,6 +7,7 @@
   "repository": "https://github.com/JasonEtco/todo.git",
   "scripts": {
     "start": "nodemon --exec \"probot\" run ./index.js",
+    "webpack": "webpack -w --config ./config/webpack.config.js",
     "build": "rimraf public && webpack -p --config ./config/webpack.config.js --progress --profile --colors",
     "serve": "probot run ./index.js",
     "test": "jest && codecov && standard"
