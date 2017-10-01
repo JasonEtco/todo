@@ -36,6 +36,7 @@ module.exports = {
     new webpack.optimize.UglifyJsPlugin(),
     new ExtractTextPlugin('[name].min.css'),
     new PurifyCSSPlugin({
+      moduleExtensions: ['.js'],
       paths: glob.sync(path.join(__dirname, '..', 'app', '**/*.js'))
     })
   ],
