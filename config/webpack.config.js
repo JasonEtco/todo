@@ -3,6 +3,8 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const autoprefixer = require('autoprefixer')
+const glob = require('glob')
+const PurifyCSSPlugin = require('purifycss-webpack')
 
 const browsers = [
   'last 2 versions',
@@ -32,7 +34,10 @@ module.exports = {
       filename: 'index.html'
     }),
     new webpack.optimize.UglifyJsPlugin(),
-    new ExtractTextPlugin('[name].min.css')
+    new ExtractTextPlugin('[name].min.css'),
+    new PurifyCSSPlugin({
+      paths: glob.sync(path.join(__dirname, '..', 'app', '**/*.js'))
+    })
   ],
   module: {
     rules: [{
