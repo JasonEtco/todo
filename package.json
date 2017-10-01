@@ -30,6 +30,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
     "codemirror": "^5.30.0",
+    "copy-webpack-plugin": "^4.1.0",
     "css-loader": "^0.28.7",
     "extract-text-webpack-plugin": "^3.0.0",
     "glob": "^7.1.2",

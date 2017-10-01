@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const autoprefixer = require('autoprefixer')
 const glob = require('glob')
 const PurifyCSSPlugin = require('purifycss-webpack')
@@ -38,7 +39,14 @@ module.exports = {
     new PurifyCSSPlugin({
       moduleExtensions: ['.js'],
       paths: glob.sync(path.join(__dirname, '..', 'app', '**/*.js'))
-    })
+    }),
+    new CopyWebpackPlugin([
+      {
+        context: path.join(__dirname, '..', 'app'),
+        from: 'assets',
+        to: 'assets'
+      }
+    ])
   ],
   module: {
     rules: [{
