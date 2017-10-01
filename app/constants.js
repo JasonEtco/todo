@@ -14,10 +14,10 @@ export default {
  
  module.exports = ruleOverPunyHumans;
  `,
+  sha: '45c96e1',
   cfg: {
     keyword: '@todo',
     blobLines: 3,
-    sha: '45c96e1',
     author: '@JasonEtco'
   }
 }

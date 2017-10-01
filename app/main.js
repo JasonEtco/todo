@@ -2,65 +2,26 @@
 
 import React, { Component } from 'react'
 import { render } from 'react-dom'
-import CodeMirror from 'react-codemirror'
-import 'codemirror/mode/javascript/javascript'
+import Demo from './components/Demo'
 
-import Issue from './Issue'
 import './style.scss'
 import c from './constants'
 
-function generateStartLine (contents, title) {
-  const index = contents.indexOf(`${c.cfg.keyword} ${title}`)
-  const tempString = contents.substring(0, index)
-  const start = tempString.split('\n').length
-  return start
-}
-
 class App extends Component {
-  constructor (props) {
-    super(props)
-    this.state = { code: c.code }
-    this.updateCode = code => this.setState({ code })
-    this.getDetails = this.getDetails.bind(this)
-  }
-
-  getDetails () {
-    const { code } = this.state
-    const titleRe = new RegExp(`${c.cfg.keyword}\\s(.*)`, c.cfg.caseSensitive ? 'g' : 'gi')
-    const matches = code.match(titleRe)
-
-    if (matches) {
-      const title = matches[0].replace(`${c.cfg.keyword} `, '')
-
-      const bodyRe = new RegExp(`${title}\n.*@body (.*)`, 'gim')
-      const bodyMatches = bodyRe.exec(code)
-      const body = bodyMatches ? bodyMatches[1] : ''
-      const start = generateStartLine(code, title)
-
-      return { title, body, start }
-    }
-
-    return { title: false }
-  }
-
   render () {
-    const options = { lineNumbers: true, mode: 'javascript' }
-    const {title, body, start} = this.getDetails()
-
-    return (
-      <div className="d-block d-lg-flex gutter-lg width-full">
-        <div className="col-12 col-lg-6">
-          <div className="border rounded-1 height-full">
-            <CodeMirror value={this.state.code} onChange={this.updateCode} options={options} />
-          </div>
-        </div>
-        <div className="col-12 col-lg-6">
-          <div className="p-4 p-lg-0">
-            <Issue title={title} body={body} start={start} code={c.code} />
-          </div>
-        </div>
-      </div>
-    )
+    return ([
+      <header key={0} className="Site-header bg-gray-dark py-2 text-white text-center">
+        <h1 className="d-flex flex-items-center flex-justify-center"><img className="rounded-1 mr-2" src="https://avatars1.githubusercontent.com/in/5534?v=4&s=32" /> todo</h1>
+        <a href={c.repo} className="text-white text-bold">Contribute on <svg className="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fillRule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" /></svg></a>
+      </header>,
+      <div className="Site-content p-2 p-lg-4">
+        <Demo key={1} />
+      </div>,
+      <footer key={2} className="Site-footer mt-6 py-4 bg-gray-light border-top text-center">
+        <p className="m-0">You can install <strong>todo</strong> in your repositories <a href={c.app}>right here.</a></p>
+        <p className="mt-0 mb-1">Built by <a href="https://twitter.com/JasonEtco">@JasonEtco</a> with 🤖 using <a href="https://github.com/probot/probot">Probot</a>.</p>
+      </footer>
+    ])
   }
 }
 
