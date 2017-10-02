@@ -21,7 +21,21 @@ const configOptions = [{
   type: 'number|boolean'
 }]
 
-class App extends Component {
+export default class App extends Component {
+  constructor (props) {
+    super(props)
+    this.installClick = this.installClick.bind(this)
+  }
+
+  installClick (e) {
+    window.ga('send', 'event', {
+      eventCategory: 'Outbound Link',
+      eventAction: 'click',
+      eventLabel: e.target.href,
+      transport: 'beacon'
+    })
+  }
+
   render () {
     return ([
       <header key={0} className="Site-header py-3 text-center border-bottom d-md-block d-flex flex-justify-between flex-items-center">
@@ -31,7 +45,7 @@ class App extends Component {
       <div key={1} className="Site-content">
         <div className="container-md p-responsive py-6 mt-6 mb-5 text-center">
           <h2 className="alt-h2">Automatically generate new issues</h2>
-          <p className="lead"><strong>todo</strong> is a GitHub App that automagically creates new issues based on comments and keywords in your code. Check out the demo below.</p>
+          <p className="lead"><strong>todo</strong> is a GitHub App that automagically creates new issues based on comments and keywords in your code when you push it to GitHub. Check out the demo below.</p>
         </div>
         <div className="p-2 p-lg-4">
           <Demo />
@@ -69,7 +83,7 @@ class App extends Component {
         <div className="container-md p-responsive mt-4 py-6 text-center">
           <h2 className="alt-h2">Install it</h2>
           <p className="lead">You can install <strong>todo</strong> in your repos right now. Because its built on <a href="https://github.com/probot/probot">Probot</a>, it is a fully integrated GitHub App and works without any additional setup.</p>
-          <a href={c.app} className="btn btn-primary btn-large f3">Install <strong>todo</strong></a>
+          <a href={c.app} className="btn btn-primary btn-large f3" onClick={this.installClick}>Install <strong>todo</strong></a>
         </div>
       </div>,
       <footer key={2} className="Site-footer mt-6 py-4 bg-gray-light border-top text-center">
@@ -79,5 +93,3 @@ class App extends Component {
     ])
   }
 }
-
-export default App

@@ -5,10 +5,12 @@
 
 .ReactCodeMirror {
   height: 100%;
+
+  textarea { display: none; }
 }
 
 .CodeMirror {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-family: $mono-font;
   font-size: 12px;
   height: 100%;
 }

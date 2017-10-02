@@ -41,11 +41,20 @@ function gimmeRobot (config = 'basic.yml') {
 }
 
 describe('todo', () => {
-  it('returns the homepage on GET /', async () => {
-    const {robot} = gimmeRobot()
-    const app = robot.route()
-    const res = await request(app).get('/')
-    expect(res.text.startsWith('<!DOCTYPE html>')).toBe(true)
+  describe('GET /', () => {
+    it('returns the homepage', async () => {
+      const {robot} = gimmeRobot()
+      const app = robot.route()
+      const res = await request(app).get('/')
+      expect(res.text.startsWith('<!DOCTYPE html>')).toBe(true)
+    })
+
+    it('responds with the proper caching header', async () => {
+      const {robot} = gimmeRobot()
+      const app = robot.route()
+      const res = await request(app).get('/')
+      expect(res.header).toHaveProperty('cache-control', 'public, max-age=1200, s-maxage=3200')
+    })
   })
 
   it('requests issues for the repo', async () => {
