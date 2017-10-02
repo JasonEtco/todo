@@ -19,8 +19,10 @@
   },
   "jest": {
     "modulePathIgnorePatterns": [
-      "<rootDir>/__tests__/fixtures/"
+      "<rootDir>/__tests__/fixtures/",
+      "<rootDir>/__tests__/shimRAF.js"
     ],
+    "setupFiles": ["<rootDir>/__tests__/shimRAF.js"],
     "coverageDirectory": "./coverage/",
     "coveragePathIgnorePatterns": [
       "/node_modules/",

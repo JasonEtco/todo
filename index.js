@@ -17,8 +17,9 @@ module.exports = (robot) => {
     const ssrStr = ReactDOMServer.renderToString(React.createElement(App))
     const tpl = ssrTemplate(ssrStr)
 
+    /* istanbul ignore next */
     if (process.env.NODE_ENV !== 'development') {
-      res.set('Cache-Control', 'public, max-age=1200, s-maxage=3200')
+      res.setHeader('cache-control', 'public, max-age=1200, s-maxage=3200')
     }
 
     res.end(tpl)

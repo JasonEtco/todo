@@ -53,7 +53,7 @@ describe('todo', () => {
       const {robot} = gimmeRobot()
       const app = robot.route()
       const res = await request(app).get('/')
-      expect(res.header).toHaveProperty('Cache-Control', 'public, max-age=1200, s-maxage=3200')
+      expect(res.header).toHaveProperty('cache-control', 'public, max-age=1200, s-maxage=3200')
     })
   })
 
