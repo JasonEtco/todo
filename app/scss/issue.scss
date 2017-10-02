@@ -39,13 +39,17 @@
     top: 11px;
     right: 100%;
     left: -16px;
-    display: block;
+    display: none;
     width: 0;
     height: 0;
     pointer-events: none;
     content: " ";
     border-color: transparent;
     border-style: solid solid outset;
+
+    @include breakpoint(md) {
+      display: block;
+    }
   }
 
   &::before {
@@ -70,16 +74,30 @@
 
 .timeline-comment-wrapper {
   position: relative;
-  padding-left: 60px;
   margin-top: 15px;
   border-top: 2px solid #fff;
   border-bottom: 2px solid #fff;
+
+  @include breakpoint(md) {
+    padding-left: 60px;
+  }
 }
 
 .timeline-comment-avatar {
+  @include breakpoint(md) {
+    display: block;
+  }
+
+  display: none;
   float: left;
   margin-left: -60px;
   border-radius: 3px;
+}
+
+.gh-header {
+  .TableObject-item--primary {
+    white-space: initial;
+  }
 }
 
 .gh-header-title {
@@ -99,9 +117,12 @@
   border-top-right-radius: 3px;
 
   &-text {
-    max-width: 78%;
     padding-top: 10px;
     padding-bottom: 10px;
+    
+    @include breakpoint(md) {
+      max-width: 78%;
+    }
   }
 }
 
