@@ -65,7 +65,7 @@ describe('todo', () => {
     await robot.receive(payloads.basic)
     expect(github.issues.create.mock.calls.length).toBe(1)
     expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'default.txt')),
+      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'pr.txt'), 'utf8'),
       number: undefined,
       owner: 'JasonEtco',
       repo: 'test',
@@ -78,7 +78,7 @@ describe('todo', () => {
     const {robot, github} = gimmeRobot('autoAssignFalse.yml')
     await robot.receive(payloads.basic)
     expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'autoAssignFalse.txt')),
+      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'autoAssignFalse.txt'), 'utf8'),
       number: undefined,
       owner: 'JasonEtco',
       repo: 'test',
@@ -90,7 +90,7 @@ describe('todo', () => {
     const {robot, github} = gimmeRobot('autoAssignString.yml')
     await robot.receive(payloads.basic)
     expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'autoAssignString.txt')),
+      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'autoAssignString.txt'), 'utf8'),
       number: undefined,
       owner: 'JasonEtco',
       repo: 'test',
@@ -103,12 +103,12 @@ describe('todo', () => {
     const {robot, github} = gimmeRobot('autoAssignArr.yml')
     await robot.receive(payloads.basic)
     expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'autoAssignArr.txt')),
+      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'autoAssignArr.txt'), 'utf8'),
       number: undefined,
       owner: 'JasonEtco',
       repo: 'test',
       title: 'Jason!',
-      assignees: ['JasonEtco', 'matchai']
+      assignees: ['JasonEtco', 'matchai', 'defunkt']
     })
   })
 

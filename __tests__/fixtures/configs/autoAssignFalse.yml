@@ -1,3 +1,4 @@
 todo:
   keyword: "@todo"
   autoAssign: false
+  blobLines: 2

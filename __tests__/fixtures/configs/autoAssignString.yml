@@ -1,3 +1,4 @@
 todo:
   keyword: "@todo"
   autoAssign: "matchai"
+  blobLines: 2
