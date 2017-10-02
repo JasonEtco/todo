@@ -4118,6 +4118,10 @@ h2.account {
   padding: 0!important;
 }
 
+.pt-0 {
+  padding-top: 0!important;
+}
+
 .pb-0 {
   padding-bottom: 0!important;
 }
@@ -4137,6 +4141,10 @@ h2.account {
 
 .p-1 {
   padding: 4px!important;
+}
+
+.pt-1 {
+  padding-top: 4px!important;
 }
 
 .pb-1 {
@@ -4160,6 +4168,10 @@ h2.account {
   padding: 8px!important;
 }
 
+.pt-2 {
+  padding-top: 8px!important;
+}
+
 .pb-2 {
   padding-bottom: 8px!important;
 }
@@ -4179,6 +4191,10 @@ h2.account {
 
 .p-3 {
   padding: 16px!important;
+}
+
+.pt-3 {
+  padding-top: 16px!important;
 }
 
 .pb-3 {
@@ -4202,6 +4218,10 @@ h2.account {
   padding: 24px!important;
 }
 
+.pt-4 {
+  padding-top: 24px!important;
+}
+
 .pb-4 {
   padding-bottom: 24px!important;
 }
@@ -4221,6 +4241,10 @@ h2.account {
 
 .p-5 {
   padding: 32px!important;
+}
+
+.pt-5 {
+  padding-top: 32px!important;
 }
 
 .pb-5 {
@@ -4244,6 +4268,10 @@ h2.account {
   padding: 40px!important;
 }
 
+.pt-6 {
+  padding-top: 40px!important;
+}
+
 .pb-6 {
   padding-bottom: 40px!important;
 }
@@ -4264,6 +4292,10 @@ h2.account {
 @media (min-width:768px) {
   .p-md-0 {
     padding: 0!important;
+  }
+
+  .pt-md-0 {
+    padding-top: 0!important;
   }
 
   .pb-md-0 {
@@ -4289,6 +4321,10 @@ h2.account {
     padding: 4px!important;
   }
 
+  .pt-md-1 {
+    padding-top: 4px!important;
+  }
+
   .pb-md-1 {
     padding-bottom: 4px!important;
   }
@@ -4310,6 +4346,10 @@ h2.account {
 @media (min-width:768px) {
   .p-md-2 {
     padding: 8px!important;
+  }
+
+  .pt-md-2 {
+    padding-top: 8px!important;
   }
 
   .pb-md-2 {
@@ -4335,6 +4375,10 @@ h2.account {
     padding: 16px!important;
   }
 
+  .pt-md-3 {
+    padding-top: 16px!important;
+  }
+
   .pb-md-3 {
     padding-bottom: 16px!important;
   }
@@ -4356,6 +4400,10 @@ h2.account {
 @media (min-width:768px) {
   .p-md-4 {
     padding: 24px!important;
+  }
+
+  .pt-md-4 {
+    padding-top: 24px!important;
   }
 
   .pb-md-4 {
@@ -4381,6 +4429,10 @@ h2.account {
     padding: 32px!important;
   }
 
+  .pt-md-5 {
+    padding-top: 32px!important;
+  }
+
   .pb-md-5 {
     padding-bottom: 32px!important;
   }
@@ -4402,6 +4454,10 @@ h2.account {
 @media (min-width:768px) {
   .p-md-6 {
     padding: 40px!important;
+  }
+
+  .pt-md-6 {
+    padding-top: 40px!important;
   }
 
   .pb-md-6 {
@@ -4427,6 +4483,10 @@ h2.account {
     padding: 0!important;
   }
 
+  .pt-lg-0 {
+    padding-top: 0!important;
+  }
+
   .pb-lg-0 {
     padding-bottom: 0!important;
   }
@@ -4448,6 +4508,10 @@ h2.account {
 @media (min-width:1012px) {
   .p-lg-1 {
     padding: 4px!important;
+  }
+
+  .pt-lg-1 {
+    padding-top: 4px!important;
   }
 
   .pb-lg-1 {
@@ -4473,6 +4537,10 @@ h2.account {
     padding: 8px!important;
   }
 
+  .pt-lg-2 {
+    padding-top: 8px!important;
+  }
+
   .pb-lg-2 {
     padding-bottom: 8px!important;
   }
@@ -4494,6 +4562,10 @@ h2.account {
 @media (min-width:1012px) {
   .p-lg-3 {
     padding: 16px!important;
+  }
+
+  .pt-lg-3 {
+    padding-top: 16px!important;
   }
 
   .pb-lg-3 {
@@ -4519,6 +4591,10 @@ h2.account {
     padding: 24px!important;
   }
 
+  .pt-lg-4 {
+    padding-top: 24px!important;
+  }
+
   .pb-lg-4 {
     padding-bottom: 24px!important;
   }
@@ -4540,6 +4616,10 @@ h2.account {
 @media (min-width:1012px) {
   .p-lg-5 {
     padding: 32px!important;
+  }
+
+  .pt-lg-5 {
+    padding-top: 32px!important;
   }
 
   .pb-lg-5 {
@@ -4565,6 +4645,10 @@ h2.account {
     padding: 40px!important;
   }
 
+  .pt-lg-6 {
+    padding-top: 40px!important;
+  }
+
   .pb-lg-6 {
     padding-bottom: 40px!important;
   }
@@ -4586,6 +4670,10 @@ h2.account {
 @media (min-width:1280px) {
   .p-xl-0 {
     padding: 0!important;
+  }
+
+  .pt-xl-0 {
+    padding-top: 0!important;
   }
 
   .pb-xl-0 {
@@ -4611,6 +4699,10 @@ h2.account {
     padding: 4px!important;
   }
 
+  .pt-xl-1 {
+    padding-top: 4px!important;
+  }
+
   .pb-xl-1 {
     padding-bottom: 4px!important;
   }
@@ -4632,6 +4724,10 @@ h2.account {
 @media (min-width:1280px) {
   .p-xl-2 {
     padding: 8px!important;
+  }
+
+  .pt-xl-2 {
+    padding-top: 8px!important;
   }
 
   .pb-xl-2 {
@@ -4657,6 +4753,10 @@ h2.account {
     padding: 16px!important;
   }
 
+  .pt-xl-3 {
+    padding-top: 16px!important;
+  }
+
   .pb-xl-3 {
     padding-bottom: 16px!important;
   }
@@ -4678,6 +4778,10 @@ h2.account {
 @media (min-width:1280px) {
   .p-xl-4 {
     padding: 24px!important;
+  }
+
+  .pt-xl-4 {
+    padding-top: 24px!important;
   }
 
   .pb-xl-4 {
@@ -4703,6 +4807,10 @@ h2.account {
     padding: 32px!important;
   }
 
+  .pt-xl-5 {
+    padding-top: 32px!important;
+  }
+
   .pb-xl-5 {
     padding-bottom: 32px!important;
   }
@@ -4724,6 +4832,10 @@ h2.account {
 @media (min-width:1280px) {
   .p-xl-6 {
     padding: 40px!important;
+  }
+
+  .pt-xl-6 {
+    padding-top: 40px!important;
   }
 
   .pb-xl-6 {
@@ -6343,6 +6455,10 @@ div.CodeMirror-cursors {
   fill: currentColor;
 }
 
+.wb-break-word {
+  word-break: break-word!important;
+}
+
 .issue {
   width: 100%;
 }
@@ -6501,4 +6617,9 @@ div.CodeMirror-cursors {
   position: absolute;
   top: calc(50% - .7em);
   right: 24px;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
 }
