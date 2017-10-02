@@ -43,24 +43,25 @@ class App extends Component {
             <h2 className="alt-h2">Configure as needed</h2>
             <p className="lead">The app comes with a few configuration options built-in, to suit your project's needs.</p>
 
-            <div className="markdown-body text-left table-wrapper">
-              <table className="d-table">
-                <thead><tr>
-                  <th>Option</th>
-                  <th>Type</th>
-                  <th>Default Value</th>
-                </tr></thead>
-                <tbody className="input-monospace">
-                  {configOptions.map(opt => (
-                    <tr key={opt.name}>
-                      <td>{opt.name}</td>
-                      <td>{opt.type}</td>
-                      <td>{String(defaultConfig[opt.name])}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
+            <div className="markdown-body text-left">
+              <div className="table-wrapper">
+                <table className="d-table">
+                  <thead><tr>
+                    <th>Option</th>
+                    <th>Type</th>
+                    <th>Default Value</th>
+                  </tr></thead>
+                  <tbody className="input-monospace">
+                    {configOptions.map(opt => (
+                      <tr key={opt.name}>
+                        <td>{opt.name}</td>
+                        <td>{opt.type}</td>
+                        <td>{String(defaultConfig[opt.name])}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
               <p className="text-center f5 pb-2">Read more about the configuration options in the <a href={`${c.repo}#configuring-for-your-project`}>GitHub repo</a>.</p>
             </div>
           </div>
