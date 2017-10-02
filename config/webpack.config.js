@@ -31,6 +31,7 @@ const web = {
     new webpack.optimize.UglifyJsPlugin(),
     new ExtractTextPlugin('[name].min.css'),
     new PurifyCSSPlugin({
+      minimize: true,
       moduleExtensions: ['.js'],
       paths: glob.sync(path.join(__dirname, '..', 'app', '**/*.js'))
     }),
@@ -100,12 +101,7 @@ const server = {
     libraryTarget: 'commonjs'
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin(),
-    new ExtractTextPlugin('[name].min.css'),
-    new PurifyCSSPlugin({
-      moduleExtensions: ['.js'],
-      paths: glob.sync(path.join(__dirname, '..', 'app', '**/*.js'))
-    })
+    new webpack.optimize.UglifyJsPlugin()
   ],
   module: {
     rules: [{
@@ -128,24 +124,7 @@ const server = {
       }
     }, {
       test: /\.scss$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: ['css-loader', {
-          loader: 'postcss-loader',
-          options: {
-            sourceMap: true,
-            plugins: () => [autoprefixer(browsers)]
-          }
-        }, {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true,
-            includePaths: [
-              'node_modules'
-            ]
-          }
-        }]
-      })
+      use: 'ignore-loader'
     }]
   }
 }
