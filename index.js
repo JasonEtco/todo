@@ -2,12 +2,21 @@ const defaultConfig = require('./lib/default-config')
 const getContents = require('./lib/get-file-contents')
 const generateBody = require('./lib/generate-body')
 const commitIsInPR = require('./lib/commit-is-in-pr')
+const ssrTemplate = require('./lib/ssr-template')
+const React = require('react')
+const ReactDOMServer = require('react-dom/server')
+const App = require('./public/server.min.js').default
 
 const express = require('express')
 const path = require('path')
 
 module.exports = (robot) => {
   const app = robot.route('/')
+  app.get('/', (req, res) => {
+    const ssrStr = ReactDOMServer.renderToString(React.createElement(App))
+    const tpl = ssrTemplate(ssrStr)
+    res.send(tpl)
+  })
   app.use(express.static(path.join(__dirname, 'public')))
 
   robot.on('push', async context => {

@@ -1,11 +1,10 @@
 /* eslint-disable jsx-quotes */
 
 import React, { Component } from 'react'
-import CodeMirror from 'react-codemirror'
-import 'codemirror/mode/javascript/javascript'
-
 import Issue from './Issue'
 import c from '../constants'
+import CodeMirror from 'react-codemirror'
+// import 'codemirror/mode/javascript/javascript'
 
 function generateStartLine (contents, title) {
   const index = contents.indexOf(`${c.cfg.keyword} ${title}`)

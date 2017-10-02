@@ -81,4 +81,8 @@ class App extends Component {
   }
 }
 
-render(<App />, document.querySelector('.mount'))
+if (typeof window !== 'undefined') {
+  render(<App />, document.querySelector('.mount'))
+}
+
+export default App
