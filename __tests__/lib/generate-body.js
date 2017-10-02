@@ -30,36 +30,68 @@ describe('generate-body', () => {
     expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'defaults.txt'), 'utf8'))
   })
 
+  describe('autoAssign', () => {
+    it('prepares a message with the committer', () => {
+      const config = { keyword: '@todo', autoAssign: true }
+      const body = generateBody(context, config, title, file, contents, author, sha)
+
+      expect(typeof body).toBe('string')
+      expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'defaults.txt'), 'utf8'))
+    })
+
+    it('prepares a message without an assignee', () => {
+      const config = { keyword: '@todo', autoAssign: false }
+      const body = generateBody(context, config, title, file, contents, author, sha)
+
+      expect(typeof body).toBe('string')
+      expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'autoAssignFalse.txt'), 'utf8'))
+    })
+
+    it('prepares a message with the configured assignee', () => {
+      const config = { keyword: '@todo', autoAssign: '@matchai' }
+      const body = generateBody(context, config, title, file, contents, author, sha)
+
+      expect(typeof body).toBe('string')
+      expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'autoAssignString.txt'), 'utf8'))
+    })
+
+    it('prepares a message with the configured assignees', () => {
+      const config = { keyword: '@todo', autoAssign: ['@JasonEtco', 'matchai'] }
+      const body = generateBody(context, config, title, file, contents, author, sha)
+
+      expect(typeof body).toBe('string')
+      expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'autoAssignArr.txt'), 'utf8'))
+    })
+  })
+
   it('generates a body string with a PR', () => {
     const config = { keyword: '@todo', blobLines: 2 }
-
     const body = generateBody(context, config, title, file, contents, author, sha, 10)
 
     expect(typeof body).toBe('string')
     expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'pr.txt'), 'utf8'))
   })
 
-  it('generates a body string without a blob, blobLines: false', () => {
-    const config = { keyword: '@todo', blobLines: false }
+  describe('blobLines', () => {
+    it('generates a body string without a blob, blobLines: false', () => {
+      const config = { keyword: '@todo', blobLines: false }
+      const body = generateBody(context, config, title, file, contents, author, sha)
 
-    const body = generateBody(context, config, title, file, contents, author, sha)
+      expect(typeof body).toBe('string')
+      expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'no-blob.txt'), 'utf8'))
+    })
 
-    expect(typeof body).toBe('string')
-    expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'no-blob.txt'), 'utf8'))
-  })
+    it('generates a body string without a blob, blobLines: 0', () => {
+      const config = { keyword: '@todo', blobLines: 0 }
+      const body = generateBody(context, config, title, file, contents, author, sha)
 
-  it('generates a body string without a blob, blobLines: 0', () => {
-    const config = { keyword: '@todo', blobLines: 0 }
-
-    const body = generateBody(context, config, title, file, contents, author, sha)
-
-    expect(typeof body).toBe('string')
-    expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'no-blob.txt'), 'utf8'))
+      expect(typeof body).toBe('string')
+      expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'no-blob.txt'), 'utf8'))
+    })
   })
 
   it('generates a body string with a custom message', () => {
     const config = { keyword: '@todo', blobLines: 2 }
-
     const body = generateBody(context, config, title, file, contentsBody, author, sha)
 
     expect(typeof body).toBe('string')
@@ -68,7 +100,6 @@ describe('generate-body', () => {
 
   it('generates a body string with a custom message but no blob', () => {
     const config = { keyword: '@todo', blobLines: false }
-
     const body = generateBody(context, config, title, file, contentsBody, author, sha)
 
     expect(typeof body).toBe('string')
