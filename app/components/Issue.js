@@ -19,8 +19,8 @@ export default class Issue extends Component {
     return (
       <div className="issue rounded-1">
         <div id="partial-discussion-header" className="gh-header Details">
-          <div className="gh-header-show ">
-            <h1 className="text-normal">
+          <div className="gh-header-show">
+            <h1 className="text-normal wb-break-word">
               <span className="issue-title">{title}</span> <span className="issue-number">#129</span>
             </h1>
           </div>
