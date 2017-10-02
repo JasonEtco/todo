@@ -32,7 +32,7 @@ class App extends Component {
       <div key={1} className="Site-content">
         <div className="container-md p-responsive py-6 mt-6 mb-5 text-center">
           <h2 className="alt-h2">Automatically generate new issues</h2>
-          <p className="lead"><strong>todo</strong> is a GitHub App automagically creates new issues based on comments and keywords in your code. Check out the demo below.</p>
+          <p className="lead"><strong>todo</strong> is a GitHub App that automagically creates new issues based on comments and keywords in your code. Check out the demo below.</p>
         </div>
         <div className="p-2 p-lg-4">
           <Demo />
