@@ -3,6 +3,7 @@ const payloads = require('./fixtures/payloads')
 const app = require('..')
 const fs = require('fs')
 const path = require('path')
+const request = require('supertest')
 
 function gimmeRobot (config = 'basic.yml') {
   const cfg = fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', config), 'utf8')
@@ -40,6 +41,13 @@ function gimmeRobot (config = 'basic.yml') {
 }
 
 describe('todo', () => {
+  it('returns the homepage on GET /', async () => {
+    const {robot} = gimmeRobot()
+    const app = robot.route()
+    const res = await request(app).get('/')
+    expect(res.text.startsWith('<!DOCTYPE html>')).toBe(true)
+  })
+
   it('requests issues for the repo', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)

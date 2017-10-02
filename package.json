@@ -22,6 +22,10 @@
       "<rootDir>/__tests__/fixtures/"
     ],
     "coverageDirectory": "./coverage/",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/public/"
+    ],
     "collectCoverage": true
   },
   "dependencies": {
@@ -54,7 +58,8 @@
     "jest": "^21.2.1",
     "localtunnel": "^1.8.2",
     "nodemon": "^1.12.1",
-    "standard": "^10.0.3"
+    "standard": "^10.0.3",
+    "supertest": "^3.0.0"
   },
   "engines": {
     "node": ">= 8.6.0",
