@@ -44,3 +44,8 @@ html, body { height: 100% }
     right: $spacer-4;
   }
 }
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}

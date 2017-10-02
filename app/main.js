@@ -43,7 +43,7 @@ class App extends Component {
             <h2 className="alt-h2">Configure as needed</h2>
             <p className="lead">The app comes with a few configuration options built-in, to suit your project's needs.</p>
 
-            <div className="markdown-body text-left">
+            <div className="markdown-body text-left table-wrapper">
               <table className="d-table">
                 <thead><tr>
                   <th>Option</th>
