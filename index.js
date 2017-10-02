@@ -3,7 +3,13 @@ const getContents = require('./lib/get-file-contents')
 const generateBody = require('./lib/generate-body')
 const commitIsInPR = require('./lib/commit-is-in-pr')
 
+const express = require('express')
+const path = require('path')
+
 module.exports = (robot) => {
+  const app = robot.route('/')
+  app.use(express.static(path.join(__dirname, 'public')))
+
   robot.on('push', async context => {
     const config = await context.config('config.yml')
     const cfg = {...defaultConfig, ...config.todo}
