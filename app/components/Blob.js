@@ -5,9 +5,22 @@ import CodeMirror from 'react-codemirror'
 import 'codemirror/mode/javascript/javascript'
 
 export default class Blob extends Component {
+  constructor (props) {
+    super(props)
+    this.splitCode = this.splitCode.bind(this)
+  }
+
+  componentDidUpdate () {
+    const { code, start } = this.props
+    this.editor.getCodeMirror().doc.setValue(this.splitCode(code, start))
+  }
+
+  splitCode (code, start) {
+    return code.split('\n').slice(start - 1, start + 5).join('\n')
+  }
+
   render () {
     const {start, code, sha} = this.props
-    const renderCode = code.split('\n').slice(start - 1, start + 5).join('\n')
     const options = {
       firstLineNumber: start,
       lineNumbers: true,
@@ -25,7 +38,7 @@ export default class Blob extends Component {
             Lines {start} to {start + 5} in <a href="#" className="commit-tease-sha">{sha}</a>
           </p>
         </div>
-        <CodeMirror value={renderCode} options={options} />
+        <CodeMirror ref={r => { this.editor = r }} value={this.splitCode(code, start)} options={options} />
       </div>
     )
   }

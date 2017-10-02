@@ -54,7 +54,7 @@ export default class Demo extends Component {
         </div>
         <div className="col-12 col-lg-6">
           <div className="p-4 p-lg-0">
-            <Issue title={title} body={body} start={start} code={c.code} />
+            <Issue title={title} body={body} start={start} code={this.state.code} />
           </div>
         </div>
       </div>
