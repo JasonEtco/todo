@@ -6,7 +6,7 @@
 .ReactCodeMirror {
   height: 100%;
 
-  textarea { display: none; }
+  > textarea { display: none; }
 }
 
 .CodeMirror {
