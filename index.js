@@ -12,17 +12,17 @@ const path = require('path')
 
 module.exports = (robot) => {
   const app = robot.route('/')
+  app.use(express.static(path.join(__dirname, 'public')))
   app.get('/', (req, res) => {
     const ssrStr = ReactDOMServer.renderToString(React.createElement(App))
     const tpl = ssrTemplate(ssrStr)
 
-    /* istanbul ignore if */
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV !== 'development') {
       res.set('Cache-Control', 'public, max-age=1200, s-maxage=3200')
     }
+
     res.end(tpl)
   })
-  app.use(express.static(path.join(__dirname, 'public')))
 
   robot.on('push', async context => {
     const config = await context.config('config.yml')
