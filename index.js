@@ -15,7 +15,7 @@ module.exports = (robot) => {
   app.get('/', (req, res) => {
     const ssrStr = ReactDOMServer.renderToString(React.createElement(App))
     const tpl = ssrTemplate(ssrStr)
-    res.send(tpl)
+    res.end(tpl)
   })
   app.use(express.static(path.join(__dirname, 'public')))
 

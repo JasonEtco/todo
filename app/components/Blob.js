@@ -3,12 +3,6 @@
 import React, { Component } from 'react'
 import CodeMirror from 'react-codemirror'
 
-// let CodeMirror = null
-// if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
-//   CodeMirror = require('react-codemirror')
-//   require('codemirror/mode/javascript/javascript')
-// }
-
 export default class Blob extends Component {
   constructor (props) {
     super(props)

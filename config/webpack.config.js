@@ -88,10 +88,7 @@ const web = {
 
 const server = {
   entry: {
-    server: [
-      'babel-polyfill',
-      path.resolve(__dirname, '..', 'app', 'main.js')
-    ]
+    server: path.resolve(__dirname, '..', 'app', 'components', 'App.js')
   },
   output: {
     path: path.join(__dirname, '..', 'public'),
