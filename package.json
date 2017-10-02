@@ -22,6 +22,10 @@
       "<rootDir>/__tests__/fixtures/"
     ],
     "coverageDirectory": "./coverage/",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/public/"
+    ],
     "collectCoverage": true
   },
   "dependencies": {
@@ -35,6 +39,7 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "glob": "^7.1.2",
     "html-webpack-plugin": "^2.30.1",
+    "ignore-loader": "^0.1.2",
     "node-sass": "^4.5.3",
     "postcss-loader": "^2.0.6",
     "primer-css": "^9.4.0",
@@ -53,7 +58,8 @@
     "jest": "^21.2.1",
     "localtunnel": "^1.8.2",
     "nodemon": "^1.12.1",
-    "standard": "^10.0.3"
+    "standard": "^10.0.3",
+    "supertest": "^3.0.0"
   },
   "engines": {
     "node": ">= 8.6.0",

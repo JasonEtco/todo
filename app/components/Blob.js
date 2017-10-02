@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react'
 import CodeMirror from 'react-codemirror'
-import 'codemirror/mode/javascript/javascript'
 
 export default class Blob extends Component {
   constructor (props) {

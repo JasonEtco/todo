@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const autoprefixer = require('autoprefixer')
@@ -16,7 +15,7 @@ const browsers = [
   '> 1%'
 ]
 
-module.exports = {
+const web = {
   entry: {
     main: [
       'babel-polyfill',
@@ -29,14 +28,10 @@ module.exports = {
     publicPath: '/'
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, '..', 'app', 'index.tpl.html'),
-      inject: 'body',
-      filename: 'index.html'
-    }),
     new webpack.optimize.UglifyJsPlugin(),
     new ExtractTextPlugin('[name].min.css'),
     new PurifyCSSPlugin({
+      minimize: true,
       moduleExtensions: ['.js'],
       paths: glob.sync(path.join(__dirname, '..', 'app', '**/*.js'))
     }),
@@ -90,3 +85,45 @@ module.exports = {
     }]
   }
 }
+
+const server = {
+  entry: {
+    server: path.resolve(__dirname, '..', 'app', 'components', 'App.js')
+  },
+  output: {
+    path: path.join(__dirname, '..', 'public'),
+    filename: '[name].min.js',
+    publicPath: '/',
+    library: '',
+    libraryTarget: 'commonjs'
+  },
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin()
+  ],
+  module: {
+    rules: [{
+      test: /\.jsx?$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            ['env', {
+              targets: { browsers },
+              debug: false,
+              loose: true,
+              modules: false,
+              useBuiltIns: true
+            }],
+            'react'
+          ]
+        }
+      }
+    }, {
+      test: /\.scss$/,
+      use: 'ignore-loader'
+    }]
+  }
+}
+
+module.exports = [web, server]
