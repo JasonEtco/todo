@@ -5,10 +5,6 @@ import Issue from './Issue'
 import c from '../constants'
 import CodeMirror from 'react-codemirror'
 
-if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
-  require('codemirror/mode/javascript/javascript')
-}
-
 function generateStartLine (contents, title) {
   const index = contents.indexOf(`${c.cfg.keyword} ${title}`)
   const tempString = contents.substring(0, index)
