@@ -10,16 +10,20 @@ export default class Blob extends Component {
   }
 
   componentDidUpdate () {
-    const { code, start } = this.props
-    this.editor.getCodeMirror().doc.setValue(this.splitCode(code, start))
+    const { code, start, cfg } = this.props
+    if (this.editor) {
+      this.editor.getCodeMirror().doc.setValue(this.splitCode(code, start, cfg.blobLines))
+    }
   }
 
-  splitCode (code, start) {
-    return code.split('\n').slice(start - 1, start + 5).join('\n')
+  splitCode (code, start, blobLines) {
+    return code.split('\n').slice(start - 1, start + blobLines).join('\n')
   }
 
   render () {
-    const {start, code, sha} = this.props
+    const {start, code, sha, cfg} = this.props
+    if (cfg.blobLines === 0 || cfg.blobLines === false) return null
+
     const options = {
       firstLineNumber: start,
       lineNumbers: true,
@@ -27,18 +31,18 @@ export default class Blob extends Component {
       readOnly: 'nocursor'
     }
 
-    return (
-      <div className="border rounded-1 my-2">
+    return ([<hr key={0} />,
+      <div key={1} className="border rounded-1 my-2">
         <div className="f6 px-3 py-2 lh-condensed border-bottom bg-gray-light">
           <p className="mb-0 text-bold">
             <a href="#">robot-plan/index.js</a>
           </p>
           <p className="mb-0 text-gray-light">
-            Lines {start} to {start + 5} in <a href="#" className="commit-tease-sha">{sha}</a>
+            Lines {start} to {start + cfg.blobLines} in <a href="#" className="commit-tease-sha">{sha}</a>
           </p>
         </div>
-        <CodeMirror ref={r => { this.editor = r }} value={this.splitCode(code, start)} options={options} />
+        <CodeMirror ref={r => { this.editor = r }} value={this.splitCode(code, start, cfg.blobLines)} options={options} />
       </div>
-    )
+    ])
   }
 }
