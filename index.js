@@ -10,13 +10,13 @@ const App = require('./public/server.min.js').default
 const express = require('express')
 const path = require('path')
 
+const ssrStr = ReactDOMServer.renderToString(React.createElement(App))
+const tpl = ssrTemplate(ssrStr)
+
 module.exports = (robot) => {
   const app = robot.route('/')
   app.use(express.static(path.join(__dirname, 'public')))
   app.get('/', (req, res) => {
-    const ssrStr = ReactDOMServer.renderToString(React.createElement(App))
-    const tpl = ssrTemplate(ssrStr)
-
     /* istanbul ignore next */
     if (process.env.NODE_ENV !== 'development') {
       res.setHeader('cache-control', 'public, max-age=1200, s-maxage=3200')
