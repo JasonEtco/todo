@@ -5,8 +5,8 @@ const fs = require('fs')
 const path = require('path')
 const request = require('supertest')
 
-function gimmeRobot (config = 'basic.yml', noConfig = false) {
-  const cfg = fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', config), 'utf8')
+function gimmeRobot (config = 'basic.yml') {
+  const cfg = config ? fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', config), 'utf8') : config
   let robot
   let github
   const content = (str) => Promise.resolve({ data: { content: Buffer.from(str) } })
@@ -23,11 +23,10 @@ function gimmeRobot (config = 'basic.yml', noConfig = false) {
       // Response for getting content from '.github/todo.yml'
       getContent: jest.fn((obj) => {
         if (obj.path.includes('config.yml')) {
-          if (noConfig) {
+          if (config === false) {
             throw { code: 404 } // eslint-disable-line
-          } else {
-            return content(cfg)
           }
+          return content(cfg)
         } else if (obj.path === 'index.js') {
           return content('\n\n@todo Jason!\nsdfasd\nsdfas\ndsfsa\n\n\nsdfsdaf\n@existing An issue that exists\n\n\n\n')
         } else if (obj.path === 'another.js') {
@@ -150,7 +149,7 @@ describe('todo', () => {
   })
 
   it('works without a config present', async () => {
-    const {robot, github} = gimmeRobot('basic.yml', true)
+    const {robot, github} = gimmeRobot(false)
     await robot.receive(payloads.basic)
     expect(github.issues.create.mock.calls.length).toBe(1)
   })
