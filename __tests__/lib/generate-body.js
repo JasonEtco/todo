@@ -6,10 +6,10 @@ const path = require('path')
 describe('generate-body', () => {
   let context
 
-  const title = 'example'
+  const title = 'Jason!'
   const file = 'index.js'
-  const contents = '\n\n@todo example\nasdfas\nasdfdsafasd\nsd\nasdfsa\n\nsdfsadfsa'
-  const contentsBody = '\n\n@todo example\n@body This one has a body\nasdfas\nasdfdsafasd\nsd\nasdfsa\n\nsdfsadfsa'
+  const contents = '\n\n@todo Jason!\nasdfas\nasdfdsafasd\nsd\nasdfsa\n\nsdfsadfsa'
+  const contentsBody = '\n\n@todo Jason!\n@body This one has a body\nasdfas\nasdfdsafasd\nsd\nasdfsa\n\nsdfsadfsa'
   const author = payloads.basic.payload.head_commit.author.username
   const sha = payloads.basic.payload.head_commit.id
 
@@ -18,7 +18,12 @@ describe('generate-body', () => {
       repo: () => ({
         owner: payloads.basic.payload.repository.owner.login,
         repo: payloads.basic.payload.repository.name
-      })
+      }),
+      payload: {
+        installation: {
+          id: 10000
+        }
+      }
     }
   })
 

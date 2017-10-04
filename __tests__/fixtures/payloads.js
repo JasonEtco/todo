@@ -19,7 +19,7 @@ exports.basic = {
       owner: { login: 'JasonEtco' }
     },
     installation: {
-      id: 55850
+      id: 10000
     }
   }
 }
@@ -45,7 +45,7 @@ exports.many = {
       owner: { login: 'JasonEtco' }
     },
     installation: {
-      id: 55850
+      id: 10000
     }
   }
 }
@@ -95,7 +95,7 @@ exports.complex = {
       owner: { login: 'JasonEtco' }
     },
     installation: {
-      id: 55850
+      id: 10000
     }
   }
 }

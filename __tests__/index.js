@@ -5,7 +5,7 @@ const fs = require('fs')
 const path = require('path')
 const request = require('supertest')
 
-function gimmeRobot (config = 'basic.yml', issues = [{ data: [{ title: 'An issue that exists', state: 'open' }] }]) {
+function gimmeRobot (config = 'basic.yml', issues = [{ data: [{ title: 'An issue that exists', state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "An issue that exists"}} -->` }] }]) {
   const cfg = config ? fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', config), 'utf8') : config
   let robot
   let github
@@ -173,18 +173,24 @@ describe('todo', () => {
   })
 
   it('paginates when there are over 30 issues', async () => {
-    const issuesPageOne = Array.apply(null, Array(30)).map((v, i) => ({ title: `I do not exist ${i}`, state: 'open' }))
-    const issuesPageTwo = Array.apply(null, Array(3)).map((v, i) => ({ title: `I do not exist ${i + 30}`, state: 'open' }))
+    const issuesPageOne = Array.apply(null, Array(30)).map((v, i) => ({ title: `I do not exist ${i}`, state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "I do not exist ${i}"}} -->` }))
+    const issuesPageTwo = Array.apply(null, Array(3)).map((v, i) => ({ title: `I do not exist ${i + 30}`, state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "I do not exist ${i + 30}"}} -->` }))
     const {robot, github} = gimmeRobot('basic.yml', [{ data: issuesPageOne }, { data: issuesPageTwo }])
     await robot.receive(payloads.many)
     expect(github.issues.create.mock.calls.length).toBe(33)
   })
 
   it('paginates when there are over 30 issues and does not make them', async () => {
-    const issuesPageOne = Array.apply(null, Array(30)).map((v, i) => ({ title: `I exist ${i}`, state: 'open' }))
-    const issuesPageTwo = Array.apply(null, Array(2)).map((v, i) => ({ title: `I exist ${i + 30}`, state: 'open' }))
+    const issuesPageOne = Array.apply(null, Array(30)).map((v, i) => ({ title: `I exist ${i}`, state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "I exist ${i}"}} -->` }))
+    const issuesPageTwo = Array.apply(null, Array(2)).map((v, i) => ({ title: `I exist ${i + 30}`, state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "I exist ${i + 30}"}} -->` }))
     const {robot, github} = gimmeRobot('basic.yml', [{ data: issuesPageOne }, { data: issuesPageTwo }])
     await robot.receive(payloads.many)
+    expect(github.issues.create.mock.calls.length).toBe(1)
+  })
+
+  it('works with issues with empty bodies', async () => {
+    const {robot, github} = gimmeRobot('basic.yml', [{ data: [{ title: 'Hey', state: 'open' }] }])
+    await robot.receive(payloads.basic)
     expect(github.issues.create.mock.calls.length).toBe(1)
   })
 })
