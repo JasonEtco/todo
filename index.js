@@ -4,6 +4,7 @@ const generateBody = require('./lib/generate-body')
 const commitIsInPR = require('./lib/commit-is-in-pr')
 const ssrTemplate = require('./lib/ssr-template')
 const generateLabel = require('./lib/generate-label')
+const metadata = require('./lib/metadata')
 const React = require('react')
 const ReactDOMServer = require('react-dom/server')
 const App = require('./public/server.min.js').default
@@ -72,10 +73,13 @@ module.exports = (robot) => {
         const titles = matches.map(title => title.replace(`${cfg.keyword} `, ''))
         titles.forEach(async title => {
           // Check if an issue with that title exists
+          const issueExists = issues.some(issue => {
+            if (!issue.body) return false
+            const key = metadata(context, issue).get('title')
+            return key === title
+          })
 
-          // :TODO: Use probot-metadata to store original title
-          // @body By adding metadata to the original post, we can check there for the original title instead of hoping that the title of the existing issue hasn't changed
-          if (issues.some(issue => issue.title === title && issue.state === 'open')) return
+          if (issueExists) return
 
           // :TODO: Reopen existing but closed issues if the same todo is introduced
 
