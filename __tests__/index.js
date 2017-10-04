@@ -5,7 +5,7 @@ const fs = require('fs')
 const path = require('path')
 const request = require('supertest')
 
-function gimmeRobot (config = 'basic.yml') {
+function gimmeRobot (config = 'basic.yml', issues = [{ title: 'An issue that exists', state: 'open' }]) {
   const cfg = config ? fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', config), 'utf8') : config
   let robot
   let github
@@ -16,7 +16,7 @@ function gimmeRobot (config = 'basic.yml') {
 
   github = {
     issues: {
-      getForRepo: jest.fn().mockReturnValue(Promise.resolve({ data: [{ title: 'An issue that exists', state: 'open' }] })),
+      getForRepo: jest.fn().mockReturnValue(Promise.resolve({ data: issues })),
       create: jest.fn()
     },
     repos: {
@@ -26,11 +26,10 @@ function gimmeRobot (config = 'basic.yml') {
           if (config === false) {
             throw { code: 404 } // eslint-disable-line
           }
+          console.log(cfg)
           return content(cfg)
-        } else if (obj.path === 'index.js') {
-          return content('\n\n@todo Jason!\nsdfasd\nsdfas\ndsfsa\n\n\nsdfsdaf\n@existing An issue that exists\n\n\n\n')
-        } else if (obj.path === 'another.js') {
-          return content('\n\n@TODO Another one!\nsdfasd\nsdfas\n\n\n@todo One more issue!\ndsfsa\n\n\nsdfsdaf')
+        } else {
+          return content(fs.readFileSync(path.join(__dirname, 'fixtures', 'files', obj.path), 'utf8'))
         }
       })
     },
@@ -152,5 +151,12 @@ describe('todo', () => {
     const {robot, github} = gimmeRobot(false)
     await robot.receive(payloads.basic)
     expect(github.issues.create.mock.calls.length).toBe(1)
+  })
+
+  it('creates 31 issues', async () => {
+    // const issues = Array.apply(null, Array(31)).map((v, i) => ({ title: `I exist ${i}`, state: 'open' }))
+    const {robot, github} = gimmeRobot()
+    await robot.receive(payloads.many)
+    expect(github.issues.create.mock.calls.length).toBe(31)
   })
 })
