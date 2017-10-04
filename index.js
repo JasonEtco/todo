@@ -27,7 +27,7 @@ module.exports = (robot) => {
 
   robot.on('push', async context => {
     const config = await context.config('config.yml')
-    const cfg = {...defaultConfig, ...config.todo}
+    const cfg = config && config.todo ? {...defaultConfig, ...config.todo} : defaultConfig
 
     // Get array of issue objects in the current repo
     const issues = await context.github.issues.getForRepo(context.repo())
