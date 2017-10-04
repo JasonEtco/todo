@@ -3,6 +3,7 @@ const getContents = require('./lib/get-file-contents')
 const generateBody = require('./lib/generate-body')
 const commitIsInPR = require('./lib/commit-is-in-pr')
 const ssrTemplate = require('./lib/ssr-template')
+const generateLabel = require('./lib/generate-label')
 const React = require('react')
 const ReactDOMServer = require('react-dom/server')
 const App = require('./public/server.min.js').default
@@ -77,10 +78,7 @@ module.exports = (robot) => {
           const pr = await commitIsInPR(context, sha)
           const body = generateBody(context, cfg, title, file, contents, author, sha, pr)
 
-          // Generate an issue object
-          // :TODO: Add labels
-
-          const issueObj = { title, body }
+          const issueObj = { title, body, labels: await generateLabel(context, cfg) }
           if (cfg.autoAssign === true) {
             issueObj.assignee = author
           } else if (typeof cfg.autoAssign === 'string') {

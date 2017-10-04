@@ -19,6 +19,9 @@ const configOptions = [{
 }, {
   name: 'autoAssign',
   type: 'boolean|string|string[]'
+}, {
+  name: 'label',
+  type: 'boolean|string'
 }]
 
 export default class App extends Component {

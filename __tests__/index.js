@@ -17,7 +17,8 @@ function gimmeRobot (config = 'basic.yml', issues = [{ data: [{ title: 'An issue
   github = {
     issues: {
       getForRepo: jest.fn().mockReturnValue(Promise.resolve(issues)),
-      create: jest.fn()
+      create: jest.fn(),
+      createLabel: jest.fn()
     },
     paginate: jest.fn().mockReturnValue(Promise.resolve(issues)),
     repos: {
@@ -78,6 +79,7 @@ describe('todo', () => {
     expect(github.issues.create).toBeCalledWith({
       body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'pr.txt'), 'utf8'),
       number: undefined,
+      labels: ['todo'],
       owner: 'JasonEtco',
       repo: 'test',
       title: 'Jason!',
@@ -91,6 +93,7 @@ describe('todo', () => {
     expect(github.issues.create).toBeCalledWith({
       body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'autoAssignFalse.txt'), 'utf8'),
       number: undefined,
+      labels: ['todo'],
       owner: 'JasonEtco',
       repo: 'test',
       title: 'Jason!'
@@ -103,6 +106,7 @@ describe('todo', () => {
     expect(github.issues.create).toBeCalledWith({
       body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'autoAssignString.txt'), 'utf8'),
       number: undefined,
+      labels: ['todo'],
       owner: 'JasonEtco',
       repo: 'test',
       title: 'Jason!',
@@ -116,6 +120,7 @@ describe('todo', () => {
     expect(github.issues.create).toBeCalledWith({
       body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'autoAssignArr.txt'), 'utf8'),
       number: undefined,
+      labels: ['todo'],
       owner: 'JasonEtco',
       repo: 'test',
       title: 'Jason!',
