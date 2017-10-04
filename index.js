@@ -91,6 +91,7 @@ module.exports = (robot) => {
 
           const issue = context.issue(issueObj)
 
+          robot.log(`Creating issue: ${issue.title}, in ${context.repo().owner}/${context.repo().repo}`)
           return context.github.issues.create(issue)
         })
       })
