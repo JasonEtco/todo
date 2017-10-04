@@ -149,7 +149,7 @@ describe('todo', () => {
     expect(github.issues.create.mock.calls.length).toBe(0)
   })
 
-  it.only('works without a config present', async () => {
+  it('works without a config present', async () => {
     const {robot, github} = gimmeRobot('basic.yml', true)
     await robot.receive(payloads.basic)
     expect(github.issues.create.mock.calls.length).toBe(1)
