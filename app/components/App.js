@@ -21,7 +21,7 @@ const configOptions = [{
   type: 'boolean|string|string[]'
 }, {
   name: 'label',
-  type: 'boolean|string'
+  type: 'boolean|string|string[]'
 }]
 
 export default class App extends Component {

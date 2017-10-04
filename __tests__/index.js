@@ -66,12 +66,6 @@ describe('todo', () => {
     expect(github.issues.getForRepo.mock.calls.length).toBe(1)
   })
 
-  it('requests issues for the repo', async () => {
-    const {robot, github} = gimmeRobot()
-    await robot.receive(payloads.basic)
-    expect(github.issues.getForRepo.mock.calls.length).toBe(1)
-  })
-
   it('creates an issue', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)
@@ -125,6 +119,20 @@ describe('todo', () => {
       repo: 'test',
       title: 'Jason!',
       assignees: ['JasonEtco', 'matchai', 'defunkt']
+    })
+  })
+
+  it('creates an issue adds an array of labels', async () => {
+    const {robot, github} = gimmeRobot('labelArr.yml')
+    await robot.receive(payloads.basic)
+    expect(github.issues.create).toBeCalledWith({
+      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'pr.txt'), 'utf8'),
+      number: undefined,
+      labels: ['one', 'two'],
+      owner: 'JasonEtco',
+      repo: 'test',
+      title: 'Jason!',
+      assignee: 'JasonEtco'
     })
   })
 

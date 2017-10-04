@@ -45,4 +45,11 @@ describe('generate-label', () => {
     expect(labels.length).toEqual(1)
     expect(labels).toEqual([label])
   })
+
+  it('returns an array with the provided array of strings', async () => {
+    const labels = await generateLabel(context, { label: ['pizza', 'dog'] })
+    expect(Array.isArray(labels)).toBe(true)
+    expect(labels.length).toEqual(2)
+    expect(labels).toEqual(['pizza', 'dog'])
+  })
 })
