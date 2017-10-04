@@ -66,6 +66,8 @@ module.exports = (robot) => {
         const titles = matches.map(title => title.replace(`${cfg.keyword} `, ''))
         titles.forEach(async title => {
           // Check if an issue with that title exists
+          // :TODO: Use probot-metadata to store original title
+          // @body By adding metadata to the original post, we can check there for the original title instead of hoping that the title of the existing issue hasn't changed
           if (issues.data.some(issue => issue.title === title && issue.state === 'open')) return
 
           // :TODO: Reopen existing but closed issues if the same todo is introduced
