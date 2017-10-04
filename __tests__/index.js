@@ -5,8 +5,8 @@ const fs = require('fs')
 const path = require('path')
 const request = require('supertest')
 
-function gimmeRobot (config = 'basic.yml', noConfig = false) {
-  const cfg = fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', config), 'utf8')
+function gimmeRobot (config = 'basic.yml', issues = [{ data: [{ title: 'An issue that exists', state: 'open' }] }]) {
+  const cfg = config ? fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', config), 'utf8') : config
   let robot
   let github
   const content = (str) => Promise.resolve({ data: { content: Buffer.from(str) } })
@@ -16,22 +16,20 @@ function gimmeRobot (config = 'basic.yml', noConfig = false) {
 
   github = {
     issues: {
-      getForRepo: jest.fn().mockReturnValue(Promise.resolve({ data: [{ title: 'An issue that exists', state: 'open' }] })),
+      getForRepo: jest.fn().mockReturnValue(Promise.resolve(issues)),
       create: jest.fn()
     },
+    paginate: jest.fn().mockReturnValue(Promise.resolve(issues)),
     repos: {
       // Response for getting content from '.github/todo.yml'
       getContent: jest.fn((obj) => {
         if (obj.path.includes('config.yml')) {
-          if (noConfig) {
+          if (config === false) {
             throw { code: 404 } // eslint-disable-line
-          } else {
-            return content(cfg)
           }
-        } else if (obj.path === 'index.js') {
-          return content('\n\n@todo Jason!\nsdfasd\nsdfas\ndsfsa\n\n\nsdfsdaf\n@existing An issue that exists\n\n\n\n')
-        } else if (obj.path === 'another.js') {
-          return content('\n\n@TODO Another one!\nsdfasd\nsdfas\n\n\n@todo One more issue!\ndsfsa\n\n\nsdfsdaf')
+          return content(cfg)
+        } else {
+          return content(fs.readFileSync(path.join(__dirname, 'fixtures', 'files', obj.path), 'utf8'))
         }
       })
     },
@@ -150,8 +148,30 @@ describe('todo', () => {
   })
 
   it('works without a config present', async () => {
-    const {robot, github} = gimmeRobot('basic.yml', true)
+    const {robot, github} = gimmeRobot(false)
     await robot.receive(payloads.basic)
+    expect(github.issues.create.mock.calls.length).toBe(1)
+  })
+
+  it('creates 31 issues', async () => {
+    const {robot, github} = gimmeRobot()
+    await robot.receive(payloads.many)
+    expect(github.issues.create.mock.calls.length).toBe(33)
+  })
+
+  it('paginates when there are over 30 issues', async () => {
+    const issuesPageOne = Array.apply(null, Array(30)).map((v, i) => ({ title: `I do not exist ${i}`, state: 'open' }))
+    const issuesPageTwo = Array.apply(null, Array(3)).map((v, i) => ({ title: `I do not exist ${i + 30}`, state: 'open' }))
+    const {robot, github} = gimmeRobot('basic.yml', [{ data: issuesPageOne }, { data: issuesPageTwo }])
+    await robot.receive(payloads.many)
+    expect(github.issues.create.mock.calls.length).toBe(33)
+  })
+
+  it('paginates when there are over 30 issues and does not make them', async () => {
+    const issuesPageOne = Array.apply(null, Array(30)).map((v, i) => ({ title: `I exist ${i}`, state: 'open' }))
+    const issuesPageTwo = Array.apply(null, Array(2)).map((v, i) => ({ title: `I exist ${i + 30}`, state: 'open' }))
+    const {robot, github} = gimmeRobot('basic.yml', [{ data: issuesPageOne }, { data: issuesPageTwo }])
+    await robot.receive(payloads.many)
     expect(github.issues.create.mock.calls.length).toBe(1)
   })
 })

@@ -26,12 +26,13 @@ module.exports = (robot) => {
   })
 
   robot.on('push', async context => {
+    const issuePages = await context.github.paginate(context.github.issues.getForRepo(context.repo()))
+    const issues = [].concat.apply([], issuePages.map(p => p.data))
+
     const config = await context.config('config.yml')
     const cfg = config && config.todo ? {...defaultConfig, ...config.todo} : defaultConfig
 
     // Get array of issue objects in the current repo
-    const issues = await context.github.issues.getForRepo(context.repo())
-
     const {head_commit, commits} = context.payload
     const author = head_commit.author.username
 
@@ -66,7 +67,10 @@ module.exports = (robot) => {
         const titles = matches.map(title => title.replace(`${cfg.keyword} `, ''))
         titles.forEach(async title => {
           // Check if an issue with that title exists
-          if (issues.data.some(issue => issue.title === title && issue.state === 'open')) return
+
+          // :TODO: Use probot-metadata to store original title
+          // @body By adding metadata to the original post, we can check there for the original title instead of hoping that the title of the existing issue hasn't changed
+          if (issues.some(issue => issue.title === title && issue.state === 'open')) return
 
           // :TODO: Reopen existing but closed issues if the same todo is introduced
 
@@ -87,6 +91,7 @@ module.exports = (robot) => {
 
           const issue = context.issue(issueObj)
 
+          robot.log(`Creating issue: ${issue.title}, in ${context.repo().owner}/${context.repo().repo}`)
           return context.github.issues.create(issue)
         })
       })
