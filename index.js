@@ -27,11 +27,15 @@ module.exports = (robot) => {
   })
 
   robot.on('push', async context => {
-    const issuePages = await context.github.paginate(context.github.issues.getForRepo(context.repo()))
-    const issues = [].concat.apply([], issuePages.map(p => p.data))
-
     const config = await context.config('config.yml')
     const cfg = config && config.todo ? {...defaultConfig, ...config.todo} : defaultConfig
+
+    const [issuePages, labels] = await Promise.all([
+      context.github.paginate(context.github.issues.getForRepo(context.repo())),
+      generateLabel(context, cfg)
+    ])
+
+    const issues = [].concat.apply([], issuePages.map(p => p.data))
 
     // Get array of issue objects in the current repo
     const {head_commit, commits} = context.payload
@@ -78,7 +82,7 @@ module.exports = (robot) => {
           const pr = await commitIsInPR(context, sha)
           const body = generateBody(context, cfg, title, file, contents, author, sha, pr)
 
-          const issueObj = { title, body, labels: await generateLabel(context, cfg) }
+          const issueObj = { title, body, labels }
           if (cfg.autoAssign === true) {
             issueObj.assignee = author
           } else if (typeof cfg.autoAssign === 'string') {
