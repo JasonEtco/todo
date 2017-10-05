@@ -6,7 +6,7 @@
   "license": "ISC",
   "repository": "https://github.com/JasonEtco/todo.git",
   "scripts": {
-    "start": "nodemon --exec \"probot\" run ./index.js",
+    "start": "nodemon --exec \"probot\" run -a 5692 -P ./todo-dev.pem ./index.js",
     "webpack": "webpack -w --config ./config/webpack.config.js",
     "build": "rimraf public && webpack -p --config ./config/webpack.config.js --progress --profile --colors",
     "serve": "probot run ./index.js",
@@ -22,7 +22,9 @@
       "<rootDir>/__tests__/fixtures/",
       "<rootDir>/__tests__/shimRAF.js"
     ],
-    "setupFiles": ["<rootDir>/__tests__/shimRAF.js"],
+    "setupFiles": [
+      "<rootDir>/__tests__/shimRAF.js"
+    ],
     "coverageDirectory": "./coverage/",
     "coveragePathIgnorePatterns": [
       "/node_modules/",
@@ -31,10 +33,16 @@
     "collectCoverage": true
   },
   "dependencies": {
+    "probot": "probot/probot",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  },
+  "devDependencies": {
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
+    "codecov": "^2.3.0",
     "codemirror": "^5.30.0",
     "copy-webpack-plugin": "^4.1.0",
     "css-loader": "^0.28.7",
@@ -42,26 +50,20 @@
     "glob": "^7.1.2",
     "html-webpack-plugin": "^2.30.1",
     "ignore-loader": "^0.1.2",
-    "node-sass": "^4.5.3",
-    "postcss-loader": "^2.0.6",
-    "primer-css": "^9.4.0",
-    "probot": "probot/probot",
-    "purify-css": "^1.2.5",
-    "purifycss-webpack": "^0.7.0",
-    "react": "^16.0.0",
-    "react-codemirror": "^1.0.0",
-    "react-dom": "^16.0.0",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.18.2",
-    "webpack": "^3.6.0"
-  },
-  "devDependencies": {
-    "codecov": "^2.3.0",
     "jest": "^21.2.1",
     "localtunnel": "^1.8.2",
+    "node-sass": "^4.5.3",
     "nodemon": "^1.12.1",
+    "postcss-loader": "^2.0.6",
+    "primer-css": "^9.4.0",
+    "purify-css": "^1.2.5",
+    "purifycss-webpack": "^0.7.0",
+    "react-codemirror": "^1.0.0",
+    "sass-loader": "^6.0.6",
     "standard": "^10.0.3",
-    "supertest": "^3.0.0"
+    "style-loader": "^0.18.2",
+    "supertest": "^3.0.0",
+    "webpack": "^3.6.0"
   },
   "engines": {
     "node": ">= 8.6.0",
