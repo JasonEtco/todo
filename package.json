@@ -6,7 +6,7 @@
   "license": "ISC",
   "repository": "https://github.com/JasonEtco/todo.git",
   "scripts": {
-    "start": "nodemon --exec \"probot\" run -a 5692 -P ./todo-dev.pem ./index.js",
+    "start": "nodemon --exec \"probot\" run ./index.js",
     "webpack": "webpack -w --config ./config/webpack.config.js",
     "build": "rimraf public && webpack -p --config ./config/webpack.config.js --progress --profile --colors",
     "serve": "probot run ./index.js",
