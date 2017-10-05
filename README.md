@@ -42,7 +42,7 @@ todo:
 | keyword | `string` | The keyword to use to generate issue titles | `@todo` |
 | blobLines | `number` or `false` | The number of lines of code to show, starting from the keyword. | 5 |
 | caseSensitive | `boolean` | Should the keyword be case sensitive? | false |
-| label | `boolean|string|string[]` | Add a label to the new issue. If true, add the `todo` label. If false, don't add any label. You can also give it a label name or an array of label names. | true |
+| label | `boolean`, `string`, `string[]` | Add a label to the new issue. If true, add the `todo` label. If false, don't add any label. You can also give it a label name or an array of label names. | true |
 
 ## Setup
 
