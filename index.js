@@ -28,6 +28,8 @@ module.exports = (robot) => {
   })
 
   robot.on('push', async context => {
+    if (!context.payload.head_commit) return
+
     const config = await context.config('config.yml')
     const cfg = config && config.todo ? {...defaultConfig, ...config.todo} : defaultConfig
 
@@ -39,8 +41,8 @@ module.exports = (robot) => {
     const issues = [].concat.apply([], issuePages.map(p => p.data))
 
     // Get array of issue objects in the current repo
-    const {head_commit, commits} = context.payload
-    const author = head_commit.author.username
+    const {pusher, commits} = context.payload
+    const author = pusher.name
 
     // Get the most up-to-date contents of each file
     // by the commit it was most recently edited in.
