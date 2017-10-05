@@ -194,6 +194,21 @@ describe('todo', () => {
     expect(github.issues.create.mock.calls.length).toBe(1)
   })
 
+  it('parses titles and respects case-insensitive', async () => {
+    const {robot, github} = gimmeRobot()
+    await robot.receive(payloads.caseinsensitive)
+    const expectedBody = fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'caseinsensitive.txt'), 'utf8')
+    expect(github.issues.create).toHaveBeenCalledWith({
+      title: 'My keyword is case insensitive!',
+      body: expectedBody,
+      owner: 'JasonEtco',
+      assignee: 'JasonEtco',
+      repo: 'test',
+      labels: ['todo'],
+      number: undefined
+    })
+  })
+
   it('does not throw errors when head_commit is null', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.merge)
