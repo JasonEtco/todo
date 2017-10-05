@@ -19,7 +19,6 @@ const makeContext = (ref = 'refs/heads/master', prs = prArr) => ({
 describe('commit-is-in-pr', () => {
   it('returns a PR number if found', async () => {
     const pr = await commitIsInPR(makeContext())
-    expect(typeof pr).toBe('number')
     expect(pr).toBe(10)
   })
 

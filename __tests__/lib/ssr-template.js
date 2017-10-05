@@ -5,7 +5,6 @@ const ssrTemplate = require('../../lib/ssr-template')
 describe('ssr-template', () => {
   it('returns the correct HTML string', async () => {
     const str = ssrTemplate('hello')
-    expect(typeof str).toBe('string')
     expect(str).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'page.html'), 'utf8'))
   })
 })
