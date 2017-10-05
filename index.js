@@ -66,11 +66,12 @@ module.exports = (robot) => {
     commitsByFiles.forEach(async (files, sha) => {
       files.forEach(async (contents, file) => {
         // Get issue titles
-        const re = new RegExp(`${cfg.keyword}\\s(.*)`, cfg.caseSensitive ? 'g' : 'gi')
+        const regexFlags = cfg.caseSensitive ? 'g' : 'gi'
+        const re = new RegExp(`${cfg.keyword}\\s(.*)`, regexFlags)
         const matches = contents.match(re)
         if (!matches) return
 
-        const titles = matches.map(title => title.replace(`${cfg.keyword} `, ''))
+        const titles = matches.map(title => title.replace(new RegExp(`${cfg.keyword} `, regexFlags), ''))
         titles.forEach(async title => {
           // Check if an issue with that title exists
           const issueExists = issues.some(issue => {
