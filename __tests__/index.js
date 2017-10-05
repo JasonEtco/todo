@@ -208,4 +208,10 @@ describe('todo', () => {
       number: undefined
     })
   })
+
+  it('does not throw errors when head_commit is null', async () => {
+    const {robot, github} = gimmeRobot()
+    await robot.receive(payloads.merge)
+    expect(github.issues.create.mock.calls.length).toBe(0)
+  })
 })
