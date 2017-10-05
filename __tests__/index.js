@@ -193,4 +193,10 @@ describe('todo', () => {
     await robot.receive(payloads.basic)
     expect(github.issues.create.mock.calls.length).toBe(1)
   })
+
+  it('does not throw errors when head_commit is null', async () => {
+    const {robot, github} = gimmeRobot()
+    await robot.receive(payloads.merge)
+    expect(github.issues.create.mock.calls.length).toBe(0)
+  })
 })

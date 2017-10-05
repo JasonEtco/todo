@@ -11,8 +11,10 @@ exports.basic = {
       }
     ],
     head_commit: {
-      id: 'f7d286aa6381bbb5045288496403d9427b0746e2',
-      author: { username: 'JasonEtco' }
+      id: 'f7d286aa6381bbb5045288496403d9427b0746e2'
+    },
+    pusher: {
+      name: 'JasonEtco'
     },
     repository: {
       name: 'test',
@@ -37,8 +39,10 @@ exports.many = {
       }
     ],
     head_commit: {
-      id: 'f7d286aa6381bbb5045288496403d9427b0746e2',
-      author: { username: 'JasonEtco' }
+      id: 'f7d286aa6381bbb5045288496403d9427b0746e2'
+    },
+    pusher: {
+      name: 'JasonEtco'
     },
     repository: {
       name: 'test',
@@ -87,12 +91,35 @@ exports.complex = {
       }
     ],
     head_commit: {
-      id: 'f7d286aa6381bbb5045288496403d9427b0746e2',
-      author: { username: 'JasonEtco' }
+      id: 'f7d286aa6381bbb5045288496403d9427b0746e2'
+    },
+    pusher: {
+      name: 'JasonEtco'
     },
     repository: {
       name: 'test',
       owner: { login: 'JasonEtco' }
+    },
+    installation: {
+      id: 10000
+    }
+  }
+}
+
+exports.merge = {
+  event: 'push',
+  payload: {
+    commits: [],
+    head_commit: null,
+    repository: {
+      name: 'todo',
+      full_name: 'JasonEtco/todo',
+      owner: {
+        name: 'JasonEtco'
+      }
+    },
+    pusher: {
+      name: 'JasonEtco'
     },
     installation: {
       id: 10000
