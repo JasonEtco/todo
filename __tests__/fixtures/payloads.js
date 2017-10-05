@@ -40,7 +40,9 @@ exports.caseinsensitive = {
     ],
     head_commit: {
       id: 'f7d286aa6381bbb5045288496403d9427b0746e2',
-      author: { username: 'JasonEtco' }
+    },
+    pusher: {
+      name: 'JasonEtco'
     },
     repository: {
       name: 'test',
