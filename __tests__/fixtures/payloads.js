@@ -91,7 +91,7 @@ exports.complex = {
       }
     ],
     head_commit: {
-      id: 'f7d286aa6381bbb5045288496403d9427b0746e2',
+      id: 'f7d286aa6381bbb5045288496403d9427b0746e2'
     },
     pusher: {
       name: 'JasonEtco'
