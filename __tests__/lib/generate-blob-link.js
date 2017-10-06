@@ -23,21 +23,22 @@ describe('generate-blob-link', () => {
   it('generates a blob link string', () => {
     const title = 'example'
     const contents = '\n\n@todo example\n\na\na\na\n\na\na'
-    const blobLink = generateBlobLink(context, 'index.js', contents, title, payloads.basic.payload.head_commit.id, config)
-    expect(blobLink).toBe('https://github.com/JasonEtco/test/blob/f7d286aa6381bbb5045288496403d9427b0746e2/index.js#L3-L5')
+    const blobLink = generateBlobLink(context, 'index.js', contents, title, 'sha', config)
+    expect(blobLink).toBe('https://github.com/JasonEtco/test/blob/sha/index.js#L3-L5')
   })
 
   it('generates the correct blob link when the file has fewer lines than start + blobLines', () => {
-    const title = 'Jason!'
-    const contents = fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'files', 'at-end.js'), 'utf8')
+    const title = 'update helpers.ResizeImage to return error code and do something with it here'
+    const contents = fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'files', 'more.txt'), 'utf8')
+    config.blobLines = 5
     const blobLink = generateBlobLink(context, 'index.js', contents, title, 'sha', config)
-    expect(blobLink).toBe('https://github.com/JasonEtco/test/blob/sha/index.js#L9-L10')
+    expect(blobLink).toBe('https://github.com/JasonEtco/test/blob/sha/index.js#L239-L242')
   })
 
   it('generates the correct blob link when the keyword is at the end of the file', () => {
     const title = 'End title'
     const contents = fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'files', 'at-end.js'), 'utf8')
     const blobLink = generateBlobLink(context, 'index.js', contents, title, 'sha', config)
-    expect(blobLink).toBe('https://github.com/JasonEtco/test/blob/sha/index.js#L10')
+    expect(blobLink).toBe('https://github.com/JasonEtco/test/blob/sha/index.js#L11')
   })
 })
