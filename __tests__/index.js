@@ -214,4 +214,23 @@ describe('todo', () => {
     await robot.receive(payloads.merge)
     expect(github.issues.create.mock.calls.length).toBe(0)
   })
+
+  describe('installation', () => {
+    let robotLog
+    const {robot} = gimmeRobot()
+
+    beforeEach(() => {
+      robotLog = robot.log
+      robot.log = jest.fn()
+    })
+
+    afterEach(() => {
+      robot.log = robotLog
+    })
+
+    it('logs the proper message to the console', async () => {
+      await robot.receive(payloads.installCreated)
+      expect(robot.log).toHaveBeenCalledWith('todo was just installed on JasonEtco/test, JasonEtco/pizza and JasonEtco/example.')
+    })
+  })
 })

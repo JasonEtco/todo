@@ -106,4 +106,13 @@ module.exports = (robot) => {
       })
     })
   })
+
+  robot.on('installation.created', context => {
+    const repos = context.payload.repositories.reduce((prev, repo, i, arr) => {
+      if (i === 0) return prev + repo.full_name
+      if (i === arr.length - 1) return `${prev} and ${repo.full_name}`
+      return `${prev}, ${repo.full_name}`
+    }, '')
+    robot.log(`todo was just installed on ${repos}.`)
+  })
 }
