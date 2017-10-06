@@ -31,7 +31,7 @@
     "collectCoverage": true
   },
   "dependencies": {
-    "probot": "probot/probot"
+    "probot": "^0.11.0"
   },
   "devDependencies": {
     "codecov": "^2.3.0",
