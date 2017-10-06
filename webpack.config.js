@@ -15,6 +15,32 @@ const browsers = [
   '> 1%'
 ]
 
+const output = {
+  path: path.join(__dirname),
+  filename: '[name].min.js',
+  publicPath: '/'
+}
+
+const babel = {
+  test: /\.jsx?$/,
+  exclude: /node_modules/,
+  use: {
+    loader: 'babel-loader',
+    options: {
+      presets: [
+        ['env', {
+          targets: { browsers },
+          debug: false,
+          loose: true,
+          modules: false,
+          useBuiltIns: true
+        }],
+        'react'
+      ]
+    }
+  }
+}
+
 const web = {
   entry: {
     main: [
@@ -22,11 +48,7 @@ const web = {
       path.resolve(__dirname, 'src', 'main.js')
     ]
   },
-  output: {
-    path: path.join(__dirname),
-    filename: '[name].min.js',
-    publicPath: '/'
-  },
+  output,
   plugins: [
     new webpack.optimize.UglifyJsPlugin(),
     new ExtractTextPlugin('[name].min.css'),
@@ -44,25 +66,7 @@ const web = {
     ])
   ],
   module: {
-    rules: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: [
-            ['env', {
-              targets: { browsers },
-              debug: false,
-              loose: true,
-              modules: false,
-              useBuiltIns: true
-            }],
-            'react'
-          ]
-        }
-      }
-    }, {
+    rules: [babel, {
       test: /\.scss$/,
       use: ExtractTextPlugin.extract({
         fallback: 'style-loader',
@@ -91,9 +95,7 @@ const server = {
     server: path.resolve(__dirname, 'src', 'components', 'App.js')
   },
   output: {
-    path: path.join(__dirname),
-    filename: '[name].min.js',
-    publicPath: '/',
+    ...output,
     library: '',
     libraryTarget: 'commonjs'
   },
@@ -101,25 +103,7 @@ const server = {
     new webpack.optimize.UglifyJsPlugin()
   ],
   module: {
-    rules: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: [
-            ['env', {
-              targets: { browsers },
-              debug: false,
-              loose: true,
-              modules: false,
-              useBuiltIns: true
-            }],
-            'react'
-          ]
-        }
-      }
-    }, {
+    rules: [babel, {
       test: /\.scss$/,
       use: 'ignore-loader'
     }]
