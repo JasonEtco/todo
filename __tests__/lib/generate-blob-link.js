@@ -31,13 +31,13 @@ describe('generate-blob-link', () => {
     const title = 'Jason!'
     const contents = fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'files', 'at-end.js'), 'utf8')
     const blobLink = generateBlobLink(context, 'index.js', contents, title, 'sha', config)
-    expect(blobLink).toBe('https://github.com/JasonEtco/test/blob/sha/index.js#L7-L8')
+    expect(blobLink).toBe('https://github.com/JasonEtco/test/blob/sha/index.js#L9-L10')
   })
 
   it('generates the correct blob link when the keyword is at the end of the file', () => {
     const title = 'End title'
     const contents = fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'files', 'at-end.js'), 'utf8')
     const blobLink = generateBlobLink(context, 'index.js', contents, title, 'sha', config)
-    expect(blobLink).toBe('https://github.com/JasonEtco/test/blob/sha/index.js#L8')
+    expect(blobLink).toBe('https://github.com/JasonEtco/test/blob/sha/index.js#L10')
   })
 })
