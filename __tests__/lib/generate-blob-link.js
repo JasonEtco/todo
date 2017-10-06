@@ -32,7 +32,7 @@ describe('generate-blob-link', () => {
     const contents = fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'files', 'more.txt'), 'utf8')
     config.blobLines = 5
     const blobLink = generateBlobLink(context, 'index.js', contents, title, 'sha', config)
-    expect(blobLink).toBe('https://github.com/JasonEtco/test/blob/sha/index.js#L239-L242')
+    expect(blobLink).toBe('https://github.com/JasonEtco/test/blob/sha/index.js#L1-L3')
   })
 
   it('generates the correct blob link when the keyword is at the end of the file', () => {
