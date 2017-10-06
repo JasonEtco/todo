@@ -28,7 +28,7 @@ describe('generate-blob-link', () => {
   })
 
   it('generates the correct blob link when the file has fewer lines than start + blobLines', () => {
-    const title = 'update helpers.ResizeImage to return error code and do something with it here'
+    const title = 'More!'
     const contents = fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'files', 'more.txt'), 'utf8')
     config.blobLines = 5
     const blobLink = generateBlobLink(context, 'index.js', contents, title, 'sha', config)
