@@ -1,0 +1,3 @@
+// @TODO update helpers.ResizeImage to return error code and do something with it here
+	return nil
+}
