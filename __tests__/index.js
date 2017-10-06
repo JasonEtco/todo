@@ -3,7 +3,6 @@ const payloads = require('./fixtures/payloads')
 const app = require('..')
 const fs = require('fs')
 const path = require('path')
-const request = require('supertest')
 
 function gimmeRobot (config = 'basic.yml', issues = [{ data: [{ title: 'An issue that exists', state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "An issue that exists"}} -->` }] }]) {
   const cfg = config ? fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', config), 'utf8') : config
@@ -44,22 +43,6 @@ function gimmeRobot (config = 'basic.yml', issues = [{ data: [{ title: 'An issue
 }
 
 describe('todo', () => {
-  describe('GET /', () => {
-    it('returns the homepage', async () => {
-      const {robot} = gimmeRobot()
-      const app = robot.route()
-      const res = await request(app).get('/')
-      expect(res.text.startsWith('<!DOCTYPE html>')).toBe(true)
-    })
-
-    it('responds with the proper caching header', async () => {
-      const {robot} = gimmeRobot()
-      const app = robot.route()
-      const res = await request(app).get('/')
-      expect(res.header).toHaveProperty('cache-control', 'public, max-age=1200, s-maxage=3200')
-    })
-  })
-
   it('requests issues for the repo', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)

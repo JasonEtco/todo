@@ -2,31 +2,10 @@ const defaultConfig = require('./lib/default-config')
 const getContents = require('./lib/get-file-contents')
 const generateBody = require('./lib/generate-body')
 const commitIsInPR = require('./lib/commit-is-in-pr')
-const ssrTemplate = require('./lib/ssr-template')
 const generateLabel = require('./lib/generate-label')
 const metadata = require('./lib/metadata')
-const React = require('react')
-const ReactDOMServer = require('react-dom/server')
-const App = require('./public/server.min.js').default
-
-const express = require('express')
-const path = require('path')
-
-const ssrStr = ReactDOMServer.renderToString(React.createElement(App))
-const tpl = ssrTemplate(ssrStr)
 
 module.exports = (robot) => {
-  const app = robot.route('/')
-  app.use(express.static(path.join(__dirname, 'public')))
-  app.get('/', (req, res) => {
-    /* istanbul ignore next */
-    if (process.env.NODE_ENV !== 'development') {
-      res.setHeader('cache-control', 'public, max-age=1200, s-maxage=3200')
-    }
-
-    res.end(tpl)
-  })
-
   robot.on('push', async context => {
     if (!context.payload.head_commit) return
 
