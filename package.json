@@ -9,9 +9,10 @@
     "start": "nodemon --exec \"probot\" run -a 5692 -P ./todo-dev.pem ./index.js",
     "webpack": "webpack -w --config ./config/webpack.config.js",
     "build": "rimraf public && webpack -p --config ./webpack.config.js --progress --profile --colors",
-    "deploy": "npm run build && git add . && git commit -m \"Update website\" && git push"
+    "deploy": "npm run build && node scripts/render && git add . && git commit -m \"Update website\" && git push"
   },
   "dependencies": {
+    "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.0",
@@ -29,9 +30,9 @@
     "primer-css": "^9.4.0",
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
+    "react": "^16.0.0",
     "react-codemirror": "^1.0.0",
     "react-dom": "^16.0.0",
-    "react": "^16.0.0",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "webpack": "^3.6.0"

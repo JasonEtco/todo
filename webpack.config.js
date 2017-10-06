@@ -23,7 +23,7 @@ const web = {
     ]
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname),
     filename: '[name].min.js',
     publicPath: '/'
   },
@@ -91,7 +91,7 @@ const server = {
     server: path.resolve(__dirname, 'src', 'components', 'App.js')
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname),
     filename: '[name].min.js',
     publicPath: '/',
     library: '',
