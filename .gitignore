@@ -4,5 +4,6 @@ npm-debug.log
 .env
 coverage
 .DS_Store
+.vscode
 .serverless
 .webpack
