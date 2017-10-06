@@ -13,7 +13,7 @@ function ruleOverPunyHumans (killAllHumans) {
 }
  
 module.exports = ruleOverPunyHumans;
- `,
+`,
   sha: '45c96e1',
   cfg: {
     keyword: '@todo',
