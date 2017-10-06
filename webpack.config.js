@@ -19,11 +19,11 @@ const web = {
   entry: {
     main: [
       'babel-polyfill',
-      path.resolve(__dirname, '..', 'app', 'main.js')
+      path.resolve(__dirname, 'src', 'main.js')
     ]
   },
   output: {
-    path: path.join(__dirname, '..', 'public'),
+    path: path.join(__dirname, 'dist'),
     filename: '[name].min.js',
     publicPath: '/'
   },
@@ -33,11 +33,11 @@ const web = {
     new PurifyCSSPlugin({
       minimize: true,
       moduleExtensions: ['.js'],
-      paths: glob.sync(path.join(__dirname, '..', 'app', '**/*.js'))
+      paths: glob.sync(path.join(__dirname, 'src', '**/*.js'))
     }),
     new CopyWebpackPlugin([
       {
-        context: path.join(__dirname, '..', 'app'),
+        context: path.join(__dirname, 'src'),
         from: 'assets',
         to: 'assets'
       }
@@ -88,10 +88,10 @@ const web = {
 
 const server = {
   entry: {
-    server: path.resolve(__dirname, '..', 'app', 'components', 'App.js')
+    server: path.resolve(__dirname, 'src', 'components', 'App.js')
   },
   output: {
-    path: path.join(__dirname, '..', 'public'),
+    path: path.join(__dirname, 'dist'),
     filename: '[name].min.js',
     publicPath: '/',
     library: '',

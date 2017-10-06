@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import Demo from './Demo'
-import defaultConfig from '../../lib/default-config'
+import defaultConfig from '../default-config'
 
 import '../style.scss'
 import c from '../constants'

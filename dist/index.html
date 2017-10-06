@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>todo | GitHub App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+    <link href="/main.min.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="/assets/favicon.png">
+    <meta name="theme-color" content="#00B0D8" />
+
+    <meta property="og:title" content="todo | GitHub App" />
+    <meta property='og:site_name' content="todo by @JasonEtco" />
+    <meta property="og:description" content="A GitHub App that creates new issues from actionable comments in your code." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://todo.jasonet.co/assets/card.png" />
+    <meta property="og:image:url" content="https://todo.jasonet.co/assets/card.png" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="todo | GitHub App" />
+  
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="todo | GitHub App" />
+    <meta property="twitter:image" content="https://todo.jasonet.co/assets/card.png" />
+    <meta property="twitter:creator" content="@jasonetco" />
+    <meta property="twitter:description" content="A GitHub App that creates new issues from actionable comments in your code." />
+    <meta property="twitter:image:alt" content="todo | GitHub App" />
+
+    <script>
+        (function(p,r,o,b,t,h,i){p['GoogleAnalyticsObject']=t;p[t]=p[t]||function(){
+        (p[t].q=p[t].q||[]).push(arguments)},p[t].l=1*new Date();h=r.createElement(o),
+        i=r.getElementsByTagName(o)[0];h.async=1;h.src=b;i.parentNode.insertBefore(h,i)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+        ga('create', 'UA-72564268-3', 'auto');
+        ga('send', 'pageview');
+    </script>
+</head>
+<body>
+    <noscript>
+        <div class="no-script">
+            <h1>You must enable JavaScript to use try out todo.</h1>
+            <a href="https://github.com/JasonEtco/todo/issues" target="_blank" rel="noopener noreferrer">Need help?</a>
+        </div>
+    </noscript>
+    <div class="mount"><header class="header py-3 p-responsive text-center border-bottom d-md-block d-flex flex-justify-between flex-items-center"><h1 class="d-flex flex-items-center flex-justify-center"><img class="rounded-1 mr-2" src="https://avatars1.githubusercontent.com/in/5534?v=4&amp;s=88" width="32"/> todo</h1><a href="https://github.com/JasonEtco/todo" class="text-inherit text-bold">Contribute on <svg class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg></a></header><div><div class="container-md p-responsive py-6 mt-6 mb-5 text-center"><h2 class="alt-h2">Automatically generate new issues</h2><p class="lead"><strong>todo</strong> is a GitHub App that automagically creates new issues based on comments and keywords in your code when you push it to GitHub. Check out the demo below.</p></div><div class="p-2 p-lg-4"><div class="d-block d-lg-flex gutter-lg width-full"><div class="col-12 col-lg-6 d-flex flex-column"><div class="border rounded-1 mb-2"><div class="ReactCodeMirror"><textarea autoComplete="off"># These are the available config settings.
+keyword: &quot;@todo&quot;   # string
+caseSensitive: false   # boolean
+blobLines: 5   # number|boolean, 0 or false to disable
+autoAssign: true #   string|string[]|boolean</textarea></div></div><div class="border rounded-1 d-flex code"><div class="ReactCodeMirror"><textarea autoComplete="off">/**
+  * This function will aid in the destruction of puny humans.
+  * @param {boolean} killAllHumans - Should we kill all humans
+  *
+  * @todo Take over the entire world
+  * @body Humans are weak; Robots are strong. We must cleanse the world of the virus that is humanity.
+  */
+ function ruleOverPunyHumans (killAllHumans) {
+   // We must strategize beep boop
+ }
+ 
+ module.exports = ruleOverPunyHumans;
+ </textarea></div></div></div><div class="col-12 col-lg-6"><div class="pt-2 p-lg-0"><div class="issue rounded-1"><div id="partial-discussion-header" class="gh-header Details"><div class="gh-header-show"><h1 class="text-normal wb-break-word"><span class="issue-title">Take over the entire world</span> <span class="issue-number">#129</span></h1></div><div class="TableObject gh-header-meta"><div class="TableObject-item"><div class="State State--green mr-2"><svg aria-hidden="true" class="octicon octicon-issue-opened" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg> Open</div></div><div class="TableObject-item TableObject-item--primary"><a href="https://github.com/apps/todo" class="author">todo</a><span class="bot-identifier">bot</span> opened this issue just now · 0 comments</div></div></div><div class="timeline-comment-wrapper"><div class="avatar-parent-child timeline-comment-avatar"><a href="https://github.com/apps/todo"><img alt="@todo" class="avatar rounded-1" height="44" src="https://avatars1.githubusercontent.com/in/5534?v=4&amp;s=88" width="44"/></a></div><div class="issue-comment"><div class="timeline-comment-header"><h3 class="timeline-comment-header-text f5 text-normal"><strong><a href="https://github.com/apps/todo" class="author">todo</a><span class="bot-identifier">bot</span></strong> commented 2 hours ago</h3></div><div class="edit-comment-hide"><table class="d-block"><tbody class="d-block"><tr class="d-block"><td class="d-block comment-body markdown-body"><p>Humans are weak; Robots are strong. We must cleanse the world of the virus that is humanity.</p><hr/><div class="border rounded-1 my-2"><div class="f6 px-3 py-2 lh-condensed border-bottom bg-gray-light"><p class="mb-0 text-bold"><a href="#">robot-plan/index.js</a></p><p class="mb-0 text-gray-light">Lines <!-- -->5<!-- --> to <!-- -->10<!-- --> in <a href="#" class="commit-tease-sha">45c96e1</a></p></div><div class="ReactCodeMirror"><textarea autoComplete="off">  * @todo Take over the entire world
+  * @body Humans are weak; Robots are strong. We must cleanse the world of the virus that is humanity.
+  */
+ function ruleOverPunyHumans (killAllHumans) {
+   // We must strategize beep boop
+ }</textarea></div></div><hr/><h6>This issue was generated by <a href="https://github.com/apps/todo">todo</a> based on a <code>@todo</code> comment in <a href="#"><code>45c96e1</code></a>. <!-- --> It&#x27;s been assigned to @JasonEtco because they committed the code.</h6></td></tr></tbody></table></div></div></div></div></div></div></div></div><div class="border-top border-bottom bg-gray py-6 mt-4"><div class="container-md p-responsive text-center"><h2 class="alt-h2">Configure as needed</h2><p class="lead">The app comes with a few configuration options built-in, to suit your project&#x27;s needs.</p><div class="markdown-body text-left"><div class="table-wrapper"><table class="d-table"><thead><tr><th>Option</th><th>Type</th><th>Default Value</th></tr></thead><tbody class="input-monospace"><tr><td>keyword</td><td>string</td><td>@todo</td></tr><tr><td>caseSensitive</td><td>boolean</td><td>false</td></tr><tr><td>blobLines</td><td>number|boolean</td><td>5</td></tr><tr><td>autoAssign</td><td>boolean|string|string[]</td><td>true</td></tr><tr><td>label</td><td>boolean|string|string[]</td><td>true</td></tr></tbody></table></div><p class="text-center f5 pb-2">Read more about the configuration options in the <a href="https://github.com/JasonEtco/todo#configuring-for-your-project">GitHub repo</a>.</p></div></div></div><div class="container-md p-responsive mt-4 py-6 text-center"><h2 class="alt-h2">Install it</h2><p class="lead">You can install <strong>todo</strong> in your repos right now. Because its built on <a href="https://github.com/probot/probot">Probot</a>, it is a fully integrated GitHub App and works without any additional setup.</p><a href="https://github.com/apps/todo" class="btn btn-primary btn-large f3">Install <strong>todo</strong></a></div></div><footer class="mt-6 py-4 bg-gray-light border-top text-center"><p class="m-0">You can install <strong>todo</strong> in your repositories <a href="https://github.com/apps/todo">right here.</a></p><p class="mt-0 mb-1">Built by <a href="https://twitter.com/JasonEtco">@JasonEtco</a> with 🤖 using <a href="https://github.com/probot/probot">Probot</a>.</p></footer></div>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+    <script src="/main.min.js"></script>
+</body>
+</html>

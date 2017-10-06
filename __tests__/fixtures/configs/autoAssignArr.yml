@@ -1,7 +1,0 @@
-todo:
-  keyword: "@todo"
-  autoAssign:
-    - "JasonEtco"
-    - "matchai"
-    - "defunkt"
-  blobLines: 2
