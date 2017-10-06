@@ -5,5 +5,8 @@
       "node": "6.10"
       }
     }]
-    ]
+  ],
+  "plugins": [
+    ["transform-object-rest-spread", { "useBuiltIns": true }]
+  ]
 }

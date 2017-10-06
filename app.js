@@ -1,8 +1,6 @@
-const fs = require('fs')
 const todo = require('.')
 const createProbot = require('probot')
-
-const cert = fs.readFileSync('private-key.pem', 'utf8')
+const cert = require('./private-key.pem')
 
 // Create probot instance
 const probot = createProbot({
