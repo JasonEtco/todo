@@ -155,7 +155,34 @@ exports.merge = {
   }
 }
 
-exports.installCreated = {
+exports.installCreatedOne = {
+  event: 'installation',
+  payload: {
+    action: 'created',
+    installation: {
+      id: 10000
+    },
+    repositories: [
+      { full_name: 'JasonEtco/test' }
+    ]
+  }
+}
+
+exports.installCreatedTwo = {
+  event: 'installation',
+  payload: {
+    action: 'created',
+    installation: {
+      id: 10000
+    },
+    repositories: [
+      { full_name: 'JasonEtco/test' },
+      { full_name: 'JasonEtco/pizza' }
+    ]
+  }
+}
+
+exports.installCreatedThree = {
   event: 'installation',
   payload: {
     action: 'created',
