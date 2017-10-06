@@ -8,8 +8,8 @@ module.exports = ssrString => `<!DOCTYPE html>
     <title>${title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
-    <link href="/main.min.css" rel="stylesheet" />
-    <link rel="shortcut icon" href="/assets/favicon.png">
+    <link href="main.min.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="assets/favicon.png">
     <meta name="theme-color" content="#00B0D8" />
 
     <meta property="og:title" content="${title}" />
@@ -49,6 +49,6 @@ module.exports = ssrString => `<!DOCTYPE html>
     </noscript>
     <div class="mount">${ssrString}</div>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
-    <script src="/main.min.js"></script>
+    <script src="main.min.js"></script>
 </body>
 </html>`
