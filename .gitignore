@@ -4,3 +4,4 @@ npm-debug.log
 .env
 coverage
 .DS_Store
+jest_0
