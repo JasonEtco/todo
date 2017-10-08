@@ -22,6 +22,9 @@ const configOptions = [{
 }, {
   name: 'label',
   type: 'boolean|string|string[]'
+}, {
+  name: 'reopenClosed',
+  type: 'boolean'
 }]
 
 export default class App extends Component {
