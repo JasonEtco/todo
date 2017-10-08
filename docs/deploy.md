@@ -2,7 +2,20 @@
 
 If you would like to run your own instance of this app, see the [docs for deployment](https://probot.github.io/docs/deployment/).
 
-This app requires these **Permissions & events** for the GitHub App:
+This plugin requires these **Permissions & Events** for the GitHub App:
 
-> :TODO: List permissions required for deployment
-> @body See [probot/stale](https://github.com/probot/stale/blob/master/docs/deploy.md) for an example.
+- Issues - **Read & Write**
+  - No necessary events
+- Pull requests - **Read & Write**
+  - No necessary Events
+- Repository Contents - **Read-only**
+  - Enable **Push** events
+
+To get it up and running on Heroku, simply create a `Procfile` at the root of the app. It should contain:
+
+```
+web: npm run serve
+```
+
+> :TODO: Add serverless deploy docs
+> @body Once #31 has been completed, add docs explaining deployment with serverless.
