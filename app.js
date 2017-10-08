@@ -6,8 +6,7 @@ const cert = require('./private-key.pem')
 const probot = createProbot({
   id: process.env.APP_ID,
   secret: process.env.WEBHOOK_SECRET,
-  cert: cert,
-  port: process.env.PORT
+  cert: cert
 })
 
 // Load probot application
@@ -21,19 +20,19 @@ module.exports.probotHandler = (event, context, callback) => {
   event.body = (typeof event.body === 'string') ? JSON.parse(event.body) : event.body
 
   try {
-    probot.robot.webbook.emit(e, {
+    probot.receive(e, {
       event: e,
-      id: event.headers['x-github-event'] || event.headers['X-GitHub-Event'],
       payload: event.body
     })
-
-    const res = {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Executed'
-      })
-    }
-    callback(null, res)
+    .then(() => {
+      const res = {
+        statusCode: 200,
+        body: JSON.stringify({
+          message: 'Executed'
+        })
+      }
+      callback(null, res)
+    })
   } catch (err) {
     console.error(err)
     callback(err)
