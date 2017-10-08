@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import Issue from './Issue'
 import c from '../constants'
+import defaultConfig from '../default-config'
 import CodeMirror from 'react-codemirror'
 import yaml from 'js-yaml'
 
@@ -29,16 +30,17 @@ export default class Demo extends Component {
 
   getDetails () {
     const { code, cfg } = this.state
-    const titleRe = new RegExp(`${cfg.keyword}\\s(.*)`, cfg.caseSensitive ? 'g' : 'gi')
+    const config = Object.assign({}, defaultConfig, this.state.cfg)    
+    const titleRe = new RegExp(`${config.keyword}\\s(.*)`, config.caseSensitive ? 'g' : 'gi')
     const matches = code.match(titleRe)
 
     if (matches) {
-      const title = matches[0].replace(`${cfg.keyword} `, '')
+      const title = matches[0].replace(`${config.keyword} `, '')
 
       const bodyRe = new RegExp(`${title}\n.*@body (.*)`, 'gim')
       const bodyMatches = bodyRe.exec(code)
       const body = bodyMatches ? bodyMatches[1] : ''
-      const start = generateStartLine(code, title, cfg)
+      const start = generateStartLine(code, title, config)
 
       return { title, body, start }
     }
@@ -46,18 +48,11 @@ export default class Demo extends Component {
     return { title: false }
   }
 
-  updateConfig (event) {
-    const { target } = event
-    const value = target.type === 'checkbox' ? target.checked : target.value
-    this.setState({
-      cfg: Object.assign({}, this.state.cfg, {[target.name]: value})
-    })
-  }
-
   render () {
     const options = { lineNumbers: true, mode: 'javascript' }
     const optionTwo = { lineNumbers: true, mode: 'yaml' }
     const {title, body, start} = this.getDetails()
+    const config = Object.assign({}, defaultConfig, this.state.cfg)
 
     return (
       <div className="d-block d-lg-flex gutter-lg width-full">
@@ -71,7 +66,7 @@ export default class Demo extends Component {
         </div>
         <div className="col-12 col-lg-6">
           <div className="pt-2 p-lg-0">
-            <Issue title={title} body={body} start={start} code={this.state.code} cfg={this.state.cfg} />
+            <Issue title={title} body={body} start={start} code={this.state.code} cfg={config} />
           </div>
         </div>
       </div>
