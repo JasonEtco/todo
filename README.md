@@ -22,6 +22,8 @@ function ruleOverPunyHumans () {
 
 ![todo](https://user-images.githubusercontent.com/10660468/31048765-83569c30-a5f2-11e7-933a-a119d43ad029.png)
 
+**Note:** While the above example is in Javascript, `todo` has been tested in JS, Go, C, C# and Ruby, and should work in any language.
+
 ## Configuring for your project
 
 There are a couple of configuration options in case you need to change the default behaviour. Note that the defaults are likely fine for most projects, so you might not need to change them.
