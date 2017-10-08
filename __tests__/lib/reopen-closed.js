@@ -5,6 +5,7 @@ const path = require('path')
 
 describe('reopen-closed', () => {
   const config = {reopenClosed: true, keyword: '@todo'}
+  const log = jest.fn()
   let context
 
   beforeEach(() => {
@@ -24,7 +25,7 @@ describe('reopen-closed', () => {
   })
 
   it('reopens a closed issue', async () => {
-    await reopenClosed(context, config, 3, 'index.js', 'sha')
+    await reopenClosed(log, context, config, 3, 'index.js', 'sha')
     expect(context.github.issues.createComment).toHaveBeenCalledTimes(1)
     expect(context.github.issues.createComment).toHaveBeenLastCalledWith({
       repo: 'test',

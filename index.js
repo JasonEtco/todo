@@ -65,7 +65,7 @@ module.exports = (robot) => {
 
           if (existingIssue) {
             if (cfg.reopenClosed && existingIssue.state === 'closed') {
-              return reopenClosed(context, config, existingIssue.number, file, sha)
+              return reopenClosed(robot.log, context, cfg, existingIssue.number, file, sha)
             } else {
               return
             }
