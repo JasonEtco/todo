@@ -3,6 +3,7 @@ const getContents = require('./lib/get-file-contents')
 const generateBody = require('./lib/generate-body')
 const commitIsInPR = require('./lib/commit-is-in-pr')
 const generateLabel = require('./lib/generate-label')
+const reopenClosed = require('./lib/reopen-closed')
 const metadata = require('./lib/metadata')
 
 module.exports = (robot) => {
@@ -13,7 +14,7 @@ module.exports = (robot) => {
     const cfg = config && config.todo ? {...defaultConfig, ...config.todo} : defaultConfig
 
     const [issuePages, labels] = await Promise.all([
-      context.github.paginate(context.github.issues.getForRepo(context.repo())),
+      context.github.paginate(context.github.issues.getForRepo(context.repo({state: 'all'}))),
       generateLabel(context, cfg)
     ])
 
@@ -55,15 +56,20 @@ module.exports = (robot) => {
         const titles = matches.map(title => title.replace(new RegExp(`${cfg.keyword} `, regexFlags), ''))
         titles.forEach(async title => {
           // Check if an issue with that title exists
-          const issueExists = issues.some(issue => {
+          const existingIssue = issues.find(issue => {
             if (!issue.body) return false
-            const key = metadata(context, issue).get('title')
-            return key === title
+            const titleKey = metadata(context, issue).get('title')
+            const fileKey = metadata(context, issue).get('file')
+            return titleKey === title && fileKey === file
           })
 
-          if (issueExists) return
-
-          // :TODO: Reopen existing but closed issues if the same todo is introduced
+          if (existingIssue) {
+            if (cfg.reopenClosed && existingIssue.state === 'closed') {
+              return reopenClosed(robot.log, context, cfg, existingIssue.number, file, sha)
+            } else {
+              return
+            }
+          }
 
           const pr = await commitIsInPR(context, sha)
           const body = generateBody(context, cfg, title, file, contents, author, sha, pr)
