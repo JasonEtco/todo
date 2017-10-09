@@ -10,6 +10,9 @@ module.exports = (robot) => {
   robot.on('push', async context => {
     if (!context.payload.head_commit) return
 
+    let prFlag = false
+    let pr
+
     const config = await context.config('config.yml')
     const cfg = config && config.todo ? {...defaultConfig, ...config.todo} : defaultConfig
 
@@ -54,7 +57,13 @@ module.exports = (robot) => {
         const matches = contents.match(re)
         if (!matches) return
 
+        if (!prFlag) {
+          prFlag = true
+          pr = await commitIsInPR(context, sha)
+        }
+
         const titles = matches.map(title => title.replace(new RegExp(`${cfg.keyword} `, regexFlags), ''))
+
         titles.forEach(async title => {
           // Check if an issue with that title exists
           const existingIssue = issues.find(issue => {
@@ -72,7 +81,6 @@ module.exports = (robot) => {
             }
           }
 
-          const pr = await commitIsInPR(context, sha)
           const body = generateBody(context, cfg, title, file, contents, author, sha, pr)
 
           const issueObj = { title, body, labels }
