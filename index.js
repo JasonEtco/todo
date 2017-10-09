@@ -39,6 +39,7 @@ module.exports = (robot) => {
         if (sliced.every(com => com.modified.indexOf(file) === -1)) {
           const contents = await getContents(context, commit.id, file)
           mappedFiles.set(file, contents)
+          break
         }
       }
 
