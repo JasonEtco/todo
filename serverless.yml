@@ -22,8 +22,8 @@ functions:
     handler: handler.todo
 
     environment:
-      WEBHOOK_SECRET: ${file(./serverless.env.yml):WEBHOOK_SECRET}
-      APP_ID: ${file(./serverless.env.yml):APP_ID}
+      WEBHOOK_SECRET: ${env:WEBHOOK_SECRET}
+      APP_ID: ${env:APP_ID}
 
     events:
      - http:
