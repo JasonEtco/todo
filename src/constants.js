@@ -27,5 +27,5 @@ caseSensitive: false  # boolean
 blobLines: 5          # number|boolean, 0 or false to disable
 autoAssign: true      # string|string[]|boolean
 label: true           # boolean|string|string[]
-reopenClosed:         # boolean`
+reopenClosed: true    # boolean`
 }
