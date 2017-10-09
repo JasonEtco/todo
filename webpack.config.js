@@ -14,12 +14,6 @@ module.exports = {
       loaders: ['babel-loader'],
       include: __dirname,
       exclude: /node_modules/
-    },
-    {
-      test: /\.pem$/,
-      loaders: ['file-loader'],
-      include: __dirname,
-      exclude: /node_modules/
     }]
   },
   output: {

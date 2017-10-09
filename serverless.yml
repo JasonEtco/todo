@@ -10,15 +10,21 @@ provider:
   name: aws
   runtime: nodejs6.10
 
+custom:
+  webpackIncludeModules:
+    forceInclude:
+      - probot
+      - fs
+
 functions:
   # Example without LAMBDA-PROXY integration
   # Invoking locally:
   # sls webpack invoke -f probot
   todo:
-    handler: app.probotHandler
+    handler: handler.todo
 
     environment:
-      WEBHOOK_SECRET: d#Epeu~gpKbV4N3=iQq8&Wtn
+      WEBHOOK_SECRET: nS8b7hXj2!Mj#uPbs~}KcVVg
       APP_ID: 5739
 
     events:

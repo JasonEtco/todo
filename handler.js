@@ -1,7 +1,9 @@
 // Webpack setup
 const fs = require('fs')
 const todo = require('.')
-const cert = fs.readFileSync('private-key.pem', 'utf8')
+
+require('file-loader?name=private-key.pem!./private-key.pem')
+const cert = fs.readFileSync('./private-key.pem', 'utf8')
 
 // Probot setup
 const createProbot = require('probot')
@@ -16,7 +18,7 @@ const probot = createProbot({
 probot.load(todo)
 
 // Lambda Handler
-module.exports.probotHandler = function (event, context, callback) {
+module.exports.todo = (event, context, callback) => {
   // Determine incoming webhook event type
   // Checking for different cases since node's http server is lowercasing everything
   const e = event.headers['x-github-event'] || event.headers['X-GitHub-Event']
