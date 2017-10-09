@@ -10,19 +10,13 @@ module.exports = (robot) => {
   robot.on('push', async context => {
     if (!context.payload.head_commit) return
 
-    let prFlag = false
-    let pr
-
     const config = await context.config('config.yml')
     const cfg = config && config.todo ? {...defaultConfig, ...config.todo} : defaultConfig
 
-    const [issuePages, labels] = await Promise.all([
-      context.github.paginate(context.github.issues.getForRepo(context.repo({state: 'all'}))),
-      generateLabel(context, cfg)
+    const [labels, prs] = await Promise.all([
+      generateLabel(context, cfg),
+      context.github.pullRequests.getAll(context.repo())
     ])
-
-    const issues = [].concat.apply([], issuePages.map(p => p.data))
-
     // Get array of issue objects in the current repo
     const {pusher, commits} = context.payload
     const author = pusher.name
@@ -57,27 +51,31 @@ module.exports = (robot) => {
         const matches = contents.match(re)
         if (!matches) return
 
-        if (!prFlag) {
-          prFlag = true
-          pr = await commitIsInPR(context, sha)
-        }
-
+        const pr = commitIsInPR(context, prs)
         const titles = matches.map(title => title.replace(new RegExp(`${cfg.keyword} `, regexFlags), ''))
 
         titles.forEach(async title => {
           // Check if an issue with that title exists
-          const existingIssue = issues.find(issue => {
-            if (!issue.body) return false
-            const titleKey = metadata(context, issue).get('title')
-            const fileKey = metadata(context, issue).get('file')
-            return titleKey === title && fileKey === file
-          })
+          const searchPages = await context.github.paginate(context.github.search.issues({
+            q: `${title} in:title repo:${context.payload.repository.full_name}`
+          }))
 
-          if (existingIssue) {
-            if (cfg.reopenClosed && existingIssue.state === 'closed') {
-              return reopenClosed(robot.log, context, cfg, existingIssue.number, file, sha)
-            } else {
-              return
+          if (searchPages.every(p => p.data.total_count !== 0)) {
+            const search = [].concat.apply([], searchPages.map(p => p.data.items))
+
+            const existingIssue = search.find(issue => {
+              if (!issue.body) return false
+              const titleKey = metadata(context, issue).get('title')
+              const fileKey = metadata(context, issue).get('file')
+              return titleKey === title && fileKey === file
+            })
+
+            if (existingIssue) {
+              if (cfg.reopenClosed && existingIssue.state === 'closed') {
+                return reopenClosed(robot.log, context, cfg, existingIssue.number, file, sha)
+              } else {
+                return
+              }
             }
           }
 

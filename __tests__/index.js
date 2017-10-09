@@ -4,7 +4,7 @@ const app = require('..')
 const fs = require('fs')
 const path = require('path')
 
-function gimmeRobot (config = 'basic.yml', issues = [{ data: [{ title: 'An issue that exists', state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "An issue that exists","file": "index.js"}} -->` }] }]) {
+function gimmeRobot (config = 'basic.yml', issues = [{ data: {items: [{ title: 'An issue that exists', state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "An issue that exists","file": "index.js"}} -->` }], total_count: 1} }]) {
   const cfg = config ? fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', config), 'utf8') : config
   let robot
   let github
@@ -20,6 +20,9 @@ function gimmeRobot (config = 'basic.yml', issues = [{ data: [{ title: 'An issue
       createLabel: jest.fn(),
       edit: jest.fn(),
       createComment: jest.fn()
+    },
+    search: {
+      issues: jest.fn().mockReturnValue(Promise.resolve([{data: {total_count: issues[0].length, items: issues[0].data}}]))
     },
     paginate: jest.fn().mockReturnValue(Promise.resolve(issues)),
     repos: {
@@ -48,7 +51,7 @@ describe('todo', () => {
   it('requests issues for the repo', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)
-    expect(github.issues.getForRepo.mock.calls.length).toBe(1)
+    expect(github.search.issues.mock.calls.length).toBe(1)
   })
 
   it('creates an issue', async () => {
@@ -160,7 +163,7 @@ describe('todo', () => {
   it('paginates when there are over 30 issues', async () => {
     const issuesPageOne = Array.apply(null, Array(30)).map((v, i) => ({ title: `I do not exist ${i}`, state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "I do not exist ${i}"}} -->` }))
     const issuesPageTwo = Array.apply(null, Array(3)).map((v, i) => ({ title: `I do not exist ${i + 30}`, state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "I do not exist ${i + 30}"}} -->` }))
-    const {robot, github} = gimmeRobot('basic.yml', [{ data: issuesPageOne }, { data: issuesPageTwo }])
+    const {robot, github} = gimmeRobot('basic.yml', [{data: {items: issuesPageOne, total_count: 30}}, {data: {items: issuesPageTwo, total_count: 3}}])
     await robot.receive(payloads.many)
     expect(github.issues.create.mock.calls.length).toBe(33)
   })
@@ -168,13 +171,13 @@ describe('todo', () => {
   it('paginates when there are over 30 issues and does not make them', async () => {
     const issuesPageOne = Array.apply(null, Array(30)).map((v, i) => ({ title: `I exist ${i}`, state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "I exist ${i}","file": "many.js"}} -->` }))
     const issuesPageTwo = Array.apply(null, Array(2)).map((v, i) => ({ title: `I exist ${i + 30}`, state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "I exist ${i + 30}","file": "many.js"}} -->` }))
-    const {robot, github} = gimmeRobot('basic.yml', [{ data: issuesPageOne }, { data: issuesPageTwo }])
+    const {robot, github} = gimmeRobot('basic.yml', [{data: {items: issuesPageOne, total_count: 30}}, {data: {items: issuesPageTwo, total_count: 2}}])
     await robot.receive(payloads.many)
     expect(github.issues.create.mock.calls.length).toBe(1)
   })
 
   it('works with issues with empty bodies', async () => {
-    const {robot, github} = gimmeRobot('basic.yml', [{ data: [{ title: 'Hey', state: 'open' }] }])
+    const {robot, github} = gimmeRobot('basic.yml', [{data: { items: [{ title: 'Hey', state: 'open' }], total_count: 1 }}])
     await robot.receive(payloads.basic)
     expect(github.issues.create.mock.calls.length).toBe(1)
   })
@@ -201,15 +204,18 @@ describe('todo', () => {
   })
 
   it('reopens a closed issue', async () => {
-    const issues = [{data: [{
-      title: 'An issue that exists',
-      state: 'open',
-      body: `\n\n<!-- probot = {"10000":{"title": "An issue that exists","file": "index.js"}} -->`
-    }, {
-      title: 'Jason!',
-      state: 'closed',
-      body: `\n\n<!-- probot = {"10000":{"title": "Jason!","file": "index.js"}} -->`
-    }]}]
+    const issues = [{data: {
+      items: [{
+        title: 'An issue that exists',
+        state: 'open',
+        body: `\n\n<!-- probot = {"10000":{"title": "An issue that exists","file": "index.js"}} -->`
+      }, {
+        title: 'Jason!',
+        state: 'closed',
+        body: `\n\n<!-- probot = {"10000":{"title": "Jason!","file": "index.js"}} -->`
+      }],
+      total_count: 2
+    }}]
     const {robot, github} = gimmeRobot('basic.yml', issues)
     await robot.receive(payloads.basic)
     expect(github.issues.edit).toHaveBeenCalledTimes(1)
@@ -217,16 +223,30 @@ describe('todo', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
+  it('skips the search if if there are no issues', async () => {
+    const issues = [{data: {
+      items: [],
+      total_count: 0
+    }}]
+    const {robot, github} = gimmeRobot('basic.yml', issues)
+    await robot.receive(payloads.basic)
+    expect(github.issues.createComment).toHaveBeenCalledTimes(0)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
+  })
+
   it('respects the reopenClosed config', async () => {
-    const issues = [{data: [{
-      title: 'An issue that exists',
-      state: 'open',
-      body: `\n\n<!-- probot = {"10000":{"title": "An issue that exists","file": "index.js"}} -->`
-    }, {
-      title: 'Jason!',
-      state: 'closed',
-      body: `\n\n<!-- probot = {"10000":{"title": "Jason!","file": "index.js"}} -->`
-    }]}]
+    const issues = [{data: {
+      items: [{
+        title: 'An issue that exists',
+        state: 'open',
+        body: `\n\n<!-- probot = {"10000":{"title": "An issue that exists","file": "index.js"}} -->`
+      }, {
+        title: 'Jason!',
+        state: 'closed',
+        body: `\n\n<!-- probot = {"10000":{"title": "Jason!","file": "index.js"}} -->`
+      }],
+      total_count: 2
+    }}]
     const {robot, github} = gimmeRobot('reopenClosedFalse.yml', issues)
     await robot.receive(payloads.basic)
     expect(github.issues.edit).toHaveBeenCalledTimes(0)
