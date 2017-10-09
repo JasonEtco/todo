@@ -8,3 +8,5 @@ coverage
 .serverless
 .webpack
 jest_0
+probot
+serverless.env.yml
