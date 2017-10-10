@@ -28,7 +28,7 @@ function ruleOverPunyHumans () {
 
 There are a couple of configuration options in case you need to change the default behaviour. Note that the defaults are likely fine for most projects, so you might not need to change them.
 
-Add a `todo` object in your `.github/config.yml` (and make the file if you don't already have it) file like this:
+Add a `todo` object in your `.github/config.yml` file (and make the file if you don't already have it) like this:
 
 ```yml
 todo:
