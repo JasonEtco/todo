@@ -17,6 +17,9 @@ module.exports = (robot) => {
       generateLabel(context, cfg),
       context.github.pullRequests.getAll(context.repo())
     ])
+
+    const pr = commitIsInPR(context, prs)
+
     // Get array of issue objects in the current repo
     const {pusher, commits} = context.payload
     const author = pusher.name
@@ -51,7 +54,6 @@ module.exports = (robot) => {
         const matches = contents.match(re)
         if (!matches) return
 
-        const pr = commitIsInPR(context, prs)
         const titles = matches.map(title => title.replace(new RegExp(`${cfg.keyword} `, regexFlags), ''))
 
         titles.forEach(async title => {
