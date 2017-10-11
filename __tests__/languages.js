@@ -19,6 +19,9 @@ function gimmeRobot () {
       create: jest.fn(),
       createLabel: jest.fn()
     },
+    search: {
+      issues: jest.fn().mockReturnValue(Promise.resolve([{data: {items: [], total_count: 0}}]))
+    },
     paginate: jest.fn().mockReturnValue(Promise.resolve([])),
     repos: {
       getContent: jest.fn((obj) => {

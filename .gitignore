@@ -4,4 +4,9 @@ npm-debug.log
 .env
 coverage
 .DS_Store
+.vscode
+.serverless
+.webpack
 jest_0
+probot
+serverless.env.yml

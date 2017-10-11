@@ -8,7 +8,8 @@
   "scripts": {
     "start": "nodemon --exec \"probot\" run ./index.js",
     "serve": "probot run ./index.js",
-    "test": "jest && codecov && standard"
+    "test": "jest && codecov && standard",
+    "postinstall": "cp -R node_modules/probot probot"
   },
   "standard": {
     "env": {
@@ -31,14 +32,23 @@
     "collectCoverage": true
   },
   "dependencies": {
-    "probot": "^0.11.0"
-  },
-  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
     "codecov": "^2.3.0",
+    "file-loader": "^1.1.5",
     "jest": "^21.2.1",
     "localtunnel": "^1.8.2",
     "nodemon": "^1.12.1",
-    "standard": "^10.0.3"
+    "probot": "^0.11.0",
+    "serverless-offline": "^3.16.0",
+    "serverless-webpack": "^3.1.1",
+    "standard": "^10.0.3",
+    "webpack": "^3.6.0",
+    "webpack-node-externals": "^1.6.0"
   },
   "engines": {
     "node": ">= 8.6.0",

@@ -1,0 +1,31 @@
+service:
+  name: todo
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+provider:
+  name: aws
+  stage: production
+  timeout: 10
+  runtime: nodejs6.10
+
+custom:
+  webpackIncludeModules:
+    forceInclude:
+      - probot
+      - fs
+
+functions:
+  todo:
+    handler: handler.todo
+
+    environment:
+      WEBHOOK_SECRET: ${env:WEBHOOK_SECRET}
+      APP_ID: ${env:APP_ID}
+
+    events:
+     - http:
+        path: probot
+        method: post
