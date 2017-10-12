@@ -1,4 +1,4 @@
-# [todo](https://todo.jasonet.co) &middot; [![Build Status](https://img.shields.io/travis/JasonEtco/todo.svg)](https://travis-ci.org/JasonEtco/todo) [![Codecov](https://img.shields.io/codecov/c/github/JasonEtco/todo.svg)](https://codecov.io/gh/JasonEtco/todo/)
+# [todo](https://todo.jasonet.co) &middot; [![Build Status](https://img.shields.io/travis/JasonEtco/todo/master.svg)](https://travis-ci.org/JasonEtco/todo) [![Codecov](https://img.shields.io/codecov/c/github/JasonEtco/todo.svg)](https://codecov.io/gh/JasonEtco/todo/)
 
 > A GitHub App built with [Probot](https://github.com/probot/probot) that creates new issues based on actionable comments in your code.
 
@@ -22,6 +22,8 @@ function ruleOverPunyHumans () {
 
 ![todo](https://user-images.githubusercontent.com/10660468/31048765-83569c30-a5f2-11e7-933a-a119d43ad029.png)
 
+**Note:** While the above example is in Javascript, `todo` has been tested in JS, Go, C, C# and Ruby, and should work in any language.
+
 ## Configuring for your project
 
 There are a couple of configuration options in case you need to change the default behaviour. Note that the defaults are likely fine for most projects, so you might not need to change them.
@@ -43,6 +45,7 @@ todo:
 | blobLines | `number` or `false` | The number of lines of code to show, starting from the keyword. | 5 |
 | caseSensitive | `boolean` | Should the keyword be case sensitive? | false |
 | label | `boolean`, `string`, `string[]` | Add a label to the new issue. If true, add the `todo` label. If false, don't add any label. You can also give it a label name or an array of label names. | true |
+| reopenClosed | `boolean` | If an issue already exists and is closed, reopen it. Note: if set to false, no new issue will be created. | true |
 
 ## Setup
 
