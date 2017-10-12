@@ -24,6 +24,7 @@ functions:
     environment:
       WEBHOOK_SECRET: ${env:WEBHOOK_SECRET}
       APP_ID: ${env:APP_ID}
+      SENTRY_DSN: ${env:SENTRY_DSN}
 
     events:
      - http:
