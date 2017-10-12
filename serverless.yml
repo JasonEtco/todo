@@ -30,3 +30,6 @@ functions:
      - http:
         path: probot
         method: post
+     - http:
+        path: probot/stats
+        method: get
