@@ -51,7 +51,7 @@ module.exports = (robot) => {
 
       commitsByFiles.set(commit.id, mappedFiles)
     }
-    commitsByFiles.forEach(async (files) => {
+    commitsByFiles.forEach(async (files, commitSha) => {
       files.forEach(async ({ contents, sha }, file) => {
         // Get issue titles
         const regexFlags = cfg.caseSensitive ? 'g' : 'gi'
@@ -86,7 +86,7 @@ module.exports = (robot) => {
             }
           }
 
-          const body = generateBody(context, cfg, title, file, contents, author, sha, pr)
+          const body = generateBody(context, cfg, title, file, contents, author, commitSha, pr)
 
           const issueObj = { title, body, labels }
           if (cfg.autoAssign === true) {
