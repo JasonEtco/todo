@@ -9,4 +9,4 @@ coverage
 .webpack
 jest_0
 probot
-serverless.env.yml
+env.yml

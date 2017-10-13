@@ -6,8 +6,9 @@
   "license": "ISC",
   "repository": "https://github.com/JasonEtco/todo.git",
   "scripts": {
-    "start": "nodemon --exec \"probot\" run ./index.js",
-    "serve": "probot run ./index.js",
+    "start": "sls offline",
+    "deploy:dev": "sls deploy --stage dev",
+    "deploy:prod": "sls deploy --stage production",
     "test": "jest && codecov && standard",
     "postinstall": "cp -R node_modules/probot probot"
   },
@@ -26,8 +27,7 @@
     ],
     "coverageDirectory": "./coverage/",
     "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/public/"
+      "/node_modules/"
     ],
     "collectCoverage": true
   },
@@ -42,7 +42,6 @@
     "file-loader": "^1.1.5",
     "jest": "^21.2.1",
     "localtunnel": "^1.8.2",
-    "nodemon": "^1.12.1",
     "probot": "^1.1.0",
     "serverless-offline": "^3.16.0",
     "serverless-webpack": "^3.1.1",
