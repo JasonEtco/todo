@@ -11,7 +11,7 @@ describe('generate-body', () => {
   const contents = '\n\n@todo Jason!\nasdfas\nasdfdsafasd\nsd\nasdfsa\n\nsdfsadfsa'
   const contentsBody = '\n\n@todo Jason!\n@body This one has a body\nasdfas\nasdfdsafasd\nsd\nasdfsa\n\nsdfsadfsa'
   const author = payloads.basic.payload.pusher.name
-  const sha = 'sha'
+  const sha = payloads.basic.payload.head_commit.id
 
   beforeEach(() => {
     context = {
