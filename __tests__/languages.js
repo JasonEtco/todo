@@ -22,6 +22,13 @@ function gimmeRobot () {
     search: {
       issues: jest.fn().mockReturnValue(Promise.resolve([{data: {items: [], total_count: 0}}]))
     },
+    gitdata: {
+      getBlob: jest.fn((obj) => ({
+        data: {
+          content: fs.readFileSync(path.join(__dirname, 'fixtures', 'files', obj.path), 'base64')
+        }
+      }))
+    },
     paginate: jest.fn().mockReturnValue(Promise.resolve([])),
     repos: {
       getContent: jest.fn((obj) => {

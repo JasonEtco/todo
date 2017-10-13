@@ -24,6 +24,13 @@ function gimmeRobot (config = 'basic.yml', issues = [{ data: {items: [{ title: '
     search: {
       issues: jest.fn().mockReturnValue(Promise.resolve([{data: {total_count: issues[0].length, items: issues[0].data}}]))
     },
+    gitdata: {
+      getBlob: jest.fn((obj) => ({
+        data: {
+          content: fs.readFileSync(path.join(__dirname, 'fixtures', 'files', obj.path), 'base64')
+        }
+      }))
+    },
     paginate: jest.fn().mockReturnValue(Promise.resolve(issues)),
     repos: {
       // Response for getting content from '.github/todo.yml'

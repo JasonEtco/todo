@@ -1,18 +1,13 @@
 const defaultConfig = require('./lib/default-config')
-const getContents = require('./lib/get-file-contents')
 const generateBody = require('./lib/generate-body')
 const commitIsInPR = require('./lib/commit-is-in-pr')
+const getContents = require('./lib/get-file-contents')
 const generateLabel = require('./lib/generate-label')
 const reopenClosed = require('./lib/reopen-closed')
 const metadata = require('./lib/metadata')
 
 module.exports = (robot) => {
   robot.on('push', async context => {
-    const repo = context.repo({sha: context.payload.head_commit.id})
-    const res = await context.github.gitdata.getBlob(repo)
-    console.log(res)
-    return
-
     if (!context.payload.head_commit) return
 
     const config = await context.config('config.yml')
@@ -28,7 +23,6 @@ module.exports = (robot) => {
     // Get array of issue objects in the current repo
     const {pusher, commits} = context.payload
     const author = pusher.name
-    return
 
     // Get the most up-to-date contents of each file
     // by the commit it was most recently edited in.
