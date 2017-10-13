@@ -29,17 +29,20 @@ module.exports = (robot) => {
     const commitsByFiles = new Map()
     for (let c = 0; c < commits.length; c++) {
       const commit = commits[c]
+      const tree = await context.github.gitdata.getTree(context.repo({sha: commit.id, recursive: true}))
       const files = [...commit.added, ...commit.modified]
       const mappedFiles = new Map()
 
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i]
-        const sliced = commits.slice(c + 1)
+      for (let i = 0; i < tree.data.tree.length; i++) {
+        const file = tree.data.tree[i]
+        if (files.indexOf(file.path) !== -1) {
+          const sliced = commits.slice(c + 1)
 
-        if (sliced.every(com => com.modified.indexOf(file) === -1)) {
-          const contents = await getContents(context, commit.id, file)
-          mappedFiles.set(file, contents)
-          break
+          if (sliced.every(com => com.modified.indexOf(file.path) === -1)) {
+            const contents = await getContents(context, file.sha, file.path)
+            mappedFiles.set(file.path, contents)
+            break
+          }
         }
       }
 
