@@ -25,6 +25,17 @@ function gimmeRobot (config = 'basic.yml', issues = [{ data: {items: [{ title: '
       issues: jest.fn().mockReturnValue(Promise.resolve([{data: {total_count: issues[0].length, items: issues[0].data}}]))
     },
     gitdata: {
+      getTree: jest.fn().mockReturnValue(Promise.resolve({
+        data: {
+          tree: [
+            { path: 'index.js', sha: 'sha' },
+            { path: 'more.js', sha: 'sha' },
+            { path: 'another.js', sha: 'sha' },
+            { path: 'many.js', sha: 'sha' },
+            { path: 'caseinsensitive.js', sha: 'sha' }
+          ]
+        }
+      })),
       getBlob: jest.fn((obj) => ({
         data: {
           content: fs.readFileSync(path.join(__dirname, 'fixtures', 'files', obj.path), 'base64')
@@ -58,13 +69,13 @@ describe('todo', () => {
   it('requests issues for the repo', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)
-    expect(github.search.issues.mock.calls.length).toBe(1)
+    expect(github.search.issues).toHaveBeenCalledTimes(1)
   })
 
   it('creates an issue', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)
-    expect(github.issues.create.mock.calls.length).toBe(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
     expect(github.issues.create).toBeCalledWith({
       body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'pr.txt'), 'utf8'),
       number: undefined,
@@ -134,37 +145,37 @@ describe('todo', () => {
   it('works with a complex push (with multiple commits)', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.complex)
-    expect(github.issues.create.mock.calls.length).toBe(3)
+    expect(github.issues.create).toHaveBeenCalledTimes(3)
   })
 
   it('respects the capitalization config', async () => {
     const {robot, github} = gimmeRobot('caseSensitive.yml')
     await robot.receive(payloads.complex)
-    expect(github.issues.create.mock.calls.length).toBe(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
   })
 
   it('does not create any issues', async () => {
     const {robot, github} = gimmeRobot('caseSensitivePizza.yml')
     await robot.receive(payloads.complex)
-    expect(github.issues.create.mock.calls.length).toBe(0)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
   it('does not create an issue that already exists', async () => {
     const {robot, github} = gimmeRobot('existing.yml')
     await robot.receive(payloads.complex)
-    expect(github.issues.create.mock.calls.length).toBe(0)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
   it('works without a config present', async () => {
     const {robot, github} = gimmeRobot(false)
     await robot.receive(payloads.basic)
-    expect(github.issues.create.mock.calls.length).toBe(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
   })
 
   it('creates 31 issues', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.many)
-    expect(github.issues.create.mock.calls.length).toBe(33)
+    expect(github.issues.create).toHaveBeenCalledTimes(33)
   })
 
   it('paginates when there are over 30 issues', async () => {
@@ -172,7 +183,7 @@ describe('todo', () => {
     const issuesPageTwo = Array.apply(null, Array(3)).map((v, i) => ({ title: `I do not exist ${i + 30}`, state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "I do not exist ${i + 30}"}} -->` }))
     const {robot, github} = gimmeRobot('basic.yml', [{data: {items: issuesPageOne, total_count: 30}}, {data: {items: issuesPageTwo, total_count: 3}}])
     await robot.receive(payloads.many)
-    expect(github.issues.create.mock.calls.length).toBe(33)
+    expect(github.issues.create).toHaveBeenCalledTimes(33)
   })
 
   it('paginates when there are over 30 issues and does not make them', async () => {
@@ -180,13 +191,13 @@ describe('todo', () => {
     const issuesPageTwo = Array.apply(null, Array(2)).map((v, i) => ({ title: `I exist ${i + 30}`, state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "I exist ${i + 30}","file": "many.js"}} -->` }))
     const {robot, github} = gimmeRobot('basic.yml', [{data: {items: issuesPageOne, total_count: 30}}, {data: {items: issuesPageTwo, total_count: 2}}])
     await robot.receive(payloads.many)
-    expect(github.issues.create.mock.calls.length).toBe(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
   })
 
   it('works with issues with empty bodies', async () => {
     const {robot, github} = gimmeRobot('basic.yml', [{data: { items: [{ title: 'Hey', state: 'open' }], total_count: 1 }}])
     await robot.receive(payloads.basic)
-    expect(github.issues.create.mock.calls.length).toBe(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
   })
 
   it('parses titles and respects case-insensitive', async () => {
@@ -207,7 +218,7 @@ describe('todo', () => {
   it('does not throw errors when head_commit is null', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.merge)
-    expect(github.issues.create.mock.calls.length).toBe(0)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
   it('reopens a closed issue', async () => {

@@ -27,6 +27,16 @@ function gimmeRobot () {
         data: {
           content: fs.readFileSync(path.join(__dirname, 'fixtures', 'files', obj.path), 'base64')
         }
+      })),
+      getTree: jest.fn().mockReturnValue(Promise.resolve({
+        data: {
+          tree: [
+            { path: 'go.go', sha: 'sha' },
+            { path: 'ruby.rb', sha: 'sha' },
+            { path: 'c.c', sha: 'sha' },
+            { path: 'c-sharp.cs', sha: 'sha' }
+          ]
+        }
       }))
     },
     paginate: jest.fn().mockReturnValue(Promise.resolve([])),
@@ -65,7 +75,7 @@ describe('languages', () => {
 
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)
-    expect(github.issues.create.mock.calls.length).toBe(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
     expect(github.issues.create).toBeCalledWith(expected('go', 'Check that Go works'))
   })
 
@@ -75,7 +85,7 @@ describe('languages', () => {
 
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)
-    expect(github.issues.create.mock.calls.length).toBe(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
     expect(github.issues.create).toBeCalledWith(expected('ruby', 'Check that Ruby works'))
   })
 
@@ -85,7 +95,7 @@ describe('languages', () => {
 
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)
-    expect(github.issues.create.mock.calls.length).toBe(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
     expect(github.issues.create).toBeCalledWith(expected('c-sharp', 'Check that C# works'))
   })
 
@@ -95,7 +105,7 @@ describe('languages', () => {
 
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)
-    expect(github.issues.create.mock.calls.length).toBe(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
     expect(github.issues.create).toBeCalledWith(expected('c', 'Check that C works'))
   })
 })

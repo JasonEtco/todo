@@ -13,9 +13,10 @@ module.exports = (robot) => {
     const config = await context.config('config.yml')
     const cfg = config && config.todo ? {...defaultConfig, ...config.todo} : defaultConfig
 
-    const [labels, prs] = await Promise.all([
+    const [labels, prs, tree] = await Promise.all([
       generateLabel(context, cfg),
-      context.github.pullRequests.getAll(context.repo())
+      context.github.pullRequests.getAll(context.repo()),
+      context.github.gitdata.getTree(context.repo({sha: context.payload.head_commit.id, recursive: true}))
     ])
 
     const pr = commitIsInPR(context, prs)
@@ -29,7 +30,6 @@ module.exports = (robot) => {
     const commitsByFiles = new Map()
     for (let c = 0; c < commits.length; c++) {
       const commit = commits[c]
-      const tree = await context.github.gitdata.getTree(context.repo({sha: commit.id, recursive: true}))
       const files = [...commit.added, ...commit.modified]
       const mappedFiles = new Map()
 
@@ -40,7 +40,10 @@ module.exports = (robot) => {
 
           if (sliced.every(com => com.modified.indexOf(file.path) === -1)) {
             const contents = await getContents(context, file.sha, file.path)
-            mappedFiles.set(file.path, contents)
+            mappedFiles.set(file.path, {
+              contents,
+              sha: file.sha
+            })
             break
           }
         }
@@ -48,9 +51,8 @@ module.exports = (robot) => {
 
       commitsByFiles.set(commit.id, mappedFiles)
     }
-
-    commitsByFiles.forEach(async (files, sha) => {
-      files.forEach(async (contents, file) => {
+    commitsByFiles.forEach(async (files) => {
+      files.forEach(async ({ contents, sha }, file) => {
         // Get issue titles
         const regexFlags = cfg.caseSensitive ? 'g' : 'gi'
         const re = new RegExp(`${cfg.keyword}\\s(.*)`, regexFlags)
