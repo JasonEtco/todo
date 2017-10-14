@@ -33,7 +33,8 @@ function gimmeRobot () {
       })
     },
     pullRequests: {
-      getAll: jest.fn().mockReturnValue(Promise.resolve({ data: [{ head: { ref: 'master' }, number: 10 }] }))
+      createComment: jest.fn(),
+      getAll: jest.fn().mockReturnValue(Promise.resolve({ data: [{ head: { ref: 'branch' }, number: 10 }] }))
     }
   }
   // Passes the mocked out GitHub API into out robot instance

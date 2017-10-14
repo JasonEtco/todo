@@ -83,6 +83,13 @@ module.exports = (robot) => {
 
           const body = generateBody(context, cfg, title, file, contents, author, sha, pr)
 
+          if (pr) {
+            return context.github.pullRequests.createComment(context.repo({
+              number: pr,
+              body
+            }))
+          }
+
           const issueObj = { title, body, labels }
           if (cfg.autoAssign === true) {
             issueObj.assignee = author

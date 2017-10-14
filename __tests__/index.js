@@ -39,7 +39,8 @@ function gimmeRobot (config = 'basic.yml', issues = [{ data: {items: [{ title: '
       })
     },
     pullRequests: {
-      getAll: jest.fn().mockReturnValue(Promise.resolve({ data: [{ head: { ref: 'master' }, number: 10 }] }))
+      createComment: jest.fn(),
+      getAll: jest.fn().mockReturnValue(Promise.resolve({ data: [{ head: { ref: 'branch' }, number: 10 }] }))
     }
   }
   // Passes the mocked out GitHub API into out robot instance
@@ -59,7 +60,7 @@ describe('todo', () => {
     await robot.receive(payloads.basic)
     expect(github.issues.create.mock.calls.length).toBe(1)
     expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'pr.txt'), 'utf8'),
+      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'default.txt'), 'utf8'),
       number: undefined,
       labels: ['todo'],
       owner: 'JasonEtco',
@@ -114,7 +115,7 @@ describe('todo', () => {
     const {robot, github} = gimmeRobot('labelArr.yml')
     await robot.receive(payloads.basic)
     expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'pr.txt'), 'utf8'),
+      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'default.txt'), 'utf8'),
       number: undefined,
       labels: ['one', 'two'],
       owner: 'JasonEtco',

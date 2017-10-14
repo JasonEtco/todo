@@ -1,10 +1,10 @@
 const commitIsInPR = require('../../lib/commit-is-in-pr')
 
 const prs = { data: [
-  { head: { ref: 'master' }, number: 10 }
+  { head: { ref: 'branch' }, number: 10 }
 ]}
 
-const makeContext = (ref = 'refs/heads/master', prs) => ({
+const makeContext = (ref = 'refs/heads/branch', prs) => ({
   repo: () => {},
   payload: { ref }
 })

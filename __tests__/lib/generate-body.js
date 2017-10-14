@@ -28,33 +28,33 @@ describe('generate-body', () => {
   })
 
   it('generates a body string', () => {
-    const config = { keyword: '@todo', blobLines: 2 }
+    const config = { keyword: '@todo', blobLines: 5 }
     const body = generateBody(context, config, title, file, contents, author, sha)
     expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'default.txt'), 'utf8'))
   })
 
   describe('autoAssign', () => {
     it('prepares a message with the committer', () => {
-      const config = { keyword: '@todo', autoAssign: true, blobLines: 2 }
+      const config = { keyword: '@todo', autoAssign: true, blobLines: 5 }
       const body = generateBody(context, config, title, file, contents, author, sha)
       expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'default.txt'), 'utf8'))
     })
 
     it('prepares a message without an assignee', () => {
-      const config = { keyword: '@todo', autoAssign: false, blobLines: 2 }
-      const body = generateBody(context, config, title, file, contents, author, sha, 10)
+      const config = { keyword: '@todo', autoAssign: false, blobLines: 5 }
+      const body = generateBody(context, config, title, file, contents, author, sha)
       expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'autoAssignFalse.txt'), 'utf8'))
     })
 
     it('prepares a message with the configured assignee', () => {
-      const config = { keyword: '@todo', autoAssign: '@matchai', blobLines: 2 }
-      const body = generateBody(context, config, title, file, contents, author, sha, 10)
+      const config = { keyword: '@todo', autoAssign: '@matchai', blobLines: 5 }
+      const body = generateBody(context, config, title, file, contents, author, sha)
       expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'autoAssignString.txt'), 'utf8'))
     })
 
     it('prepares a message with the configured assignees', () => {
-      const config = { keyword: '@todo', autoAssign: ['@JasonEtco', 'matchai', 'defunkt'], blobLines: 2 }
-      const body = generateBody(context, config, title, file, contents, author, sha, 10)
+      const config = { keyword: '@todo', autoAssign: ['@JasonEtco', 'matchai', 'defunkt'], blobLines: 5 }
+      const body = generateBody(context, config, title, file, contents, author, sha)
       expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'autoAssignArr.txt'), 'utf8'))
     })
   })
@@ -80,7 +80,7 @@ describe('generate-body', () => {
   })
 
   it('generates a body string with a custom message', () => {
-    const config = { keyword: '@todo', blobLines: 2 }
+    const config = { keyword: '@todo', blobLines: 5 }
     const body = generateBody(context, config, title, file, contentsBody, author, sha)
     expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'with-body.txt'), 'utf8'))
   })
