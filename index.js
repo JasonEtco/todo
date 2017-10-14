@@ -5,6 +5,7 @@ const commitIsInPR = require('./lib/commit-is-in-pr')
 const generateLabel = require('./lib/generate-label')
 const reopenClosed = require('./lib/reopen-closed')
 const metadata = require('./lib/metadata')
+const {stripAt} = require('./lib/helpers')
 
 module.exports = (robot) => {
   robot.on('push', async context => {
@@ -96,7 +97,7 @@ module.exports = (robot) => {
           } else if (typeof cfg.autoAssign === 'string') {
             issueObj.assignee = cfg.autoAssign
           } else if (Array.isArray(cfg.autoAssign)) {
-            issueObj.assignees = cfg.autoAssign
+            issueObj.assignees = cfg.autoAssign.map(n => stripAt(n))
           }
 
           const issue = context.issue(issueObj)
