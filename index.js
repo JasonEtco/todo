@@ -111,7 +111,7 @@ module.exports = (robot) => {
   // :TODO: Verify PR merge event name
   robot.on('pull_request.merged', async context => {
     // 1. Get all PR comments
-    // 2. Filter for TODO comments
+    // 2. Filter for TODO comment
     // 3. For each TODO comment, see if TODO is still in code merged.
     // 4. If yes, open an issue.
   })
