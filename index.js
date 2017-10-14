@@ -111,6 +111,8 @@ module.exports = (robot) => {
 
   // :TODO: Verify PR merge event name
   robot.on('pull_request.merged', async context => {
+    // :TODO: Create new issues from PR comments if they still exist
+    // @body This should be done after the Gitdata API has been settled, since that changes how files are parsed for todo titles.
     // 1. Get all PR comments
     // 2. Filter for TODO comment
     // 3. For each TODO comment, see if TODO is still in code merged.
