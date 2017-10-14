@@ -27,6 +27,7 @@ exports.basic = {
 }
 
 exports.pr = {
+  event: 'push',
   payload: {
     ref: 'refs/heads/branch',
     commits: [
