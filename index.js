@@ -108,6 +108,14 @@ module.exports = (robot) => {
     })
   })
 
+  // :TODO: Verify PR merge event name
+  robot.on('pull_request.merged', async context => {
+    // 1. Get all PR comments
+    // 2. Filter for TODO comments
+    // 3. For each TODO comment, see if TODO is still in code merged.
+    // 4. If yes, open an issue.
+  })
+
   robot.on('installation.created', context => {
     const repos = context.payload.repositories.reduce((prev, repo, i, arr) => {
       if (i === 0) return prev + repo.full_name
