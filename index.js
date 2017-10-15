@@ -19,6 +19,12 @@ module.exports = (robot) => {
       context.github.gitdata.getTree(context.repo({sha: context.payload.head_commit.id, recursive: true}))
     ])
 
+    if (tree.truncated) {
+      const errorMessage = 'Tree was too large for one recursive request.'
+      robot.log.error(errorMessage)
+      return
+    }
+
     const pr = commitIsInPR(context, prs)
 
     // Get array of issue objects in the current repo

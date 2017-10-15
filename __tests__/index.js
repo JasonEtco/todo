@@ -221,6 +221,15 @@ describe('todo', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
+  it('throws when the tree is too large', async () => {
+    const {robot, github} = gimmeRobot()
+    robot.log.error = jest.fn()
+    github.gitdata.getTree.mockReturnValueOnce({ truncated: true })
+    await robot.receive(payloads.basic)
+    expect(robot.log.error).toHaveBeenCalledWith('Tree was too large for one recursive request.')
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
+
   it('reopens a closed issue', async () => {
     const issues = [{data: {
       items: [{
