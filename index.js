@@ -81,7 +81,7 @@ module.exports = (robot) => {
 
           const issue = context.issue(issueObj)
 
-          robot.log(`Creating issue: ${issue.title}, in ${context.repo().owner}/${context.repo().repo}`)
+          robot.log.info(`Creating issue: ${issue.title}, in ${context.repo().owner}/${context.repo().repo}`)
           return context.github.issues.create(issue)
         })
       })
@@ -94,6 +94,6 @@ module.exports = (robot) => {
       if (i === arr.length - 1) return `${prev} and ${repo.full_name}`
       return `${prev}, ${repo.full_name}`
     }, '')
-    robot.log(`todo was just installed on ${repos}.`)
+    robot.log.info(`todo was just installed on ${repos}.`)
   })
 }
