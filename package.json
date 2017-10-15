@@ -7,6 +7,7 @@
   "repository": "https://github.com/JasonEtco/todo.git",
   "scripts": {
     "start": "sls offline",
+    "serve": "probot run ./index.js",
     "deploy:dev": "sls deploy --stage dev",
     "deploy:prod": "sls deploy --stage production",
     "test": "jest && codecov && standard",
