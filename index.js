@@ -8,8 +8,6 @@ const metadata = require('./lib/metadata')
 
 module.exports = (robot) => {
   robot.on('push', async context => {
-    robot.log.info('Initializing work')
-
     if (!context.payload.head_commit) return
 
     const config = await context.config('config.yml')
@@ -88,9 +86,6 @@ module.exports = (robot) => {
         })
       })
     })
-
-    robot.log.info('Completing work, sending response')
-    return true
   })
 
   robot.on('installation.created', context => {
