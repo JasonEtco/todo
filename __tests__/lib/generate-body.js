@@ -93,7 +93,7 @@ describe('generate-body', () => {
 
   it('respects the configured bodyKeyword', () => {
     const config = { keyword: '@todo', bodyKeyword: '@pizza', blobLines: 2 }
-    const contentsPizza = '\n\n@todo Jason!\n@pizza This one has a body\n@body eat some pizza\nasdfas\nasdfdsafasd\nsd\nasdfsa\n\nsdfsadfsa'    
+    const contentsPizza = '\n\n@todo Jason!\n@pizza This one has a body\n@body eat some pizza\nasdfas\nasdfdsafasd\nsd\nasdfsa\n\nsdfsadfsa'
     const body = generateBody(context, config, title, file, contentsPizza, author, sha)
     expect(body).toBe(fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'with-body.txt'), 'utf8'))
   })
