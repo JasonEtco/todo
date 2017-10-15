@@ -226,7 +226,7 @@ describe('todo', () => {
     robot.log.error = jest.fn()
     github.gitdata.getTree.mockReturnValueOnce({ truncated: true })
     await robot.receive(payloads.basic)
-    expect(robot.log.error).toHaveBeenCalledWith('Tree was too large for one recursive request.')
+    expect(robot.log.error).toHaveBeenCalledWith(new Error('Tree was too large for one recursive request.'))
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 

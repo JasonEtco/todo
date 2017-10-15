@@ -1,13 +1,15 @@
 const defaultConfig = require('./lib/default-config')
 const generateBody = require('./lib/generate-body')
 const commitIsInPR = require('./lib/commit-is-in-pr')
-const getContents = require('./lib/get-file-contents')
+const organizeCommits = require('./lib/organize-commits')
 const generateLabel = require('./lib/generate-label')
 const reopenClosed = require('./lib/reopen-closed')
 const metadata = require('./lib/metadata')
 
 module.exports = (robot) => {
   robot.on('push', async context => {
+    robot.log.info('Initializing work')
+
     if (!context.payload.head_commit) return
 
     const config = await context.config('config.yml')
@@ -20,8 +22,7 @@ module.exports = (robot) => {
     ])
 
     if (tree.truncated) {
-      const errorMessage = 'Tree was too large for one recursive request.'
-      robot.log.error(errorMessage)
+      robot.log.error(new Error('Tree was too large for one recursive request.'))
       return
     }
 
@@ -33,30 +34,7 @@ module.exports = (robot) => {
 
     // Get the most up-to-date contents of each file
     // by the commit it was most recently edited in.
-    const commitsByFiles = new Map()
-    for (let c = 0; c < commits.length; c++) {
-      const commit = commits[c]
-      const files = [...commit.added, ...commit.modified]
-      const mappedFiles = new Map()
-
-      for (let i = 0; i < tree.data.tree.length; i++) {
-        const file = tree.data.tree[i]
-        if (files.indexOf(file.path) !== -1) {
-          const sliced = commits.slice(c + 1)
-
-          if (sliced.every(com => com.modified.indexOf(file.path) === -1)) {
-            const contents = await getContents(context, file.sha, file.path)
-            mappedFiles.set(file.path, {
-              contents,
-              sha: file.sha
-            })
-            break
-          }
-        }
-      }
-
-      commitsByFiles.set(commit.id, mappedFiles)
-    }
+    const commitsByFiles = await organizeCommits(context, commits, tree)
     commitsByFiles.forEach(async (files, commitSha) => {
       files.forEach(async ({ contents, sha }, file) => {
         // Get issue titles
@@ -111,6 +89,7 @@ module.exports = (robot) => {
       })
     })
 
+    robot.log.info('Completing work, sending response')
     return true
   })
 
