@@ -1,22 +1,30 @@
 const defaultConfig = require('./lib/default-config')
-const getContents = require('./lib/get-file-contents')
 const generateBody = require('./lib/generate-body')
 const commitIsInPR = require('./lib/commit-is-in-pr')
+const organizeCommits = require('./lib/organize-commits')
 const generateLabel = require('./lib/generate-label')
 const reopenClosed = require('./lib/reopen-closed')
 const metadata = require('./lib/metadata')
 
 module.exports = (robot) => {
   robot.on('push', async context => {
+    robot.log.info('Initializing work')
+
     if (!context.payload.head_commit) return
 
     const config = await context.config('config.yml')
     const cfg = config && config.todo ? {...defaultConfig, ...config.todo} : defaultConfig
 
-    const [labels, prs] = await Promise.all([
+    const [labels, prs, tree] = await Promise.all([
       generateLabel(context, cfg),
-      context.github.pullRequests.getAll(context.repo())
+      context.github.pullRequests.getAll(context.repo()),
+      context.github.gitdata.getTree(context.repo({sha: context.payload.head_commit.id, recursive: true}))
     ])
+
+    if (tree.truncated) {
+      robot.log.error(new Error('Tree was too large for one recursive request.'))
+      return
+    }
 
     const pr = commitIsInPR(context, prs)
 
@@ -26,28 +34,9 @@ module.exports = (robot) => {
 
     // Get the most up-to-date contents of each file
     // by the commit it was most recently edited in.
-    const commitsByFiles = new Map()
-    for (let c = 0; c < commits.length; c++) {
-      const commit = commits[c]
-      const files = [...commit.added, ...commit.modified]
-      const mappedFiles = new Map()
-
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i]
-        const sliced = commits.slice(c + 1)
-
-        if (sliced.every(com => com.modified.indexOf(file) === -1)) {
-          const contents = await getContents(context, commit.id, file)
-          mappedFiles.set(file, contents)
-          break
-        }
-      }
-
-      commitsByFiles.set(commit.id, mappedFiles)
-    }
-
-    commitsByFiles.forEach(async (files, sha) => {
-      files.forEach(async (contents, file) => {
+    const commitsByFiles = await organizeCommits(context, commits, tree)
+    commitsByFiles.forEach(async (files, commitSha) => {
+      files.forEach(async ({ contents, sha }, file) => {
         // Get issue titles
         const regexFlags = cfg.caseSensitive ? 'g' : 'gi'
         const re = new RegExp(`${cfg.keyword}\\s(.*)`, regexFlags)
@@ -74,14 +63,14 @@ module.exports = (robot) => {
 
             if (existingIssue) {
               if (cfg.reopenClosed && existingIssue.state === 'closed') {
-                return reopenClosed(robot.log, context, cfg, existingIssue.number, file, sha)
+                return reopenClosed(robot.log, context, cfg, existingIssue.number, file, commitSha)
               } else {
                 return
               }
             }
           }
 
-          const body = generateBody(context, cfg, title, file, contents, author, sha, pr)
+          const body = generateBody(context, cfg, title, file, contents, author, commitSha, pr)
 
           const issueObj = { title, body, labels }
           if (cfg.autoAssign === true) {
@@ -99,6 +88,9 @@ module.exports = (robot) => {
         })
       })
     })
+
+    robot.log.info('Completing work, sending response')
+    return true
   })
 
   robot.on('installation.created', context => {
