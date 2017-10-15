@@ -110,6 +110,8 @@ module.exports = (robot) => {
         })
       })
     })
+
+    return true
   })
 
   robot.on('installation.created', context => {
