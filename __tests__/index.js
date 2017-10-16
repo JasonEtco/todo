@@ -10,7 +10,15 @@ function gimmeRobot (config = 'basic.yml', issues = [{ data: {items: [{ title: '
   let github
   const content = (str) => Promise.resolve({ data: { content: Buffer.from(str) } })
 
-  robot = createRobot()
+  const logger = {
+    trace: jest.fn(),
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    fatal: jest.fn()
+  }
+  robot = createRobot({ logger })
   app(robot)
 
   github = {
@@ -280,33 +288,30 @@ describe('todo', () => {
     expect(github.issues.createComment).toHaveBeenCalledTimes(0)
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
+})
 
-  describe('installation', () => {
-    let robotLog
-    const {robot} = gimmeRobot()
+describe('installation', () => {
+  let robot
 
-    beforeEach(() => {
-      robotLog = robot.log
-      robot.log = jest.fn()
-    })
+  beforeEach(() => {
+    robot = createRobot()
+    robot.auth = () => Promise.resolve({})
+    robot.log.info = jest.fn()
+    app(robot)
+  })
 
-    afterEach(() => {
-      robot.log = robotLog
-    })
+  it('logs the proper message to the console', async () => {
+    await robot.receive(payloads.installCreatedOne)
+    expect(robot.log.info).toHaveBeenCalledWith('todo was just installed on JasonEtco/test.')
+  })
 
-    it('logs the proper message to the console', async () => {
-      await robot.receive(payloads.installCreatedOne)
-      expect(robot.log).toHaveBeenCalledWith('todo was just installed on JasonEtco/test.')
-    })
+  it('logs the proper message to the console w/ 2 repos', async () => {
+    await robot.receive(payloads.installCreatedTwo)
+    expect(robot.log.info).toHaveBeenCalledWith('todo was just installed on JasonEtco/test and JasonEtco/pizza.')
+  })
 
-    it('logs the proper message to the console w/ 2 repos', async () => {
-      await robot.receive(payloads.installCreatedTwo)
-      expect(robot.log).toHaveBeenCalledWith('todo was just installed on JasonEtco/test and JasonEtco/pizza.')
-    })
-
-    it('logs the proper message to the console w/ 3 repos', async () => {
-      await robot.receive(payloads.installCreatedThree)
-      expect(robot.log).toHaveBeenCalledWith('todo was just installed on JasonEtco/test, JasonEtco/pizza and JasonEtco/example.')
-    })
+  it('logs the proper message to the console w/ 3 repos', async () => {
+    await robot.receive(payloads.installCreatedThree)
+    expect(robot.log.info).toHaveBeenCalledWith('todo was just installed on JasonEtco/test, JasonEtco/pizza and JasonEtco/example.')
   })
 })
