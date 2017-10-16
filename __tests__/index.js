@@ -229,6 +229,12 @@ describe('todo', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
+  it('ignores the config file', async () => {
+    const {robot, github} = gimmeRobot()
+    await robot.receive(payloads.configFile)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
+
   it('throws when the tree is too large', async () => {
     const {robot, github} = gimmeRobot()
     robot.log.error = jest.fn()
