@@ -31,5 +31,5 @@ functions:
         path: probot
         method: post
      - http:
-        path: probot/stats
+        path: "{page+}"
         method: get
