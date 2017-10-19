@@ -10,7 +10,15 @@ function gimmeRobot (config = 'basic.yml', issues = [{ data: {items: [{ title: '
   let github
   const content = (str) => Promise.resolve({ data: { content: Buffer.from(str) } })
 
-  robot = createRobot()
+  const logger = {
+    trace: jest.fn(),
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    fatal: jest.fn()
+  }
+  robot = createRobot({ logger })
   app(robot)
 
   github = {
@@ -23,6 +31,24 @@ function gimmeRobot (config = 'basic.yml', issues = [{ data: {items: [{ title: '
     },
     search: {
       issues: jest.fn().mockReturnValue(Promise.resolve([{data: {total_count: issues[0].length, items: issues[0].data}}]))
+    },
+    gitdata: {
+      getTree: jest.fn().mockReturnValue(Promise.resolve({
+        data: {
+          tree: [
+            { path: 'index.js', sha: 'sha' },
+            { path: 'more.js', sha: 'sha' },
+            { path: 'another.js', sha: 'sha' },
+            { path: 'many.js', sha: 'sha' },
+            { path: 'caseinsensitive.js', sha: 'sha' }
+          ]
+        }
+      })),
+      getBlob: jest.fn((obj) => ({
+        data: {
+          content: fs.readFileSync(path.join(__dirname, 'fixtures', 'files', obj.path), 'base64')
+        }
+      }))
     },
     paginate: jest.fn().mockReturnValue(Promise.resolve(issues)),
     repos: {
@@ -51,13 +77,13 @@ describe('todo', () => {
   it('requests issues for the repo', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)
-    expect(github.search.issues.mock.calls.length).toBe(1)
+    expect(github.search.issues).toHaveBeenCalledTimes(1)
   })
 
   it('creates an issue', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)
-    expect(github.issues.create.mock.calls.length).toBe(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
     expect(github.issues.create).toBeCalledWith({
       body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'pr.txt'), 'utf8'),
       number: undefined,
@@ -127,37 +153,37 @@ describe('todo', () => {
   it('works with a complex push (with multiple commits)', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.complex)
-    expect(github.issues.create.mock.calls.length).toBe(3)
+    expect(github.issues.create).toHaveBeenCalledTimes(3)
   })
 
   it('respects the capitalization config', async () => {
     const {robot, github} = gimmeRobot('caseSensitive.yml')
     await robot.receive(payloads.complex)
-    expect(github.issues.create.mock.calls.length).toBe(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
   })
 
   it('does not create any issues', async () => {
     const {robot, github} = gimmeRobot('caseSensitivePizza.yml')
     await robot.receive(payloads.complex)
-    expect(github.issues.create.mock.calls.length).toBe(0)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
   it('does not create an issue that already exists', async () => {
     const {robot, github} = gimmeRobot('existing.yml')
     await robot.receive(payloads.complex)
-    expect(github.issues.create.mock.calls.length).toBe(0)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
   it('works without a config present', async () => {
     const {robot, github} = gimmeRobot(false)
     await robot.receive(payloads.basic)
-    expect(github.issues.create.mock.calls.length).toBe(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
   })
 
   it('creates 31 issues', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.many)
-    expect(github.issues.create.mock.calls.length).toBe(33)
+    expect(github.issues.create).toHaveBeenCalledTimes(33)
   })
 
   it('paginates when there are over 30 issues', async () => {
@@ -165,7 +191,7 @@ describe('todo', () => {
     const issuesPageTwo = Array.apply(null, Array(3)).map((v, i) => ({ title: `I do not exist ${i + 30}`, state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "I do not exist ${i + 30}"}} -->` }))
     const {robot, github} = gimmeRobot('basic.yml', [{data: {items: issuesPageOne, total_count: 30}}, {data: {items: issuesPageTwo, total_count: 3}}])
     await robot.receive(payloads.many)
-    expect(github.issues.create.mock.calls.length).toBe(33)
+    expect(github.issues.create).toHaveBeenCalledTimes(33)
   })
 
   it('paginates when there are over 30 issues and does not make them', async () => {
@@ -173,13 +199,13 @@ describe('todo', () => {
     const issuesPageTwo = Array.apply(null, Array(2)).map((v, i) => ({ title: `I exist ${i + 30}`, state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "I exist ${i + 30}","file": "many.js"}} -->` }))
     const {robot, github} = gimmeRobot('basic.yml', [{data: {items: issuesPageOne, total_count: 30}}, {data: {items: issuesPageTwo, total_count: 2}}])
     await robot.receive(payloads.many)
-    expect(github.issues.create.mock.calls.length).toBe(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
   })
 
   it('works with issues with empty bodies', async () => {
     const {robot, github} = gimmeRobot('basic.yml', [{data: { items: [{ title: 'Hey', state: 'open' }], total_count: 1 }}])
     await robot.receive(payloads.basic)
-    expect(github.issues.create.mock.calls.length).toBe(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
   })
 
   it('parses titles and respects case-insensitive', async () => {
@@ -200,7 +226,22 @@ describe('todo', () => {
   it('does not throw errors when head_commit is null', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.merge)
-    expect(github.issues.create.mock.calls.length).toBe(0)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
+
+  it('ignores the config file', async () => {
+    const {robot, github} = gimmeRobot()
+    await robot.receive(payloads.configFile)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
+
+  it('throws when the tree is too large', async () => {
+    const {robot, github} = gimmeRobot()
+    robot.log.error = jest.fn()
+    github.gitdata.getTree.mockReturnValueOnce({ truncated: true })
+    await robot.receive(payloads.basic)
+    expect(robot.log.error).toHaveBeenCalledWith(new Error('Tree was too large for one recursive request.'))
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
   it('reopens a closed issue', async () => {
@@ -253,33 +294,30 @@ describe('todo', () => {
     expect(github.issues.createComment).toHaveBeenCalledTimes(0)
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
+})
 
-  describe('installation', () => {
-    let robotLog
-    const {robot} = gimmeRobot()
+describe('installation', () => {
+  let robot
 
-    beforeEach(() => {
-      robotLog = robot.log
-      robot.log = jest.fn()
-    })
+  beforeEach(() => {
+    robot = createRobot()
+    robot.auth = () => Promise.resolve({})
+    robot.log.info = jest.fn()
+    app(robot)
+  })
 
-    afterEach(() => {
-      robot.log = robotLog
-    })
+  it('logs the proper message to the console', async () => {
+    await robot.receive(payloads.installCreatedOne)
+    expect(robot.log.info).toHaveBeenCalledWith('todo was just installed on JasonEtco/test.')
+  })
 
-    it('logs the proper message to the console', async () => {
-      await robot.receive(payloads.installCreatedOne)
-      expect(robot.log).toHaveBeenCalledWith('todo was just installed on JasonEtco/test.')
-    })
+  it('logs the proper message to the console w/ 2 repos', async () => {
+    await robot.receive(payloads.installCreatedTwo)
+    expect(robot.log.info).toHaveBeenCalledWith('todo was just installed on JasonEtco/test and JasonEtco/pizza.')
+  })
 
-    it('logs the proper message to the console w/ 2 repos', async () => {
-      await robot.receive(payloads.installCreatedTwo)
-      expect(robot.log).toHaveBeenCalledWith('todo was just installed on JasonEtco/test and JasonEtco/pizza.')
-    })
-
-    it('logs the proper message to the console w/ 3 repos', async () => {
-      await robot.receive(payloads.installCreatedThree)
-      expect(robot.log).toHaveBeenCalledWith('todo was just installed on JasonEtco/test, JasonEtco/pizza and JasonEtco/example.')
-    })
+  it('logs the proper message to the console w/ 3 repos', async () => {
+    await robot.receive(payloads.installCreatedThree)
+    expect(robot.log.info).toHaveBeenCalledWith('todo was just installed on JasonEtco/test, JasonEtco/pizza and JasonEtco/example.')
   })
 })

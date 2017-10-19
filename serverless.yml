@@ -22,9 +22,9 @@ functions:
     handler: handler.todo
 
     environment:
-      WEBHOOK_SECRET: ${env:WEBHOOK_SECRET}
-      APP_ID: ${env:APP_ID}
-      SENTRY_DSN: ${env:SENTRY_DSN}
+      WEBHOOK_SECRET: ${file(./env.yml):WEBHOOK_SECRET}
+      APP_ID: ${file(./env.yml):APP_ID}
+      SENTRY_DSN: ${file(./env.yml):SENTRY_DSN}
 
     events:
      - http:

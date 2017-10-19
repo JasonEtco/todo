@@ -5,7 +5,7 @@ const path = require('path')
 
 describe('reopen-closed', () => {
   const config = {reopenClosed: true, keyword: '@todo'}
-  const log = jest.fn()
+  const log = { info: jest.fn() }
   let context
 
   beforeEach(() => {
