@@ -45,14 +45,13 @@ module.exports = (robot) => {
 
         titles.forEach(async title => {
           // Check if an issue with that title exists
-          const searchPages = await context.github.paginate(context.github.search.issues({
-            q: `${title} in:title repo:${context.payload.repository.full_name}`
-          }))
+          const search = await context.github.search.issues({
+            q: `${title} in:title repo:${context.payload.repository.full_name}`,
+            per_page: 100
+          })
 
-          if (searchPages.every(p => p.data.total_count !== 0)) {
-            const search = [].concat.apply([], searchPages.map(p => p.data.items))
-
-            const existingIssue = search.find(issue => {
+          if (search.data.total_count !== 0) {
+            const existingIssue = search.data.items.find(issue => {
               if (!issue.body) return false
               const titleKey = metadata(context, issue).get('title')
               const fileKey = metadata(context, issue).get('file')
