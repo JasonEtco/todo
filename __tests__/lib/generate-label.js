@@ -22,7 +22,7 @@ describe('generate-label', () => {
   it('calls github.createLabel()', async () => {
     const labels = await generateLabel(context, { label: true })
     expect(Array.isArray(labels)).toBe(true)
-    expect(context.github.issues.createLabel.mock.calls.length).toBe(1)
+    expect(context.github.issues.createLabel).toHaveBeenCalledTimes(1)
   })
 
   it('returns an array of the default label name', async () => {

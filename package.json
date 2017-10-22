@@ -7,6 +7,7 @@
   "repository": "https://github.com/JasonEtco/todo.git",
   "scripts": {
     "start": "sls offline",
+    "serve": "probot run ./index.js",
     "deploy:dev": "sls deploy --stage dev",
     "deploy:prod": "sls deploy --stage production",
     "test": "jest && codecov && standard",
@@ -20,10 +21,7 @@
   "jest": {
     "modulePathIgnorePatterns": [
       "<rootDir>/__tests__/fixtures/",
-      "<rootDir>/__tests__/shimRAF.js"
-    ],
-    "setupFiles": [
-      "<rootDir>/__tests__/shimRAF.js"
+      "<rootDir>/__tests__/helpers.js"
     ],
     "coverageDirectory": "./coverage/",
     "coveragePathIgnorePatterns": [
