@@ -1,65 +1,17 @@
-const {createRobot} = require('probot')
 const payloads = require('./fixtures/payloads')
-const app = require('..')
+const {gimmeRobot} = require('./helpers')
 const fs = require('fs')
 const path = require('path')
 
-function gimmeRobot () {
-  const cfg = fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', 'noBlob.yml'), 'utf8')
-  let robot
-  let github
-  const content = (str) => Promise.resolve({ data: { content: Buffer.from(str) } })
-
-  robot = createRobot()
-  app(robot)
-
-  github = {
-    issues: {
-      getForRepo: jest.fn().mockReturnValue(Promise.resolve([])),
-      create: jest.fn(),
-      createLabel: jest.fn()
-    },
-    search: {
-      issues: jest.fn().mockReturnValue(Promise.resolve([{data: {items: [], total_count: 0}}]))
-    },
-    gitdata: {
-      getBlob: jest.fn((obj) => ({
-        data: {
-          content: fs.readFileSync(path.join(__dirname, 'fixtures', 'files', obj.path), 'base64')
-        }
-      })),
-      getTree: jest.fn().mockReturnValue(Promise.resolve({
-        data: {
-          tree: [
-            { path: 'go.go', sha: 'sha' },
-            { path: 'ruby.rb', sha: 'sha' },
-            { path: 'c.c', sha: 'sha' },
-            { path: 'c-sharp.cs', sha: 'sha' }
-          ]
-        }
-      }))
-    },
-    paginate: jest.fn().mockReturnValue(Promise.resolve([])),
-    repos: {
-      getContent: jest.fn((obj) => {
-        if (obj.path.includes('config.yml')) {
-          return content(cfg)
-        } else {
-          return content(fs.readFileSync(path.join(__dirname, 'fixtures', 'files', obj.path), 'utf8'))
-        }
-      })
-    },
-    pullRequests: {
-      getAll: jest.fn().mockReturnValue(Promise.resolve({ data: [{ head: { ref: 'master' }, number: 10 }] }))
-    }
-  }
-  // Passes the mocked out GitHub API into out robot instance
-  robot.auth = () => Promise.resolve(github)
-  return { robot, github }
-}
-
 describe('languages', () => {
-  const expected = (language, title) => ({
+  const tree = [
+    { path: 'go.go', sha: 'sha' },
+    { path: 'ruby.rb', sha: 'sha' },
+    { path: 'c.c', sha: 'sha' },
+    { path: 'c-sharp.cs', sha: 'sha' }
+  ]
+
+  const expected = (title, language) => ({
     title,
     body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', `${language}.txt`), 'utf8'),
     number: undefined,
@@ -70,42 +22,45 @@ describe('languages', () => {
   })
 
   it('works with Go', async () => {
+    const {robot, github} = gimmeRobot('noBlob.yml', {data: {items: [], total_count: 0}}, tree)
     const p = payloads.basic
     p.payload.commits[0].modified = ['go.go']
 
-    const {robot, github} = gimmeRobot()
-    await robot.receive(payloads.basic)
+    await robot.receive(p)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create).toBeCalledWith(expected('go', 'Check that Go works'))
+    expect(github.issues.create).toBeCalledWith(expected('Check that Go works', 'go'))
   })
 
   it('works with Ruby', async () => {
+    const {robot, github} = gimmeRobot('noBlob.yml', {data: {items: [], total_count: 0}}, tree)
+
     const p = payloads.basic
     p.payload.commits[0].modified = ['ruby.rb']
 
-    const {robot, github} = gimmeRobot()
-    await robot.receive(payloads.basic)
+    await robot.receive(p)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create).toBeCalledWith(expected('ruby', 'Check that Ruby works'))
+    expect(github.issues.create).toBeCalledWith(expected('Check that Ruby works', 'ruby'))
   })
 
   it('works with C#', async () => {
+    const {robot, github} = gimmeRobot('noBlob.yml', {data: {items: [], total_count: 0}}, tree)
+
     const p = payloads.basic
     p.payload.commits[0].modified = ['c-sharp.cs']
 
-    const {robot, github} = gimmeRobot()
-    await robot.receive(payloads.basic)
+    await robot.receive(p)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create).toBeCalledWith(expected('c-sharp', 'Check that C# works'))
+    expect(github.issues.create).toBeCalledWith(expected('Check that C# works', 'c-sharp'))
   })
 
   it('works with C', async () => {
+    const {robot, github} = gimmeRobot('noBlob.yml', {data: {items: [], total_count: 0}}, tree)
+
     const p = payloads.basic
     p.payload.commits[0].modified = ['c.c']
 
-    const {robot, github} = gimmeRobot()
-    await robot.receive(payloads.basic)
+    await robot.receive(p)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create).toBeCalledWith(expected('c', 'Check that C works'))
+    expect(github.issues.create).toBeCalledWith(expected('Check that C works', 'c'))
   })
 })
