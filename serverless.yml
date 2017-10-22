@@ -30,3 +30,6 @@ functions:
      - http:
         path: probot
         method: post
+     - http:
+        path: "{page+}"
+        method: get
