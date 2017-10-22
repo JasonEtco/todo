@@ -223,26 +223,3 @@ describe('todo', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 })
-
-describe('pr comments', () => {
-  it('comments on a pull request', async () => {
-    const {robot, github} = gimmeRobot()
-    await robot.receive(payloads.pr)
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
-    expect(github.pullRequests.createComment).toHaveBeenCalledTimes(1)
-  })
-
-  it('comments on a pull request and mentions the assigned user', async () => {
-    const {robot, github} = gimmeRobot('autoAssignString.yml')
-    await robot.receive(payloads.pr)
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
-    expect(github.pullRequests.createComment).toHaveBeenCalledTimes(1)
-  })
-
-  it('comments on a pull request and mentions the assigned users', async () => {
-    const {robot, github} = gimmeRobot('autoAssignArr.yml')
-    await robot.receive(payloads.pr)
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
-    expect(github.pullRequests.createComment).toHaveBeenCalledTimes(1)
-  })
-})
