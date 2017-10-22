@@ -11,6 +11,9 @@ const configOptions = [{
   name: 'keyword',
   type: 'string'
 }, {
+  name: 'bodyKeyword',
+  type: 'string'
+}, {
   name: 'caseSensitive',
   type: 'boolean'
 }, {
