@@ -130,20 +130,6 @@ describe('todo', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(33)
   })
 
-  it('paginates when there are over 30 issues', async () => {
-    const issuesPageOne = Array.apply(null, Array(33)).map((v, i) => ({ title: `I do not exist ${i}`, state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "I do not exist ${i}"}} -->` }))
-    const {robot, github} = gimmeRobot('basic.yml', {data: {items: issuesPageOne, total_count: 33}})
-    await robot.receive(payloads.many)
-    expect(github.issues.create).toHaveBeenCalledTimes(33)
-  })
-
-  it('paginates when there are over 30 issues and does not make them', async () => {
-    const issuesPageOne = Array.apply(null, Array(32)).map((v, i) => ({ title: `I exist ${i}`, state: 'open', body: `\n\n<!-- probot = {"10000":{"title": "I exist ${i}","file": "many.js"}} -->` }))
-    const {robot, github} = gimmeRobot('basic.yml', {data: {items: issuesPageOne, total_count: 32}})
-    await robot.receive(payloads.many)
-    expect(github.issues.create).toHaveBeenCalledTimes(1)
-  })
-
   it('works with issues with empty bodies', async () => {
     const {robot, github} = gimmeRobot('basic.yml', {data: { items: [{ title: 'Hey', state: 'open' }], total_count: 1 }})
     await robot.receive(payloads.basic)

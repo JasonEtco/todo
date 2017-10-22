@@ -50,7 +50,6 @@ exports.gimmeRobot = (config = 'basic.yml', issues = defaultIssues, tree = defau
         }
       }))
     },
-    paginate: jest.fn().mockReturnValue(Promise.resolve(issues)),
     repos: {
       // Response for getting content from '.github/todo.yml'
       getContent: jest.fn((obj) => {
