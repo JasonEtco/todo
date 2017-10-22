@@ -1,6 +1,4 @@
-const {createRobot} = require('probot')
 const payloads = require('./fixtures/payloads')
-const app = require('..')
 const fs = require('fs')
 const path = require('path')
 const {gimmeRobot} = require('./helpers')
