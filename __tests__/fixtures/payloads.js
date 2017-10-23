@@ -287,6 +287,20 @@ exports.pullRequestMerged = {
   }
 }
 
+exports.pullRequestClosed = {
+  event: 'pull_request',
+  payload: {
+    action: 'closed',
+    number: 5,
+    pull_request: {
+      merged: false
+    },
+    installation: {
+      id: 10000
+    }
+  }
+}
+
 exports.installCreatedOne = {
   event: 'installation',
   payload: {
