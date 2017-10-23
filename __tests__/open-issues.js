@@ -98,6 +98,12 @@ describe('open-issues', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
+  it('does nothing on a merge commit', async () => {
+    const {robot, github} = gimmeRobot('caseSensitivePizza.yml')
+    await robot.receive(payloads.mergeCommit)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
+
   it('does not create an issue that already exists', async () => {
     const {robot, github} = gimmeRobot('existing.yml')
     await robot.receive(payloads.complex)

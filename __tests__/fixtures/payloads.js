@@ -239,6 +239,27 @@ exports.merge = {
   }
 }
 
+exports.mergeCommit = {
+  event: 'push',
+  payload: {
+    commits: [],
+    head_commit: { id: 'sha' },
+    repository: {
+      name: 'todo',
+      full_name: 'JasonEtco/todo',
+      owner: {
+        name: 'JasonEtco'
+      }
+    },
+    pusher: {
+      name: 'JasonEtco'
+    },
+    installation: {
+      id: 10000
+    }
+  }
+}
+
 exports.installCreatedOne = {
   event: 'installation',
   payload: {
