@@ -18,7 +18,8 @@ exports.basic = {
     },
     repository: {
       name: 'test',
-      owner: { login: 'JasonEtco' }
+      owner: { login: 'JasonEtco' },
+      default_branch: 'master'
     },
     installation: {
       id: 10000
@@ -46,7 +47,8 @@ exports.pr = {
     },
     repository: {
       name: 'test',
-      owner: { login: 'JasonEtco' }
+      owner: { login: 'JasonEtco' },
+      default_branch: 'master'
     },
     installation: {
       id: 10000
@@ -74,7 +76,8 @@ exports.caseinsensitive = {
     },
     repository: {
       name: 'test',
-      owner: { login: 'JasonEtco' }
+      owner: { login: 'JasonEtco' },
+      default_branch: 'master'
     },
     installation: {
       id: 10000
@@ -102,7 +105,8 @@ exports.configFile = {
     },
     repository: {
       name: 'test',
-      owner: { login: 'JasonEtco' }
+      owner: { login: 'JasonEtco' },
+      default_branch: 'master'
     },
     installation: {
       id: 10000
@@ -130,7 +134,8 @@ exports.caseinsensitive = {
     },
     repository: {
       name: 'test',
-      owner: { login: 'JasonEtco' }
+      owner: { login: 'JasonEtco' },
+      default_branch: 'master'
     },
     installation: {
       id: 10000
@@ -158,7 +163,8 @@ exports.many = {
     },
     repository: {
       name: 'test',
-      owner: { login: 'JasonEtco' }
+      owner: { login: 'JasonEtco' },
+      default_branch: 'master'
     },
     installation: {
       id: 10000
@@ -210,7 +216,8 @@ exports.complex = {
     },
     repository: {
       name: 'test',
-      owner: { login: 'JasonEtco' }
+      owner: { login: 'JasonEtco' },
+      default_branch: 'master'
     },
     installation: {
       id: 10000
