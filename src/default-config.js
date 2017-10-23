@@ -1,7 +1,7 @@
 module.exports = {
   autoAssign: true,
   keyword: '@todo',
-  bodyKeyword: '@todo',
+  bodyKeyword: '@body',
   blobLines: 5,
   caseSensitive: false,
   label: true,
