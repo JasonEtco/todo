@@ -62,7 +62,8 @@ exports.gimmeRobot = (config = 'basic.yml', issues = defaultIssues, tree = defau
         } else {
           return content(fs.readFileSync(path.join(__dirname, 'fixtures', 'files', obj.path), 'utf8'))
         }
-      })
+      }),
+      getShaOfCommitRef: jest.fn().mockReturnValue(Promise.resolve({ data: { sha: 'sha' } }))
     },
     pullRequests: {
       getAll: jest.fn().mockReturnValue(Promise.resolve({ data: [{ head: { ref: 'master' } }] }))
