@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const {gimmeRobot} = require('./helpers')
 
-describe('todo', () => {
+describe('open-issues', () => {
   it('requests issues for the repo', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)
