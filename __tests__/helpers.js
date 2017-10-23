@@ -35,7 +35,8 @@ exports.gimmeRobot = (config = 'basic.yml', issues = defaultIssues, tree = defau
       create: jest.fn(),
       createLabel: jest.fn(),
       edit: jest.fn(),
-      createComment: jest.fn()
+      createComment: jest.fn(),
+      getComments: jest.fn().mockReturnValue(Promise.resolve({ data: [] }))
     },
     search: {
       issues: jest.fn().mockReturnValue(Promise.resolve(issues))
@@ -61,10 +62,11 @@ exports.gimmeRobot = (config = 'basic.yml', issues = defaultIssues, tree = defau
         } else {
           return content(fs.readFileSync(path.join(__dirname, 'fixtures', 'files', obj.path), 'utf8'))
         }
-      })
+      }),
+      getShaOfCommitRef: jest.fn().mockReturnValue(Promise.resolve({ data: { sha: 'sha' } }))
     },
     pullRequests: {
-      getAll: jest.fn().mockReturnValue(Promise.resolve({ data: [{ head: { ref: 'master' }, number: 10 }] }))
+      getAll: jest.fn().mockReturnValue(Promise.resolve({ data: [{ head: { ref: 'master' } }] }))
     }
   }
   // Passes the mocked out GitHub API into out robot instance

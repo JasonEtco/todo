@@ -1,11 +1,9 @@
-const {createRobot} = require('probot')
 const payloads = require('./fixtures/payloads')
-const app = require('..')
 const fs = require('fs')
 const path = require('path')
 const {gimmeRobot} = require('./helpers')
 
-describe('todo', () => {
+describe('open-issues', () => {
   it('requests issues for the repo', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)
@@ -17,7 +15,7 @@ describe('todo', () => {
     await robot.receive(payloads.basic)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
     expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'pr.txt'), 'utf8'),
+      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'default.txt'), 'utf8'),
       number: undefined,
       labels: ['todo'],
       owner: 'JasonEtco',
@@ -72,7 +70,7 @@ describe('todo', () => {
     const {robot, github} = gimmeRobot('labelArr.yml')
     await robot.receive(payloads.basic)
     expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'pr.txt'), 'utf8'),
+      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'default.txt'), 'utf8'),
       number: undefined,
       labels: ['one', 'two'],
       owner: 'JasonEtco',
@@ -97,6 +95,12 @@ describe('todo', () => {
   it('does not create any issues', async () => {
     const {robot, github} = gimmeRobot('caseSensitivePizza.yml')
     await robot.receive(payloads.complex)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
+
+  it('does nothing on a merge commit', async () => {
+    const {robot, github} = gimmeRobot('caseSensitivePizza.yml')
+    await robot.receive(payloads.mergeCommit)
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
@@ -221,31 +225,5 @@ describe('todo', () => {
     expect(github.issues.edit).toHaveBeenCalledTimes(0)
     expect(github.issues.createComment).toHaveBeenCalledTimes(0)
     expect(github.issues.create).toHaveBeenCalledTimes(0)
-  })
-})
-
-describe('installation', () => {
-  let robot
-
-  beforeEach(() => {
-    robot = createRobot()
-    robot.auth = () => Promise.resolve({})
-    robot.log.info = jest.fn()
-    app(robot)
-  })
-
-  it('logs the proper message to the console', async () => {
-    await robot.receive(payloads.installCreatedOne)
-    expect(robot.log.info).toHaveBeenCalledWith('todo was just installed on JasonEtco/test.')
-  })
-
-  it('logs the proper message to the console w/ 2 repos', async () => {
-    await robot.receive(payloads.installCreatedTwo)
-    expect(robot.log.info).toHaveBeenCalledWith('todo was just installed on JasonEtco/test and JasonEtco/pizza.')
-  })
-
-  it('logs the proper message to the console w/ 3 repos', async () => {
-    await robot.receive(payloads.installCreatedThree)
-    expect(robot.log.info).toHaveBeenCalledWith('todo was just installed on JasonEtco/test, JasonEtco/pizza and JasonEtco/example.')
   })
 })

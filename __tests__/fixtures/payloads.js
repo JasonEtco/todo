@@ -26,6 +26,34 @@ exports.basic = {
   }
 }
 
+exports.pr = {
+  event: 'push',
+  payload: {
+    ref: 'refs/heads/branch',
+    commits: [
+      {
+        id: 'f7d286aa6381bbb5045288496403d9427b0746e2',
+        added: [],
+        removed: [],
+        modified: ['index.js']
+      }
+    ],
+    head_commit: {
+      id: 'f7d286aa6381bbb5045288496403d9427b0746e2'
+    },
+    pusher: {
+      name: 'JasonEtco'
+    },
+    repository: {
+      name: 'test',
+      owner: { login: 'JasonEtco' }
+    },
+    installation: {
+      id: 10000
+    }
+  }
+}
+
 exports.caseinsensitive = {
   event: 'push',
   payload: {
@@ -204,6 +232,68 @@ exports.merge = {
     },
     pusher: {
       name: 'JasonEtco'
+    },
+    installation: {
+      id: 10000
+    }
+  }
+}
+
+exports.mergeCommit = {
+  event: 'push',
+  payload: {
+    commits: [],
+    head_commit: { id: 'sha' },
+    repository: {
+      name: 'todo',
+      full_name: 'JasonEtco/todo',
+      owner: {
+        name: 'JasonEtco'
+      }
+    },
+    pusher: {
+      name: 'JasonEtco'
+    },
+    installation: {
+      id: 10000
+    }
+  }
+}
+
+exports.pullRequestMerged = {
+  event: 'pull_request',
+  payload: {
+    action: 'closed',
+    number: 17,
+    pull_request: {
+      head: {
+        sha: '856e2d80f9a00e440425efb94416dabf07edab0c'
+      },
+      merged: true,
+      merged_by: {
+        login: 'JasonEtco'
+      }
+    },
+    repository: {
+      name: 'todo',
+      full_name: 'JasonEtco/todo',
+      owner: {
+        name: 'JasonEtco'
+      }
+    },
+    installation: {
+      id: 10000
+    }
+  }
+}
+
+exports.pullRequestClosed = {
+  event: 'pull_request',
+  payload: {
+    action: 'closed',
+    number: 5,
+    pull_request: {
+      merged: false
     },
     installation: {
       id: 10000
