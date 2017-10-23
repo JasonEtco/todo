@@ -36,7 +36,7 @@ exports.gimmeRobot = (config = 'basic.yml', issues = defaultIssues, tree = defau
       createLabel: jest.fn(),
       edit: jest.fn(),
       createComment: jest.fn(),
-      getComments: jest.fn()
+      getComments: jest.fn().mockReturnValue(Promise.resolve({ data: [] }))
     },
     search: {
       issues: jest.fn().mockReturnValue(Promise.resolve(issues))

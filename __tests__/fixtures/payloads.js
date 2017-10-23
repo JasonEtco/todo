@@ -260,6 +260,33 @@ exports.mergeCommit = {
   }
 }
 
+exports.pullRequestMerged = {
+  event: 'pull_request',
+  payload: {
+    action: 'closed',
+    number: 17,
+    pull_request: {
+      head: {
+        sha: '856e2d80f9a00e440425efb94416dabf07edab0c'
+      },
+      merged: true,
+      merged_by: {
+        login: 'JasonEtco'
+      }
+    },
+    repository: {
+      name: 'todo',
+      full_name: 'JasonEtco/todo',
+      owner: {
+        name: 'JasonEtco'
+      }
+    },
+    installation: {
+      id: 10000
+    }
+  }
+}
+
 exports.installCreatedOne = {
   event: 'installation',
   payload: {
