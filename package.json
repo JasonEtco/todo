@@ -21,7 +21,11 @@
   "jest": {
     "modulePathIgnorePatterns": [
       "<rootDir>/__tests__/fixtures/",
-      "<rootDir>/__tests__/helpers.js"
+      "<rootDir>/__tests__/helpers.js",
+      "<rootDir>/__tests__/setup.js"
+    ],
+    "setupFiles": [
+      "<rootDir>/__tests__/setup.js"
     ],
     "coverageDirectory": "./coverage/",
     "coveragePathIgnorePatterns": [
