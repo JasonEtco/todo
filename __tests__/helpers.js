@@ -45,6 +45,9 @@ exports.gimmeRobot = (config = 'basic.yml', issues = defaultIssues, tree = defau
       getTree: jest.fn().mockReturnValue(Promise.resolve({
         data: { tree }
       })),
+      getCommit: jest.fn().mockReturnValue(Promise.resolve({
+        data: { parents: [1] }
+      })),
       getBlob: jest.fn((obj) => ({
         data: {
           content: fs.readFileSync(path.join(__dirname, 'fixtures', 'files', obj.path), 'base64')

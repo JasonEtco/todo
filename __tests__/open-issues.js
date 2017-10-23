@@ -99,8 +99,11 @@ describe('open-issues', () => {
   })
 
   it('does nothing on a merge commit', async () => {
-    const {robot, github} = gimmeRobot('caseSensitivePizza.yml')
-    await robot.receive(payloads.mergeCommit)
+    const {robot, github} = gimmeRobot()
+    github.gitdata.getCommit.mockReturnValueOnce(Promise.resolve({
+      data: { parents: [1, 2] }
+    }))
+    await robot.receive(payloads.basic)
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
