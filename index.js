@@ -3,7 +3,7 @@ const mergeHandler = require('./lib/merge-handler')
 
 module.exports = (robot) => {
   robot.on('push', async context => openIssues(context, robot))
-  robot.on('pull_request.merged', async context => mergeHandler(context, robot))
+  robot.on('pull_request.closed', async context => mergeHandler(context, robot))
 
   robot.on('installation.created', context => {
     const repos = context.payload.repositories.reduce((prev, repo, i, arr) => {
