@@ -28,6 +28,24 @@ describe('merge-handler', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(1)
   })
 
+  it('does not create duplicate issues', async () => {
+    const {robot, github} = gimmeRobot('basic.yml', { data: { items: [{ title: 'Jason!', state: 'open', body: '\n\n<!-- probot = {"10000":{"title": "Jason!","file": "index.js"}} -->`' }] } })
+    github.issues.getComments.mockReturnValueOnce(w([jason, bot(comment.body)]))
+
+    await robot.receive(payloads.pullRequestMerged)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
+
+  it('reopens closed issues', async () => {
+    const {robot, github} = gimmeRobot('basic.yml', { data: { items: [{ title: 'Jason!', state: 'closed', body: '\n\n<!-- probot = {"10000":{"title": "Jason!","file": "index.js"}} -->`' }] } })
+    github.issues.getComments.mockReturnValueOnce(w([jason, bot(comment.body)]))
+
+    await robot.receive(payloads.pullRequestMerged)
+    expect(github.issues.edit).toHaveBeenCalledTimes(1)
+    expect(github.issues.createComment).toHaveBeenCalledTimes(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
+
   it('throws when the tree is too large', async () => {
     const {robot, github} = gimmeRobot()
     robot.log.error = jest.fn()
