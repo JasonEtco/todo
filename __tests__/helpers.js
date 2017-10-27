@@ -9,6 +9,7 @@ const defaultTree = [
   { path: 'more.js', sha: 'sha' },
   { path: 'another.js', sha: 'sha' },
   { path: 'many.js', sha: 'sha' },
+  { path: 'special.js', sha: 'sha' },
   { path: 'caseinsensitive.js', sha: 'sha' }
 ]
 
