@@ -25,6 +25,21 @@ describe('open-issues', () => {
     })
   })
 
+  it('creates an issue that has special characters', async () => {
+    const {robot, github} = gimmeRobot()
+    await robot.receive(payloads.special)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
+    expect(github.issues.create).toBeCalledWith({
+      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'special.txt'), 'utf8'),
+      number: undefined,
+      labels: ['todo'],
+      owner: 'JasonEtco',
+      repo: 'test',
+      title: 'Eat pizza @*&()[]$%^',
+      assignee: 'JasonEtco'
+    })
+  })
+
   it('creates an issue without assigning anyone', async () => {
     const {robot, github} = gimmeRobot('autoAssignFalse.yml')
     await robot.receive(payloads.basic)
