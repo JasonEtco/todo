@@ -35,7 +35,7 @@ describe('open-issues', () => {
       labels: ['todo'],
       owner: 'JasonEtco',
       repo: 'test',
-      title: 'Eat pizza @*&()[]$%^',
+      title: 'Mention @someone, ask a question?',
       assignee: 'JasonEtco'
     })
   })
