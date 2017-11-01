@@ -4,7 +4,7 @@
 
 ## Usage
 
-Using `todo` should be really simple. Once you've installed it in your repository, simply push some code (to your default branch, a PR; doesn't matter). If the code you pushed includes the configured keyword (default is `@todo`), then the integration will create a new issue for you using the comment your wrote in your code!
+Using **todo** should be really simple. Once you've installed it in your repository, simply push some code (to your default branch, a PR; doesn't matter). If the code you pushed includes the configured keyword (default is `@todo`), then the integration will create a new issue for you using the comment your wrote in your code!
 
 If I pushed this:
 
@@ -18,17 +18,21 @@ function ruleOverPunyHumans () {
 }
 ```
 
-`todo` would create a new issue:
+**todo** would create a new issue:
 
 ![todo](https://user-images.githubusercontent.com/10660468/31048765-83569c30-a5f2-11e7-933a-a119d43ad029.png)
 
-**Note:** While the above example is in Javascript, `todo` has been tested in JS, Go, C, C# and Ruby, and should work in any language.
+**Note:** While the above example is in Javascript, **todo** has been tested in JS, Go, C, C# and Ruby, and should work in any language.
+
+## Behaviour in pull requests
+
+To reduce noise and keep your **todo** notes in the right context, **todo** comments made in commits that are part of a pull request will be converted into comments on that pull request. When the PR is merged, **todo** will determine which of those **todo**s have yet to be resolved and open an appropriate issue. 
 
 ## Configuring for your project
 
 There are a couple of configuration options in case you need to change the default behaviour. Note that the defaults are likely fine for most projects, so you might not need to change them.
 
-Add a `todo` object in your `.github/config.yml` file (and make the file if you don't already have it) like this:
+Add a **todo** object in your `.github/config.yml` file (and make the file if you don't already have it) like this:
 
 ```yml
 todo:
@@ -40,7 +44,7 @@ todo:
 
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
-| autoAssign | `string`, `string[]` or `boolean` | Should `todo` automatically assign a user to the new issue? If `true`, it'll assign whoever pushed the code. If a string, it'll assign that user by username. You can also give it an array of usernames or `false` to not assign anyone. | `true` |
+| autoAssign | `string`, `string[]` or `boolean` | Should **todo** automatically assign a user to the new issue? If `true`, it'll assign whoever pushed the code. If a string, it'll assign that user by username. You can also give it an array of usernames or `false` to not assign anyone. | `true` |
 | keyword | `string` | The keyword to use to generate issue titles | `@todo` |
 | bodyKeyword | `string` | If this is in the line right after the main keyword, it will become the generated issue body.  | `@body` |
 | blobLines | `number` or `false` | The number of lines of code to show, starting from the keyword. | 5 |
