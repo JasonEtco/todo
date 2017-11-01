@@ -24,6 +24,10 @@ function ruleOverPunyHumans () {
 
 **Note:** While the above example is in Javascript, **todo** has been tested in JS, Go, C, C# and Ruby, and should work in any language.
 
+## Behaviour in pull requests
+
+To reduce noise and keep your **todo** notes in the right context, **todo** comments made in commits that are part of a pull request will be converted into comments on that pull request. When the PR is merged, **todo** will determine which of those **todo**s have yet to be resolved and open an appropriate issue. 
+
 ## Configuring for your project
 
 There are a couple of configuration options in case you need to change the default behaviour. Note that the defaults are likely fine for most projects, so you might not need to change them.
