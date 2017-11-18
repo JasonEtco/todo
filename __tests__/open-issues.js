@@ -40,6 +40,21 @@ describe('open-issues', () => {
     })
   })
 
+  it('creates an issue with a truncated title', async () => {
+    const {robot, github} = gimmeRobot()
+    await robot.receive(payloads.long)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
+    expect(github.issues.create).toBeCalledWith({
+      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'long-title.txt'), 'utf8'),
+      number: undefined,
+      labels: ['todo'],
+      owner: 'JasonEtco',
+      repo: 'test',
+      title: 'This is a full, very long title. Just trust me that this is a very, very long, l...',
+      assignee: 'JasonEtco'
+    })
+  })
+
   it('creates an issue without assigning anyone', async () => {
     const {robot, github} = gimmeRobot('autoAssignFalse.yml')
     await robot.receive(payloads.basic)
