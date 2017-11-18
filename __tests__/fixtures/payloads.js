@@ -27,6 +27,35 @@ exports.basic = {
   }
 }
 
+exports.long = {
+  event: 'push',
+  payload: {
+    ref: 'refs/heads/master',
+    commits: [
+      {
+        id: 'f7d286aa6381bbb5045288496403d9427b0746e2',
+        added: [],
+        removed: [],
+        modified: ['long-title.js']
+      }
+    ],
+    head_commit: {
+      id: 'f7d286aa6381bbb5045288496403d9427b0746e2'
+    },
+    pusher: {
+      name: 'JasonEtco'
+    },
+    repository: {
+      name: 'test',
+      owner: { login: 'JasonEtco' },
+      default_branch: 'master'
+    },
+    installation: {
+      id: 10000
+    }
+  }
+}
+
 exports.special = {
   event: 'push',
   payload: {
