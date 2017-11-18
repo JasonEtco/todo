@@ -53,7 +53,7 @@ exports.long = {
     installation: {
       id: 10000
     }
-  }  
+  }
 }
 
 exports.special = {
