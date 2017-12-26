@@ -10,7 +10,7 @@
     "serve": "probot run ./index.js",
     "deploy:dev": "sls deploy --stage dev",
     "deploy:prod": "sls deploy --stage production",
-    "test": "jest && codecov && standard",
+    "test": "jest --coverage && standard",
     "postinstall": "cp -R node_modules/probot probot"
   },
   "standard": {
@@ -40,7 +40,6 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.0",
-    "codecov": "^2.3.0",
     "file-loader": "^1.1.5",
     "jest": "^21.2.1",
     "localtunnel": "^1.8.2",

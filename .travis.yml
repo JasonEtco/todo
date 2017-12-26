@@ -1,6 +1,22 @@
 sudo: false
+
 language: node_js
+
 node_js:
-  - "8.6.0"
+  - "8"
+  - "9"
+
 notifications:
   disabled: true
+
+install:
+  - npm install -g codecov
+  - npm install
+
+branches:
+  except:
+    - /^v\d+\.\d+\.\d+$/
+
+script:
+  - npm test
+  - codecov
