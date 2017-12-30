@@ -1,6 +1,4 @@
 const payloads = require('./fixtures/payloads')
-const fs = require('fs')
-const path = require('path')
 const {gimmeRobot} = require('./helpers')
 
 describe('open-issues', () => {
@@ -14,100 +12,45 @@ describe('open-issues', () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.basic)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'default.txt'), 'utf8'),
-      number: undefined,
-      labels: ['todo'],
-      owner: 'JasonEtco',
-      repo: 'test',
-      title: 'Jason!',
-      assignee: 'JasonEtco'
-    })
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('creates an issue that has special characters', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.special)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'special.txt'), 'utf8'),
-      number: undefined,
-      labels: ['todo'],
-      owner: 'JasonEtco',
-      repo: 'test',
-      title: 'Mention @someone, ask a question?',
-      assignee: 'JasonEtco'
-    })
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('creates an issue with a truncated title', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.long)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'long-title.txt'), 'utf8'),
-      number: undefined,
-      labels: ['todo'],
-      owner: 'JasonEtco',
-      repo: 'test',
-      title: 'This is a full, very long title. Just trust me that this is a very, very long, l...',
-      assignee: 'JasonEtco'
-    })
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('creates an issue without assigning anyone', async () => {
     const {robot, github} = gimmeRobot('autoAssignFalse.yml')
     await robot.receive(payloads.basic)
-    expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'autoAssignFalse.txt'), 'utf8'),
-      number: undefined,
-      labels: ['todo'],
-      owner: 'JasonEtco',
-      repo: 'test',
-      title: 'Jason!'
-    })
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('creates an issue and assigns the configured user', async () => {
     const {robot, github} = gimmeRobot('autoAssignString.yml')
     await robot.receive(payloads.basic)
-    expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'autoAssignString.txt'), 'utf8'),
-      number: undefined,
-      labels: ['todo'],
-      owner: 'JasonEtco',
-      repo: 'test',
-      title: 'Jason!',
-      assignee: 'matchai'
-    })
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('creates an issue and assigns the configured users', async () => {
     const {robot, github} = gimmeRobot('autoAssignArr.yml')
     await robot.receive(payloads.basic)
-    expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'autoAssignArr.txt'), 'utf8'),
-      number: undefined,
-      labels: ['todo'],
-      owner: 'JasonEtco',
-      repo: 'test',
-      title: 'Jason!',
-      assignees: ['JasonEtco', 'matchai', 'defunkt']
-    })
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('creates an issue adds an array of labels', async () => {
     const {robot, github} = gimmeRobot('labelArr.yml')
     await robot.receive(payloads.basic)
-    expect(github.issues.create).toBeCalledWith({
-      body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'default.txt'), 'utf8'),
-      number: undefined,
-      labels: ['one', 'two'],
-      owner: 'JasonEtco',
-      repo: 'test',
-      title: 'Jason!',
-      assignee: 'JasonEtco'
-    })
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('works with a complex push (with multiple commits)', async () => {
@@ -176,16 +119,7 @@ describe('open-issues', () => {
   it('parses titles and respects case-insensitive', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.caseinsensitive)
-    const expectedBody = fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', 'caseinsensitive.txt'), 'utf8')
-    expect(github.issues.create).toHaveBeenCalledWith({
-      title: 'My keyword is case insensitive!',
-      body: expectedBody,
-      owner: 'JasonEtco',
-      assignee: 'JasonEtco',
-      repo: 'test',
-      labels: ['todo'],
-      number: undefined
-    })
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('does not throw errors when head_commit is null', async () => {
