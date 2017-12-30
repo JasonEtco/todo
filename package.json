@@ -27,13 +27,11 @@
     "setupFiles": [
       "<rootDir>/tests/setup.js"
     ],
-    "coverageDirectory": "./coverage/",
     "coveragePathIgnorePatterns": [
       "<rootDir>/tests/helpers.js",
       "<rootDir>/tests/setup.js",
       "/node_modules/"
-    ],
-    "collectCoverage": true
+    ]
   },
   "dependencies": {
     "babel-core": "^6.26.0",
