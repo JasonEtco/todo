@@ -41,8 +41,7 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "file-loader": "^1.1.5",
-    "jest": "^22.0.6",
-    "localtunnel": "^1.8.2",
+    "github-webhook-handler": "^0.7.1",
     "probot": "^4.1.0",
     "serverless-offline": "^3.16.0",
     "serverless-webpack": "^4.2.0",
@@ -53,5 +52,10 @@
   "engines": {
     "node": ">= 8.6.0",
     "npm": ">= 5.0.0"
+  },
+  "devDependencies": {
+    "jest": "^22.0.6",
+    "localtunnel": "^1.8.2",
+    "supertest": "^3.0.0"
   }
 }
