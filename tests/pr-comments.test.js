@@ -41,7 +41,7 @@ describe('pr comments', () => {
       payload: {
         ...payloads.pr.payload,
         commits: [{
-          ...payloads.pr.commits[0],
+          ...payloads.pr.payload.commits[0],
           modified: ['multiple-keywords.js']
         }]
       }
