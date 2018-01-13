@@ -6,7 +6,7 @@
   "license": "ISC",
   "repository": "https://github.com/JasonEtco/todo.git",
   "scripts": {
-    "starts": "probot run ./index.js",
+    "start": "probot run ./index.js",
     "test": "jest --coverage && standard",
     "test:update": "jest -u"
   },
