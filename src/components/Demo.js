@@ -47,7 +47,6 @@ export default class Demo extends Component {
       const body = bodyMatches ? bodyMatches[1] : ''
       const start = generateStartLine(code, title, theOne)
 
-      console.log(theOne)
       return { title, body, start, theOne }
     }
 
