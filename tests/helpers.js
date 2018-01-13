@@ -59,14 +59,10 @@ exports.gimmeRobot = (config = 'basic.yml', issues = defaultIssues, tree = defau
     repos: {
       // Response for getting content from '.github/todo.yml'
       getContent: jest.fn((obj) => {
-        if (obj.path.includes('config.yml')) {
-          if (config === false) {
-            throw { code: 404 } // eslint-disable-line
-          }
-          return content(cfg)
-        } else {
-          return content(fs.readFileSync(path.join(__dirname, 'fixtures', 'files', obj.path), 'utf8'))
+        if (config === false) {
+          throw { code: 404 } // eslint-disable-line
         }
+        return content(cfg)
       }),
       getShaOfCommitRef: jest.fn().mockReturnValue(Promise.resolve({ data: { sha: 'sha' } }))
     },

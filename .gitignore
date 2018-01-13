@@ -5,8 +5,4 @@ npm-debug.log
 coverage
 .DS_Store
 .vscode
-.serverless
-.webpack
-jest_0
-probot
-env.yml
+package-lock.json
