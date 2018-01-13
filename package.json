@@ -31,11 +31,10 @@
     ]
   },
   "dependencies": {
-    "probot": "^3.0.0"
+    "probot": "^4.1.0"
   },
   "devDependencies": {
     "jest": "^21.2.1",
-    "localtunnel": "^1.8.2",
     "nock": "^9.1.6",
     "standard": "^10.0.3",
     "supertest": "^3.0.0"
