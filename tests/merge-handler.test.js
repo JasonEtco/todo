@@ -1,4 +1,6 @@
 const payloads = require('./fixtures/payloads')
+const fs = require('fs')
+const path = require('path')
 const {gimmeRobot} = require('./helpers')
 const w = any => Promise.resolve({ data: any })
 
@@ -29,6 +31,19 @@ describe('merge-handler', () => {
 
     await robot.receive(payloads.pullRequestMerged)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
+  })
+
+  it('opens multiple issues with multiple keywords', async () => {
+    const {robot, github} = gimmeRobot('multipleKeywords.yml')
+    github.issues.getComments.mockReturnValueOnce(w([jason, bot(comment)]))
+    github.gitdata.getBlob.mockReturnValueOnce({
+      data: {
+        content: fs.readFileSync(path.join(__dirname, 'fixtures', 'files', 'multiple-keywords.js'), 'base64')
+      }
+    })
+
+    await robot.receive(payloads.pullRequestMerged)
+    expect(github.issues.create).toHaveBeenCalledTimes(2)
   })
 
   it('does not create duplicate issues', async () => {
