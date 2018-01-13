@@ -35,9 +35,7 @@
   },
   "devDependencies": {
     "jest": "^21.2.1",
-    "nock": "^9.1.6",
-    "standard": "^10.0.3",
-    "supertest": "^3.0.0"
+    "standard": "^10.0.3"
   },
   "engines": {
     "node": ">= 8.6.0",
