@@ -13,12 +13,3 @@ This plugin requires these **Permissions** for the GitHub App:
 You'll also need to enable the following **Webhook Events**:
   - **Push**
   - **Pull Requests**
-
-To get it up and running on Heroku, simply create a `Procfile` at the root of the app. It should contain:
-
-```
-web: npm run serve
-```
-
-> :TODO: Add serverless deploy docs
-> @body Once #31 has been completed, add docs explaining deployment with serverless.
