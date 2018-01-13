@@ -32,6 +32,25 @@ describe('pr comments', () => {
     expect(github.issues.createComment).toHaveBeenCalledWith(comment)
   })
 
+  it('comments on a pull request with multiple keywords', async () => {
+    const {robot, github} = gimmeRobot()
+    github.pullRequests.getAll.mockReturnValue(branch)
+    github.issues.getComments.mockReturnValueOnce(w([jason]))
+
+    await robot.receive({...payloads.pr,
+      payload: {
+        ...payloads.pr.payload,
+        commits: [{
+          ...payloads.pr.commits[0],
+          modified: ['multiple-keywords.js']
+        }]
+      }
+    })
+
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.createComment).toHaveBeenCalledTimes(2)
+  })
+
   it('comments on a pull request and mentions the assigned user', async () => {
     const {robot, github} = gimmeRobot('autoAssignString.yml')
     github.pullRequests.getAll.mockReturnValue(branch)
