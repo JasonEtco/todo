@@ -17,18 +17,18 @@
   },
   "jest": {
     "modulePathIgnorePatterns": [
-      "<rootDir>/__tests__/fixtures/",
-      "<rootDir>/__tests__/helpers.js",
-      "<rootDir>/__tests__/setup.js"
+      "<rootDir>/tests/fixtures/",
+      "<rootDir>/tests/helpers.js",
+      "<rootDir>/tests/setup.js"
     ],
     "setupFiles": [
-      "<rootDir>/__tests__/setup.js"
+      "<rootDir>/tests/setup.js"
     ],
-    "coverageDirectory": "./coverage/",
     "coveragePathIgnorePatterns": [
+      "<rootDir>/tests/helpers.js",
+      "<rootDir>/tests/setup.js",
       "/node_modules/"
-    ],
-    "collectCoverage": true
+    ]
   },
   "dependencies": {
     "probot": "^3.0.0"

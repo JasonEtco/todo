@@ -1,7 +1,5 @@
 const payloads = require('./fixtures/payloads')
 const {gimmeRobot} = require('./helpers')
-const fs = require('fs')
-const path = require('path')
 
 describe('languages', () => {
   const tree = [
@@ -11,16 +9,6 @@ describe('languages', () => {
     { path: 'c-sharp.cs', sha: 'sha' }
   ]
 
-  const expected = (title, language) => ({
-    title,
-    body: fs.readFileSync(path.join(__dirname, 'fixtures', 'bodies', `${language}.txt`), 'utf8'),
-    number: undefined,
-    labels: ['todo'],
-    owner: 'JasonEtco',
-    repo: 'test',
-    assignee: 'JasonEtco'
-  })
-
   it('works with Go', async () => {
     const {robot, github} = gimmeRobot('noBlob.yml', {data: {items: [], total_count: 0}}, tree)
     const p = payloads.basic
@@ -28,7 +16,7 @@ describe('languages', () => {
 
     await robot.receive(p)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create).toBeCalledWith(expected('Check that Go works', 'go'))
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('works with Ruby', async () => {
@@ -39,7 +27,7 @@ describe('languages', () => {
 
     await robot.receive(p)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create).toBeCalledWith(expected('Check that Ruby works', 'ruby'))
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('works with C#', async () => {
@@ -50,7 +38,7 @@ describe('languages', () => {
 
     await robot.receive(p)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create).toBeCalledWith(expected('Check that C# works', 'c-sharp'))
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('works with C', async () => {
@@ -61,6 +49,6 @@ describe('languages', () => {
 
     await robot.receive(p)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create).toBeCalledWith(expected('Check that C works', 'c'))
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 })

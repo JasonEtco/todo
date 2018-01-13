@@ -1,7 +1,5 @@
 const reopenClosed = require('../../lib/reopen-closed')
 const payloads = require('../fixtures/payloads')
-const fs = require('fs')
-const path = require('path')
 
 describe('reopen-closed', () => {
   const config = {reopenClosed: true, keyword: '@todo'}
@@ -27,11 +25,6 @@ describe('reopen-closed', () => {
   it('reopens a closed issue', async () => {
     await reopenClosed(log, context, config, 3, 'index.js', 'sha')
     expect(context.github.issues.createComment).toHaveBeenCalledTimes(1)
-    expect(context.github.issues.createComment).toHaveBeenLastCalledWith({
-      repo: 'test',
-      owner: 'JasonEtco',
-      number: 3,
-      body: fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'bodies', 'reopen.txt'), 'utf8')
-    })
+    expect(context.github.issues.createComment.mock.calls[0]).toMatchSnapshot()
   })
 })
