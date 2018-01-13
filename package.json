@@ -19,19 +19,13 @@
     }
   },
   "jest": {
-    "modulePathIgnorePatterns": [
-      "<rootDir>/__tests__/fixtures/",
-      "<rootDir>/__tests__/helpers.js",
-      "<rootDir>/__tests__/setup.js"
-    ],
     "setupFiles": [
-      "<rootDir>/__tests__/setup.js"
+      "<rootDir>/tests/setup.js"
     ],
-    "coverageDirectory": "./coverage/",
     "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "collectCoverage": true
+      "/node_modules/",
+      "<rootDir>/tests/helpers.js"
+    ]
   },
   "dependencies": {
     "babel-core": "^6.26.0",
