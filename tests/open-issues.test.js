@@ -22,6 +22,21 @@ describe('open-issues', () => {
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
+  it('creates an issue with multiple keywords', async () => {
+    const {robot, github} = gimmeRobot('multipleKeywords.yml')
+    await robot.receive(payloads.basic)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot('open-issues creates an issue')
+  })
+
+  it('creates multiple issues with multiple keywords', async () => {
+    const {robot, github} = gimmeRobot('multipleKeywords.yml')
+    await robot.receive(payloads.multiple)
+    expect(github.issues.create).toHaveBeenCalledTimes(2)
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+    expect(github.issues.create.mock.calls[1]).toMatchSnapshot()
+  })
+
   it('creates an issue with a truncated title', async () => {
     const {robot, github} = gimmeRobot()
     await robot.receive(payloads.long)

@@ -27,6 +27,35 @@ exports.basic = {
   }
 }
 
+exports.multiple = {
+  event: 'push',
+  payload: {
+    ref: 'refs/heads/master',
+    commits: [
+      {
+        id: 'f7d286aa6381bbb5045288496403d9427b0746e2',
+        added: [],
+        removed: [],
+        modified: ['multiple-keywords.js']
+      }
+    ],
+    head_commit: {
+      id: 'f7d286aa6381bbb5045288496403d9427b0746e2'
+    },
+    pusher: {
+      name: 'JasonEtco'
+    },
+    repository: {
+      name: 'test',
+      owner: { login: 'JasonEtco' },
+      default_branch: 'master'
+    },
+    installation: {
+      id: 10000
+    }
+  }
+}
+
 exports.long = {
   event: 'push',
   payload: {
@@ -153,35 +182,6 @@ exports.configFile = {
         added: [],
         removed: [],
         modified: ['.github/config.yml']
-      }
-    ],
-    head_commit: {
-      id: 'f7d286aa6381bbb5045288496403d9427b0746e2'
-    },
-    pusher: {
-      name: 'JasonEtco'
-    },
-    repository: {
-      name: 'test',
-      owner: { login: 'JasonEtco' },
-      default_branch: 'master'
-    },
-    installation: {
-      id: 10000
-    }
-  }
-}
-
-exports.caseinsensitive = {
-  event: 'push',
-  payload: {
-    ref: 'refs/heads/master',
-    commits: [
-      {
-        id: 'f7d286aa6381bbb5045288496403d9427b0746e2',
-        added: [],
-        removed: [],
-        modified: ['caseinsensitive.js']
       }
     ],
     head_commit: {
