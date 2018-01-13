@@ -33,7 +33,7 @@ describe('pr comments', () => {
   })
 
   it('comments on a pull request with multiple keywords', async () => {
-    const {robot, github} = gimmeRobot()
+    const {robot, github} = gimmeRobot('multipleKeywords.yml')
     github.pullRequests.getAll.mockReturnValue(branch)
     github.issues.getComments.mockReturnValueOnce(w([jason]))
 
