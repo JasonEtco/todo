@@ -11,7 +11,8 @@ const defaultTree = [
   { path: 'many.js', sha: 'sha' },
   { path: 'special.js', sha: 'sha' },
   { path: 'caseinsensitive.js', sha: 'sha' },
-  { path: 'long-title.js', sha: 'sha' }
+  { path: 'long-title.js', sha: 'sha' },
+  { path: 'multiple-keywords.js', sha: 'sha' }
 ]
 
 exports.gimmeRobot = (config = 'basic.yml', issues = defaultIssues, tree = defaultTree) => {
