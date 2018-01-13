@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reopen-closed reopens a closed issue 1`] = `
+Array [
+  Object {
+    "body": "This issue has been reopened because the **\`@todo\`** comment still exists in [**index.js**](https://github.com/JasonEtco/test/blob/sha/index.js), as of sha.
+
+---
+
+###### If this was not intentional, just remove the comment from your code. You can also set the [\`reopenClosed\`](https://github.com/JasonEtco/todo#configuring-for-your-project) config if you don't want this to happen at all anymore.",
+    "number": 3,
+    "owner": "JasonEtco",
+    "repo": "test",
+  },
+]
+`;
