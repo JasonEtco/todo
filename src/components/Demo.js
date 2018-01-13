@@ -7,8 +7,8 @@ import defaultConfig from '../default-config'
 import CodeMirror from 'react-codemirror'
 import yaml from 'js-yaml'
 
-function generateStartLine (contents, title, cfg) {
-  const index = contents.indexOf(`${cfg.keyword} ${title}`)
+function generateStartLine (contents, title, keyword) {
+  const index = contents.indexOf(`${keyword} ${title}`)
   const tempString = contents.substring(0, index)
   const start = tempString.split('\n').length
   return start
@@ -30,19 +30,25 @@ export default class Demo extends Component {
 
   getDetails () {
     const { code, cfg } = this.state
-    const config = Object.assign({}, defaultConfig, this.state.cfg)    
-    const titleRe = new RegExp(`${config.keyword}\\s(.*)`, config.caseSensitive ? 'g' : 'gi')
+    const config = Object.assign({}, defaultConfig, this.state.cfg)
+    const theOne = Array.isArray(cfg.keyword) ? cfg.keyword.find(keyword => {
+      const titleRe = new RegExp(`${keyword}\\s(.*)`, config.caseSensitive ? 'g' : 'gi')
+      return code.search(titleRe) > -1
+    }) : cfg.keyword
+
+    const titleRe = new RegExp(`${theOne}\\s(.*)`, config.caseSensitive ? 'g' : 'gi')
     const matches = code.match(titleRe)
 
     if (matches) {
-      const title = matches[0].replace(`${config.keyword} `, '')
+      const title = matches[0].replace(`${theOne} `, '')
 
       const bodyRe = new RegExp(`${title}\n.*@body (.*)`, 'gim')
       const bodyMatches = bodyRe.exec(code)
       const body = bodyMatches ? bodyMatches[1] : ''
-      const start = generateStartLine(code, title, config)
+      const start = generateStartLine(code, title, theOne)
 
-      return { title, body, start }
+      console.log(theOne)
+      return { title, body, start, theOne }
     }
 
     return { title: false }
@@ -51,7 +57,7 @@ export default class Demo extends Component {
   render () {
     const options = { lineNumbers: true, mode: 'javascript' }
     const optionTwo = { lineNumbers: true, mode: 'yaml' }
-    const {title, body, start} = this.getDetails()
+    const {title, body, start, theOne} = this.getDetails()
     const config = Object.assign({}, defaultConfig, this.state.cfg)
 
     return (
@@ -66,7 +72,7 @@ export default class Demo extends Component {
         </div>
         <div className="col-12 col-lg-6">
           <div className="pt-2 p-lg-0">
-            <Issue title={title} body={body} start={start} code={this.state.code} cfg={config} />
+            <Issue title={title} body={body} start={start} code={this.state.code} cfg={config} keyword={theOne} />
           </div>
         </div>
       </div>

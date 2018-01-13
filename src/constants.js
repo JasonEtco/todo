@@ -22,10 +22,10 @@ module.exports = ruleOverPunyHumans;
     autoAssign: true
   },
   config: `# These are the available config settings.
-keyword: "@todo"      # string
-caseSensitive: false  # boolean
-blobLines: 5          # number|boolean, 0 or false to disable
-autoAssign: true      # string|string[]|boolean
-label: true           # boolean|string|string[]
-reopenClosed: true    # boolean`
+keyword: ["@todo", "TODO:"] # string
+caseSensitive: false        # boolean
+blobLines: 5                # number|boolean, 0 or false to disable
+autoAssign: true            # string|string[]|boolean
+label: true                 # boolean|string|string[]
+reopenClosed: true          # boolean`
 }

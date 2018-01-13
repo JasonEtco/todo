@@ -6,8 +6,7 @@
   "license": "ISC",
   "repository": "https://github.com/JasonEtco/todo.git",
   "scripts": {
-    "start": "start the dev server",
-    "webpack": "webpack -w --config ./config/webpack.config.js",
+    "start": "webpack -w --config webpack.config.js",
     "build": "rimraf public && webpack -p --config ./webpack.config.js --progress --profile --colors",
     "deploy": "npm run build && node scripts/render && git add . && git commit -m \"Update website\" && git push"
   },
