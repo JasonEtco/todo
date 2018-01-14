@@ -6,7 +6,8 @@
   "license": "ISC",
   "repository": "https://github.com/JasonEtco/todo.git",
   "scripts": {
-    "start": "probot run ./index.js",
+    "start": "PRIVATE_KEY=$(echo $PRIVATE_KEY | base64 -d) npm run start-probot",
+    "start-probot": "probot run ./index.js",
     "test": "jest --coverage && standard",
     "test:update": "jest -u"
   },
@@ -40,5 +41,14 @@
   "engines": {
     "node": ">= 8.6.0",
     "npm": ">= 5.0.0"
+  },
+  "now": {
+    "alias": "todo",
+    "env": {
+      "APP_ID": "@app-id",
+      "NODE_ENV": "production",
+      "PRIVATE_KEY": "@private-key",
+      "WEBHOOK_SECRET": "@webhook-secret"
+    }
   }
 }
