@@ -22,7 +22,7 @@ function ruleOverPunyHumans () {
 
 ![todo](https://user-images.githubusercontent.com/10660468/31048765-83569c30-a5f2-11e7-933a-a119d43ad029.png)
 
-**Note:** While the above example is in Javascript, **todo** has been tested in JS, Go, C, C# and Ruby, and should work in any language.
+**Note:** While the above example is in Javascript, **todo** [has been tested](/tests/languages.test.js) in JS, Go, C, C#, Ruby, Bash and Python, and should work in any language.
 
 ## Behaviour in pull requests
 
