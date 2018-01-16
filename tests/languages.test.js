@@ -6,48 +6,63 @@ describe('languages', () => {
     { path: 'go.go', sha: 'sha' },
     { path: 'ruby.rb', sha: 'sha' },
     { path: 'c.c', sha: 'sha' },
-    { path: 'c-sharp.cs', sha: 'sha' }
+    { path: 'c-sharp.cs', sha: 'sha' },
+    { path: 'bash.sh', sha: 'sha' },
+    { path: 'python.py', sha: 'sha' }
   ]
 
-  it('works with Go', async () => {
-    const {robot, github} = gimmeRobot('noBlob.yml', {data: {items: [], total_count: 0}}, tree)
-    const p = payloads.basic
-    p.payload.commits[0].modified = ['go.go']
+  let robot, github
 
-    await robot.receive(p)
+  beforeEach(() => {
+    const given = gimmeRobot('noBlob.yml', {data: {items: [], total_count: 0}}, tree)
+    robot = given.robot
+    github = given.github
+  })
+
+  it('works with Go', async () => {
+    payloads.basic.payload.commits[0].modified = ['go.go']
+
+    await robot.receive(payloads.basic)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('works with Ruby', async () => {
-    const {robot, github} = gimmeRobot('noBlob.yml', {data: {items: [], total_count: 0}}, tree)
+    payloads.basic.payload.commits[0].modified = ['ruby.rb']
 
-    const p = payloads.basic
-    p.payload.commits[0].modified = ['ruby.rb']
-
-    await robot.receive(p)
+    await robot.receive(payloads.basic)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('works with C#', async () => {
-    const {robot, github} = gimmeRobot('noBlob.yml', {data: {items: [], total_count: 0}}, tree)
+    payloads.basic.payload.commits[0].modified = ['c-sharp.cs']
 
-    const p = payloads.basic
-    p.payload.commits[0].modified = ['c-sharp.cs']
-
-    await robot.receive(p)
+    await robot.receive(payloads.basic)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('works with C', async () => {
-    const {robot, github} = gimmeRobot('noBlob.yml', {data: {items: [], total_count: 0}}, tree)
+    payloads.basic.payload.commits[0].modified = ['c.c']
 
-    const p = payloads.basic
-    p.payload.commits[0].modified = ['c.c']
+    await robot.receive(payloads.basic)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+  })
 
-    await robot.receive(p)
+  it('works with Bash', async () => {
+    payloads.basic.payload.commits[0].modified = ['bash.sh']
+
+    await robot.receive(payloads.basic)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+  })
+
+  it('works with Python', async () => {
+    payloads.basic.payload.commits[0].modified = ['python.py']
+
+    await robot.receive(payloads.basic)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
