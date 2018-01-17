@@ -26,7 +26,7 @@ describe('open-issues', () => {
     const {robot, github} = gimmeRobot('multipleKeywords.yml')
     await robot.receive(payloads.basic)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create.mock.calls[0]).toMatchSnapshot('open-issues creates an issue')
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('creates multiple issues with multiple keywords', async () => {
