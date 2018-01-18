@@ -32,7 +32,7 @@
     ]
   },
   "dependencies": {
-    "probot": "^4.1.0"
+    "probot": "^5.0.0"
   },
   "devDependencies": {
     "jest": "^22.1.2",
