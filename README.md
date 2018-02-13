@@ -1,6 +1,11 @@
-# [todo](https://todo.jasonet.co) &middot; [![Build Status](https://img.shields.io/travis/JasonEtco/todo/master.svg)](https://travis-ci.org/JasonEtco/todo) [![Codecov](https://img.shields.io/codecov/c/github/JasonEtco/todo.svg)](https://codecov.io/gh/JasonEtco/todo/) [![Greenkeeper badge](https://badges.greenkeeper.io/JasonEtco/todo.svg)](https://greenkeeper.io/) [![Uptime Robot status](https://img.shields.io/uptimerobot/status/m779871198-981c519b7f7991057848e1e4.svg)]()
+<p align="center">
+  <img src="https://avatars2.githubusercontent.com/in/5534?s=128&v=4" width="64">
+  <h3 align="center">todo</h3>
+  <p align="center">A GitHub App built with <a href="https://github.com/probot/probot">Probot</a> that creates new issues based on actionable comments in your code.<p>
+  <p align="center"><a href="https://travis-ci.org/JasonEtco/todo"><img src="https://img.shields.io/travis/JasonEtco/todo/master.svg" alt="Build Status"></a> <a href="https://codecov.io/gh/JasonEtco/todo/"><img src="https://img.shields.io/codecov/c/github/JasonEtco/todo.svg" alt="Codecov"></a> <a href="https://greenkeeper.io"><img src="https://badges.greenkeeper.io/JasonEtco/todo.svg" alt="Greenkeeper enabled"></a> <a href="https://img.shields.io/uptimerobot/status/m779871198-981c519b7f7991057848e1e4.svg"><img src="https://img.shields.io/uptimerobot/status/m779871198-981c519b7f7991057848e1e4.svg" alt="Uptime Robot status"></a>
+  </p>
+</p>
 
-> A GitHub App built with [Probot](https://github.com/probot/probot) that creates new issues based on actionable comments in your code.
 
 ## Usage
 
