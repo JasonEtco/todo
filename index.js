@@ -1,16 +1,23 @@
-const openIssues = require('./lib/open-issues')
-const mergeHandler = require('./lib/merge-handler')
+const pullRequestHandler = require('./lib/pull-request-handler')
+const pullRequestMergedHandler = require('./lib/pull-request-merged-handler')
 
-module.exports = (robot) => {
-  robot.on('push', async context => openIssues(context, robot))
-  robot.on('pull_request.closed', async context => mergeHandler(context, robot))
+module.exports = robot => {
+  robot.on('push', async context => {
+    // Only trigger push handler on pushes to master
+    if (context.payload.ref !== `refs/heads/${context.payload.repository.master_branch}`) {
+      return
+    }
 
-  robot.on('installation.created', context => {
-    const repos = context.payload.repositories.reduce((prev, repo, i, arr) => {
-      if (i === 0) return prev + repo.full_name
-      if (i === arr.length - 1) return `${prev} and ${repo.full_name}`
-      return `${prev}, ${repo.full_name}`
-    }, '')
-    robot.log.info(`todo was just installed on ${repos}.`)
+    const { data: diff } = await context.github.repos.getCommit(context.repo({
+      sha: context.payload.head_commit.sha,
+      headers: { Accept: 'application/vnd.github.diff' }
+    }))
+
+    console.log(diff)
   })
+
+  robot.on(['pull_request.opened', 'pull_request.synchronize'], pullRequestHandler)
+
+  // Merge handler
+  robot.on('pull_request.closed', pullRequestMergedHandler)
 }
