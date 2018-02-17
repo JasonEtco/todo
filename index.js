@@ -1,6 +1,7 @@
 const pullRequestHandler = require('./lib/pull-request-handler')
 const pullRequestMergedHandler = require('./lib/pull-request-merged-handler')
-const { titleChange } = require('./templates')
+const pushHandler = require('./lib/push-handler')
+const { titleChange } = require('./lib/templates')
 
 module.exports = robot => {
   // PR handler (comments on pull requests)
@@ -9,20 +10,9 @@ module.exports = robot => {
   // Merge handler (opens new issues)
   robot.on('pull_request.closed', pullRequestMergedHandler)
 
+  // TODO: Don't trigger push handler on merge commits
   // Push handler (opens new issues)
-  robot.on('push', async context => {
-    // Only trigger push handler on pushes to master
-    if (context.payload.ref !== `refs/heads/${context.payload.repository.master_branch}`) {
-      return
-    }
-
-    const { data: diff } = await context.github.repos.getCommit(context.repo({
-      sha: context.payload.head_commit.sha,
-      headers: { Accept: 'application/vnd.github.diff' }
-    }))
-
-    console.log(diff)
-  })
+  robot.on('push', pushHandler)
 
   // Prevent tampering with the issue title
   robot.on('issues.edited', async context => {
