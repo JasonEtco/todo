@@ -2,6 +2,13 @@ const pullRequestHandler = require('./lib/pull-request-handler')
 const pullRequestMergedHandler = require('./lib/pull-request-merged-handler')
 
 module.exports = robot => {
+  // PR handler (comments on pull requests)
+  robot.on(['pull_request.opened', 'pull_request.synchronize'], pullRequestHandler)
+
+  // Merge handler (opens new issues)
+  robot.on('pull_request.closed', pullRequestMergedHandler)
+
+  // Push handler (opens new issues)
   robot.on('push', async context => {
     // Only trigger push handler on pushes to master
     if (context.payload.ref !== `refs/heads/${context.payload.repository.master_branch}`) {
@@ -15,9 +22,4 @@ module.exports = robot => {
 
     console.log(diff)
   })
-
-  robot.on(['pull_request.opened', 'pull_request.synchronize'], pullRequestHandler)
-
-  // Merge handler
-  robot.on('pull_request.closed', pullRequestMergedHandler)
 }
