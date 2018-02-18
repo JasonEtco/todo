@@ -4,7 +4,17 @@ const {createRobot} = require('probot')
 const app = require('../')
 
 const loadDiff = exports.loadDiff = filename => {
-  return fs.readFileSync(path.join(__dirname, 'fixtures', 'diffs', filename + '.txt'), 'utf8')
+  return Promise.resolve({
+    data: fs.readFileSync(path.join(__dirname, 'fixtures', 'diffs', filename + '.txt'), 'utf8')
+  })
+}
+
+exports.loadConfig = filename => {
+  return Promise.resolve({
+    data: {
+      content: Buffer.from(fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', filename + '.yml'), 'utf8'))
+    }
+  })
 }
 
 exports.gimmeRobot = () => {
@@ -29,10 +39,10 @@ exports.gimmeRobot = () => {
       createLabel: jest.fn(),
       edit: jest.fn(),
       createComment: jest.fn(),
-      getComments: jest.fn().mockReturnValue(Promise.resolve({ data: [] }))
+      getComments: jest.fn(() => Promise.resolve({ data: [] }))
     },
     search: {
-      issues: jest.fn().mockReturnValue(Promise.resolve({ data: { total_count: 0, items: [] } }))
+      issues: jest.fn(() => Promise.resolve({ data: { total_count: 0, items: [] } }))
     },
     repos: {
       // Response for getting content from '.github/todo.yml'
@@ -41,7 +51,7 @@ exports.gimmeRobot = () => {
       })
     },
     pullRequests: {
-      get: jest.fn().mockReturnValue(Promise.resolve({ data: loadDiff('basic') }))
+      get: jest.fn(() => loadDiff('basic'))
     }
   }
   // Passes the mocked out GitHub API into out robot instance
