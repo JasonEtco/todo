@@ -1,4 +1,4 @@
-const generateLabel = require('../../lib/generate-label')
+const generateLabel = require('../../lib/utils/generate-label')
 
 describe('generate-label', () => {
   let context
