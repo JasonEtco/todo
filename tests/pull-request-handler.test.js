@@ -30,6 +30,10 @@ describe('pr-comment-handler', () => {
   })
 
   it('does not create duplicate comments', async () => {
+    github.issues.getComments.mockReturnValueOnce(Promise.resolve({ data: [{
+      body: '## I am an example title'
+    }] }))
+
     await robot.receive(event)
     expect(github.issues.createComment).toHaveBeenCalledTimes(0)
   })
