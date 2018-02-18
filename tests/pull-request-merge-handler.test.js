@@ -42,12 +42,6 @@ describe('pull-request-merged-handler', () => {
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
-  // it('creates an issue adds an array of labels', async () => {
-  //   const {robot, github} = gimmeRobot('labelArr.yml')
-  //   await robot.receive(event)
-  //   expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
-  // })
-
   it('does not create any issues if no todos are found', async () => {
     github.pullRequests.get.mockReturnValueOnce(loadDiff('none'))
     await robot.receive(event)
