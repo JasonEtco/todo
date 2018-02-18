@@ -81,6 +81,7 @@ describe('pull-request-merged-handler', () => {
     await robot.receive(event)
     expect(github.issues.edit).toHaveBeenCalledTimes(1)
     expect(github.issues.createComment).toHaveBeenCalledTimes(1)
+    expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 

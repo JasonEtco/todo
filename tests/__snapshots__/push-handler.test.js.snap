@@ -143,3 +143,18 @@ Array [
   },
 ]
 `;
+
+exports[`push-handler reopens a closed issue 1`] = `
+Array [
+  Object {
+    "body": "This issue has been reopened because the **\`TODO\`** comment still exists in [**.travis.yml**](https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml), as of e06c237a0c041f5a0a61f1c361f7a1d6f3d669af.
+
+---
+
+###### If this was not intentional, just remove the comment from your code. You can also set the [\`reopenClosed\`](https://github.com/JasonEtco/todo#configuring-for-your-project) config if you don't want this to happen at all anymore.",
+    "number": undefined,
+    "owner": "JasonEtco",
+    "repo": "tests",
+  },
+]
+`;

@@ -120,3 +120,18 @@ Array [
   },
 ]
 `;
+
+exports[`pull-request-merged-handler reopens a closed issue 1`] = `
+Array [
+  Object {
+    "body": "This issue has been reopened because the **\`TODO\`** comment still exists in [**.travis.yml**](https://github.com/JasonEtco/tests/blob/6c2373ad036d292f7e9467981ba8b467e8b8b0ff/.travis.yml), as of 6c2373ad036d292f7e9467981ba8b467e8b8b0ff.
+
+---
+
+###### If this was not intentional, just remove the comment from your code. You can also set the [\`reopenClosed\`](https://github.com/JasonEtco/todo#configuring-for-your-project) config if you don't want this to happen at all anymore.",
+    "number": undefined,
+    "owner": "JasonEtco",
+    "repo": "tests",
+  },
+]
+`;

@@ -56,14 +56,6 @@ describe('push-handler', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
-  it('does create an issue that already exists but is closed', async () => {
-    github.search.issues.mockReturnValueOnce(Promise.resolve({
-      data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
-    }))
-    await robot.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(1)
-  })
-
   it('creates an issue if the search does not have an issue with the correct title', async () => {
     github.search.issues.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 1, items: [{ title: 'Not found', state: 'open' }] }
@@ -118,6 +110,7 @@ describe('push-handler', () => {
     await robot.receive(event)
     expect(github.issues.edit).toHaveBeenCalledTimes(1)
     expect(github.issues.createComment).toHaveBeenCalledTimes(1)
+    expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
