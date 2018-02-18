@@ -48,7 +48,8 @@ exports.gimmeRobot = () => {
       // Response for getting content from '.github/todo.yml'
       getContent: jest.fn(() => {
         throw { code: 404 } // eslint-disable-line
-      })
+      }),
+      getCommit: jest.fn(() => loadDiff('basic'))
     },
     pullRequests: {
       get: jest.fn(() => loadDiff('basic'))

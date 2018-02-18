@@ -1,18 +1,21 @@
 const payloads = require('./fixtures/payloads')
+const pushEvent = require('./fixtures/payloads/push.json')
 const {gimmeRobot} = require('./helpers')
 
-describe('open-issues', () => {
-  it('requests issues for the repo', async () => {
-    const {robot, github} = gimmeRobot()
-    await robot.receive(payloads.basic)
-    expect(github.search.issues).toHaveBeenCalledTimes(1)
+describe('push-handler', () => {
+  let robot, github
+  const event = { event: 'push', payload: pushEvent }
+
+  beforeEach(() => {
+    const gimme = gimmeRobot()
+    robot = gimme.robot
+    github = gimme.github
   })
 
-  it('creates an issue', async () => {
-    const {robot, github} = gimmeRobot()
-    await robot.receive(payloads.basic)
+  it.only('creates an issue', async () => {
+    await robot.receive(event)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+    expect(github.issues.create.mock.calls[0][0]).toMatchSnapshot()
   })
 
   it('creates an issue that has special characters', async () => {

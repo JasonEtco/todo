@@ -9,7 +9,8 @@
     "start": "probot run ./index.js",
     "test": "jest --coverage && standard",
     "test:update": "jest -u",
-    "test:pr": "jest pull-request-handler.test.js"
+    "test:pr": "jest pull-request-handler.test.js",
+    "test:push": "jest push-handler.test.js"
   },
   "standard": {
     "env": {
