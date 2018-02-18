@@ -65,6 +65,22 @@ describe('push-handler', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
+  it('does create an issue that already exists but is closed', async () => {
+    github.search.issues.mockReturnValueOnce(Promise.resolve({
+      data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
+    }))
+    await robot.receive(event)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
+  })
+
+  it('creates an issue if the search does not have an issue with the correct title', async () => {
+    github.search.issues.mockReturnValueOnce(Promise.resolve({
+      data: { total_count: 1, items: [{ title: 'Not found', state: 'open' }] }
+    }))
+    await robot.receive(event)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
+  })
+
   it('creates many (5) issues', async () => {
     github.repos.getCommit.mockReturnValueOnce(loadDiff('many'))
     await robot.receive(event)
@@ -74,6 +90,12 @@ describe('push-handler', () => {
   it('ignores changes to the config file', async () => {
     github.repos.getCommit.mockReturnValueOnce(loadDiff('config'))
     await robot.receive(event)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
+
+  it('ignores pushes not to master', async () => {
+    const e = { event: event.event, payload: { ...event.payload, ref: 'not/the/master/branch' } }
+    await robot.receive(e)
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
