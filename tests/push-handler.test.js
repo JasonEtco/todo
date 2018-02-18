@@ -111,43 +111,24 @@ describe('push-handler', () => {
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
-  // it('reopens a closed issue', async () => {
-  //   const issues = {data: {
-  //     items: [{
-  //       title: 'An issue that exists',
-  //       state: 'open',
-  //       body: `\n\n<!-- probot = {"10000":{"title": "An issue that exists","file": "index.js"}} -->`
-  //     }, {
-  //       title: 'Jason!',
-  //       state: 'closed',
-  //       body: `\n\n<!-- probot = {"10000":{"title": "Jason!","file": "index.js"}} -->`
-  //     }],
-  //     total_count: 2
-  //   }}
-  //   const {robot, github} = gimmeRobot('basic.yml', issues)
-  //   await robot.receive(payloads.basic)
-  //   expect(github.issues.edit).toHaveBeenCalledTimes(1)
-  //   expect(github.issues.createComment).toHaveBeenCalledTimes(1)
-  //   expect(github.issues.create).toHaveBeenCalledTimes(0)
-  // })
+  it('reopens a closed issue', async () => {
+    github.search.issues.mockReturnValueOnce(Promise.resolve({
+      data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
+    }))
+    await robot.receive(event)
+    expect(github.issues.edit).toHaveBeenCalledTimes(1)
+    expect(github.issues.createComment).toHaveBeenCalledTimes(1)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
 
-  // it('respects the reopenClosed config', async () => {
-  //   const issues = {data: {
-  //     items: [{
-  //       title: 'An issue that exists',
-  //       state: 'open',
-  //       body: `\n\n<!-- probot = {"10000":{"title": "An issue that exists","file": "index.js"}} -->`
-  //     }, {
-  //       title: 'Jason!',
-  //       state: 'closed',
-  //       body: `\n\n<!-- probot = {"10000":{"title": "Jason!","file": "index.js"}} -->`
-  //     }],
-  //     total_count: 2
-  //   }}
-  //   const {robot, github} = gimmeRobot('reopenClosedFalse.yml', issues)
-  //   await robot.receive(payloads.basic)
-  //   expect(github.issues.edit).toHaveBeenCalledTimes(0)
-  //   expect(github.issues.createComment).toHaveBeenCalledTimes(0)
-  //   expect(github.issues.create).toHaveBeenCalledTimes(0)
-  // })
+  it('respects the reopenClosed config', async () => {
+    github.repos.getContent.mockReturnValueOnce(loadConfig('reopenClosedFalse'))
+    github.search.issues.mockReturnValueOnce(Promise.resolve({
+      data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
+    }))
+    await robot.receive(event)
+    expect(github.issues.edit).toHaveBeenCalledTimes(0)
+    expect(github.issues.createComment).toHaveBeenCalledTimes(0)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
 })
