@@ -48,15 +48,6 @@ describe('push-handler', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
-  // it('does nothing on a merge commit', async () => {
-  //   const {robot, github} = gimmeRobot()
-  //   github.gitdata.getCommit.mockReturnValueOnce(Promise.resolve({
-  //     data: { parents: [1, 2] }
-  //   }))
-  //   await robot.receive(payloads.basic)
-  //   expect(github.issues.create).toHaveBeenCalledTimes(0)
-  // })
-
   it('does not create an issue that already exists', async () => {
     github.search.issues.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 1, items: [{ title: 'I am an example title', state: 'open' }] }
@@ -96,6 +87,14 @@ describe('push-handler', () => {
   it('ignores pushes not to master', async () => {
     const e = { event: event.event, payload: { ...event.payload, ref: 'not/the/master/branch' } }
     await robot.receive(e)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
+
+  it('ignores merge commits', async () => {
+    github.gitdata.getCommit.mockReturnValueOnce(Promise.resolve({
+      data: { parents: [1, 2] }
+    }))
+    await robot.receive(event)
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 

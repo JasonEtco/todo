@@ -44,6 +44,9 @@ exports.gimmeRobot = () => {
     search: {
       issues: jest.fn(() => Promise.resolve({ data: { total_count: 0, items: [] } }))
     },
+    gitdata: {
+      getCommit: jest.fn(() => Promise.resolve({ data: { parents: [1] } }))
+    },
     repos: {
       // Response for getting content from '.github/todo.yml'
       getContent: jest.fn(() => {
