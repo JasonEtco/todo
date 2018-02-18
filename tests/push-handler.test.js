@@ -63,11 +63,13 @@ describe('push-handler', () => {
   //   expect(github.issues.create).toHaveBeenCalledTimes(0)
   // })
 
-  // it('does not create an issue that already exists', async () => {
-  //   const {robot, github} = gimmeRobot('existing.yml')
-  //   await robot.receive(payloads.complex)
-  //   expect(github.issues.create).toHaveBeenCalledTimes(0)
-  // })
+  it('does not create an issue that already exists', async () => {
+    github.search.issues.mockReturnValueOnce(Promise.resolve({
+      data: { total_count: 1, items: [{ title: 'I am an example title', state: 'open' }] }
+    }))
+    await robot.receive(event)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
 
   it('creates many (5) issues', async () => {
     github.repos.getCommit.mockReturnValueOnce(loadDiff('many'))
