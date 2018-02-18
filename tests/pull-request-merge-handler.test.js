@@ -1,7 +1,7 @@
 const pullRequestClosed = require('./fixtures/payloads/pull_request.closed.json')
 const { gimmeRobot, loadConfig, loadDiff } = require('./helpers')
 
-describe('push-handler', () => {
+describe('pull-request-merged-handler', () => {
   let robot, github
   const event = { event: 'pull_request', payload: pullRequestClosed }
 

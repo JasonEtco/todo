@@ -1,7 +1,7 @@
 const { gimmeRobot, loadConfig, loadDiff } = require('./helpers')
 const pullRequestOpened = require('./fixtures/payloads/pull_request.opened.json')
 
-describe('pr-comment-handler', () => {
+describe('pull-request-handler', () => {
   let robot, github
   const event = { event: 'pull_request', payload: pullRequestOpened }
 

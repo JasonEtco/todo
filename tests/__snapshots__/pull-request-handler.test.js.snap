@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pr-comment-handler comments on a pull request 1`] = `
+exports[`pull-request-handler comments on a pull request 1`] = `
 Array [
   Object {
     "body": "## I am an example title
@@ -17,7 +17,7 @@ https://github.com/JasonEtco/tests/blob/1409a3f61a27fe80a7170026fd73eaa2108a0108
 ]
 `;
 
-exports[`pr-comment-handler comments on a pull request and mentions the assigned user 1`] = `
+exports[`pull-request-handler comments on a pull request and mentions the assigned user 1`] = `
 Array [
   Object {
     "body": "## I am an example title
@@ -34,7 +34,7 @@ https://github.com/JasonEtco/tests/blob/1409a3f61a27fe80a7170026fd73eaa2108a0108
 ]
 `;
 
-exports[`pr-comment-handler comments on a pull request and mentions the assigned users 1`] = `
+exports[`pull-request-handler comments on a pull request and mentions the assigned users 1`] = `
 Array [
   Object {
     "body": "## I am an example title
