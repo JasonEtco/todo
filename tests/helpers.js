@@ -3,8 +3,11 @@ const path = require('path')
 const {createRobot} = require('probot')
 const app = require('../')
 
-exports.gimmeRobot = (config = false) => {
-  const cfg = config ? fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', config), 'utf8') : config
+const loadDiff = exports.loadDiff = filename => {
+  return fs.readFileSync(path.join(__dirname, 'fixtures', 'diffs', filename + '.txt'), 'utf8')
+}
+
+exports.gimmeRobot = () => {
   let robot
   let github
 
@@ -34,21 +37,14 @@ exports.gimmeRobot = (config = false) => {
     repos: {
       // Response for getting content from '.github/todo.yml'
       getContent: jest.fn(() => {
-        if (config === false) {
-          throw { code: 404 } // eslint-disable-line
-        }
-        return Promise.resolve({ data: { content: Buffer.from(cfg) } })
+        throw { code: 404 } // eslint-disable-line
       })
     },
     pullRequests: {
-      get: jest.fn().mockReturnValue(Promise.resolve({ data: '' }))
+      get: jest.fn().mockReturnValue(Promise.resolve({ data: loadDiff('basic') }))
     }
   }
   // Passes the mocked out GitHub API into out robot instance
   robot.auth = () => Promise.resolve(github)
   return { robot, github }
-}
-
-exports.loadDiff = filename => {
-  return fs.readFileSync(path.join(__dirname, 'fixtures', 'diffs', filename + '.txt'), 'utf8')
 }

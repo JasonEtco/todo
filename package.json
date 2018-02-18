@@ -8,7 +8,8 @@
   "scripts": {
     "start": "probot run ./index.js",
     "test": "jest --coverage && standard",
-    "test:update": "jest -u"
+    "test:update": "jest -u",
+    "test:pr": "jest pull-request-handler.test.js"
   },
   "standard": {
     "env": {

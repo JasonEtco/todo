@@ -3,11 +3,16 @@ const payloads = require('./fixtures/payloads')
 const pullRequestOpened = require('./fixtures/payloads/pull_request.opened.json')
 
 describe('pr-comment-handler', () => {
-  it.only('comments on a pull request', async () => {
-    const {robot, github} = gimmeRobot()
-    github.pullRequests.get.mockReturnValueOnce(Promise.resolve({ data: loadDiff('basic') }))
-    await robot.receive({ event: 'pull_request', payload: pullRequestOpened })
+  let robot, github
 
+  beforeEach(() => {
+    const gimme = gimmeRobot()
+    robot = gimme.robot
+    github = gimme.github
+  })
+
+  it('comments on a pull request', async () => {
+    await robot.receive({ event: 'pull_request', payload: pullRequestOpened })
     expect(github.issues.create).toHaveBeenCalledTimes(0)
     expect(github.issues.createComment).toHaveBeenCalledTimes(1)
     expect(github.issues.createComment.mock.calls[0][0]).toMatchSnapshot()
