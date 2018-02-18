@@ -1,5 +1,11 @@
 ## {{ title }}
 
+{{#if body}}
+{{ body }}
+
+---
+
+{{/if}}
 https://github.com/{{ owner }}/{{ repo }}/blob/{{ sha }}/{{ filename }}#L{{ start }}
 
 ---
