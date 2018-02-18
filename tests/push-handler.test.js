@@ -71,11 +71,11 @@ describe('push-handler', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(5)
   })
 
-  // it('ignores the config file', async () => {
-  //   const {robot, github} = gimmeRobot()
-  //   await robot.receive(payloads.configFile)
-  //   expect(github.issues.create).toHaveBeenCalledTimes(0)
-  // })
+  it('ignores changes to the config file', async () => {
+    github.repos.getCommit.mockReturnValueOnce(loadDiff('config'))
+    await robot.receive(event)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
 
   // it('reopens a closed issue', async () => {
   //   const issues = {data: {

@@ -43,4 +43,10 @@ describe('pull-request-handler', () => {
     await robot.receive(event)
     expect(github.issues.createComment).toHaveBeenCalledTimes(5)
   })
+
+  it('ignores changes to the config file', async () => {
+    github.pullRequests.get.mockReturnValueOnce(loadDiff('config'))
+    await robot.receive(event)
+    expect(github.issues.createComment).toHaveBeenCalledTimes(0)
+  })
 })
