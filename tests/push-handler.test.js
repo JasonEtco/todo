@@ -98,6 +98,12 @@ describe('push-handler', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
+  it('creates an issue with a body line', async () => {
+    github.repos.getCommit.mockReturnValueOnce(loadDiff('body'))
+    await robot.receive(event)
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+  })
+
   // it('reopens a closed issue', async () => {
   //   const issues = {data: {
   //     items: [{
