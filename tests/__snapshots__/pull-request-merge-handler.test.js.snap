@@ -3,6 +3,7 @@
 exports[`push-handler creates an issue 1`] = `
 Array [
   Object {
+    "assignee": "JasonEtco",
     "body": "https://github.com/JasonEtco/tests/blob/6c2373ad036d292f7e9467981ba8b467e8b8b0ff/.travis.yml#L11
 
 ---
@@ -21,6 +22,7 @@ Array [
 exports[`push-handler creates an issue and assigns the configured user 1`] = `
 Array [
   Object {
+    "assignee": "matchai",
     "body": "https://github.com/JasonEtco/tests/blob/6c2373ad036d292f7e9467981ba8b467e8b8b0ff/.travis.yml#L11
 
 ---
@@ -39,6 +41,11 @@ Array [
 exports[`push-handler creates an issue and assigns the configured users 1`] = `
 Array [
   Object {
+    "assignees": Array [
+      "JasonEtco",
+      "matchai",
+      "defunkt",
+    ],
     "body": "https://github.com/JasonEtco/tests/blob/6c2373ad036d292f7e9467981ba8b467e8b8b0ff/.travis.yml#L11
 
 ---
@@ -57,6 +64,7 @@ Array [
 exports[`push-handler creates an issue with a truncated title 1`] = `
 Array [
   Object {
+    "assignee": "JasonEtco",
     "body": "https://github.com/JasonEtco/tests/blob/6c2373ad036d292f7e9467981ba8b467e8b8b0ff/.travis.yml#L11
 
 ---
