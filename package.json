@@ -33,6 +33,7 @@
     ]
   },
   "dependencies": {
+    "hbs": "^4.0.1",
     "probot": "^4.1.0"
   },
   "devDependencies": {
