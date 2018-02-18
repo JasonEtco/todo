@@ -69,7 +69,8 @@ describe('push-handler', () => {
   //   expect(github.issues.create).toHaveBeenCalledTimes(0)
   // })
 
-  it('creates many issues', async () => {
+  it('creates many (5) issues', async () => {
+    github.repos.getCommit.mockReturnValueOnce(loadDiff('many'))
     await robot.receive(event)
     expect(github.issues.create).toHaveBeenCalledTimes(5)
   })
