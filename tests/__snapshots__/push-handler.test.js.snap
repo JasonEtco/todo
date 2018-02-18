@@ -3,7 +3,7 @@
 exports[`push-handler creates an issue 1`] = `
 Array [
   Object {
-    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L13
+    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L11
 
 ---
 
@@ -18,7 +18,7 @@ Array [
 exports[`push-handler creates an issue and assigns the configured user 1`] = `
 Array [
   Object {
-    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L13
+    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L11
 
 ---
 
@@ -33,7 +33,7 @@ Array [
 exports[`push-handler creates an issue and assigns the configured users 1`] = `
 Array [
   Object {
-    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L13
+    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L11
 
 ---
 
@@ -48,7 +48,7 @@ Array [
 exports[`push-handler creates an issue without assigning anyone 1`] = `
 Array [
   Object {
-    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L13
+    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L11
 
 ---
 
