@@ -10,7 +10,6 @@ module.exports = robot => {
   // Merge handler (opens new issues)
   robot.on('pull_request.closed', pullRequestMergedHandler)
 
-  // TODO: Don't trigger push handler on merge commits
   // Push handler (opens new issues)
   robot.on('push', pushHandler)
 
