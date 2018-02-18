@@ -50,8 +50,8 @@ todo:
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
 | autoAssign | `string`, `string[]` or `boolean` | Should **todo** automatically assign a user to the new issue? If `true`, it'll assign whoever pushed the code. If a string, it'll assign that user by username. You can also give it an array of usernames or `false` to not assign anyone. | `true` |
-| keyword | `string` or `string[]` | The keyword(s) to use to generate issue titles | `['@todo', 'TODO:']` |
-| bodyKeyword | `string` | If this is in the line right after the main keyword, it will become the generated issue body.  | `@body` |
+| keyword | `string` or `string[]` | The keyword(s) to use to generate issue titles | `['@todo', 'TODO']` |
+| bodyKeyword | `string` or `string[]` | If this is in the line right after the main keyword, it will become the generated issue body.  | `[@body, 'BODY']` |
 | blobLines | `number` or `false` | The number of lines of code to show, starting from the keyword. | 5 |
 | caseSensitive | `boolean` | Should the keyword be case sensitive? | false |
 | label | `boolean`, `string`, `string[]` | Add a label to the new issue. If true, add the `todo` label. If false, don't add any label. You can also give it a label name or an array of label names. | true |
