@@ -104,6 +104,13 @@ describe('push-handler', () => {
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
+  it('creates an issue with a body line with one body keyword', async () => {
+    github.repos.getCommit.mockReturnValueOnce(loadDiff('body'))
+    github.repos.getContent.mockReturnValueOnce(loadConfig('bodyString'))
+    await robot.receive(event)
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+  })
+
   // it('reopens a closed issue', async () => {
   //   const issues = {data: {
   //     items: [{
