@@ -1,7 +1,7 @@
 const pullRequestHandler = require('./lib/pull-request-handler')
 const pullRequestMergedHandler = require('./lib/pull-request-merged-handler')
 const pushHandler = require('./lib/push-handler')
-const { titleChange } = require('./lib/templates')
+const issueRenameHandler = require('./lib/issue-rename-handler')
 
 module.exports = robot => {
   // PR handler (comments on pull requests)
@@ -15,17 +15,5 @@ module.exports = robot => {
   robot.on('push', pushHandler)
 
   // Prevent tampering with the issue title
-  robot.on('issues.edited', async context => {
-    const { issue, changes, sender } = context.payload
-    const app = process.env.APP_NAME + '[bot]'
-
-    if (sender.login !== app && issue.user.login === app && changes.title) {
-      return Promise.all([
-        context.github.issues.edit(context.issue({ title: changes.title.from })),
-        context.github.issues.createComment(context.issue({
-          body: titleChange()
-        }))
-      ])
-    }
-  })
+  robot.on('issues.edited', issueRenameHandler)
 }

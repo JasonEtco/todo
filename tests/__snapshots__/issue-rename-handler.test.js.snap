@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`issue-rename-handler un-edits the issue title 1`] = `
+Object {
+  "number": 35,
+  "owner": "JasonEtco",
+  "repo": "tests",
+  "title": "I have been edited",
+}
+`;
+
+exports[`issue-rename-handler un-edits the issue title 2`] = `
+Object {
+  "body": "Please do not change the issue title! **todo** uses it to prevent duplicate issues from being opened. If you think this is an error, please [open an issue](https://github.com/jasonetco/todo)!",
+  "number": 35,
+  "owner": "JasonEtco",
+  "repo": "tests",
+}
+`;
