@@ -17,12 +17,12 @@ describe('push-handler', () => {
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
-  // it('creates an issue with a truncated title', async () => {
-  //   const {robot, github} = gimmeRobot()
-  //   await robot.receive(payloads.long)
-  //   expect(github.issues.create).toHaveBeenCalledTimes(1)
-  //   expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
-  // })
+  it('creates an issue with a truncated title', async () => {
+    github.repos.getCommit.mockReturnValueOnce(loadDiff('long-title'))
+    await robot.receive(event)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+  })
 
   it('creates an issue without assigning anyone', async () => {
     github.repos.getContent.mockReturnValueOnce(loadConfig('autoAssignFalse'))
