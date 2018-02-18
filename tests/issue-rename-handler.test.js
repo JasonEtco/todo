@@ -3,11 +3,11 @@ const issueEdited = require('./fixtures/payloads/issues.edited.json')
 const plugin = require('../')
 
 describe('issue-rename-handler', () => {
-  let robot, github
-  const event = { event: 'issues', payload: issueEdited }
+  let robot, github, event
 
   beforeEach(() => {
     robot = createRobot()
+    event = { event: 'issues', payload: issueEdited }
 
     github = {
       issues: {
@@ -25,6 +25,13 @@ describe('issue-rename-handler', () => {
     await robot.receive(event)
     expect(github.issues.edit.mock.calls[0][0]).toMatchSnapshot()
     expect(github.issues.createComment.mock.calls[0][0]).toMatchSnapshot()
+  })
+
+  it('only acts if the title is edited', async () => {
+    event.payload.changes = {}
+    await robot.receive(event)
+    expect(github.issues.edit).not.toHaveBeenCalled()
+    expect(github.issues.createComment).not.toHaveBeenCalled()
   })
 
   afterEach(() => {
