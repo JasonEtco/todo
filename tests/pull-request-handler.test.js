@@ -55,4 +55,10 @@ describe('pull-request-handler', () => {
     await robot.receive(event)
     expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
   })
+
+  it('creates a comment with a body line', async () => {
+    github.pullRequests.get.mockReturnValueOnce(loadDiff('body'))
+    await robot.receive(event)
+    expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
+  })
 })
