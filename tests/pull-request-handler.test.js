@@ -1,4 +1,4 @@
-const { gimmeRobot, loadConfig } = require('./helpers')
+const { gimmeRobot, loadConfig, loadDiff } = require('./helpers')
 const pullRequestOpened = require('./fixtures/payloads/pull_request.opened.json')
 
 describe('pr-comment-handler', () => {
@@ -36,5 +36,11 @@ describe('pr-comment-handler', () => {
 
     await robot.receive(event)
     expect(github.issues.createComment).toHaveBeenCalledTimes(0)
+  })
+
+  it('creates many (5) comments', async () => {
+    github.pullRequests.get.mockReturnValueOnce(loadDiff('many'))
+    await robot.receive(event)
+    expect(github.issues.createComment).toHaveBeenCalledTimes(5)
   })
 })
