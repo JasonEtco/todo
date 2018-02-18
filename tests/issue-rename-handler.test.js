@@ -17,7 +17,6 @@ describe('issue-rename-handler', () => {
     }
 
     robot.auth = jest.fn(() => Promise.resolve(github))
-    process.env.APP_NAME = 'test-app'
     plugin(robot)
   })
 
@@ -32,9 +31,5 @@ describe('issue-rename-handler', () => {
     await robot.receive(event)
     expect(github.issues.edit).not.toHaveBeenCalled()
     expect(github.issues.createComment).not.toHaveBeenCalled()
-  })
-
-  afterEach(() => {
-    delete process.env.APP_NAME
   })
 })
