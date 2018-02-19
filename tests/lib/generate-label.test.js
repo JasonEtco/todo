@@ -1,5 +1,4 @@
-const generateLabel = require('../../lib/generate-label')
-const payloads = require('../fixtures/payloads')
+const generateLabel = require('../../lib/utils/generate-label')
 
 describe('generate-label', () => {
   let context
@@ -7,8 +6,8 @@ describe('generate-label', () => {
   beforeEach(() => {
     context = {
       repo: (obj) => ({
-        owner: payloads.basic.payload.repository.owner.login,
-        repo: payloads.basic.payload.repository.name,
+        owner: 'JasonEtco',
+        repo: 'todo',
         ...obj
       }),
       github: {

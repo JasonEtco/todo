@@ -1,0 +1,21 @@
+diff --git a/.travis.yml b/.travis.yml
+index 0d43cbb..4e652e9 100644
+--- a/.travis.yml
++++ b/.travis.yml
+@@ -4,21 +4,22 @@
+language: node_js
+ 
+ node_js:
+   - "8"
+-  
++
+ notifications:
+   disabled: true
+-  
+ branches:
+   except:
+     - /^vd+.d+.d+$/
+-    
+ script:
+   - npm test
+   - codecov
