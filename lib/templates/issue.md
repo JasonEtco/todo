@@ -4,7 +4,7 @@
 ---
 
 {{/if}}
-https://github.com/{{ owner }}/{{ repo }}/blob/{{ sha }}/{{ filename }}#L{{ start }}
+https://github.com/{{ owner }}/{{ repo }}/blob/{{ sha }}/{{ filename }}#{{ range }}
 
 ---
 
