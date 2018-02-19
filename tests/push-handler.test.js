@@ -131,4 +131,10 @@ describe('push-handler', () => {
     await robot.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
+
+  it('cuts the blobLines', async () => {
+    github.repos.getCommit.mockReturnValueOnce(loadDiff('blob-past-end'))
+    await robot.receive(event)
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+  })
 })
