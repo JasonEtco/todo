@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "jest": "^22.1.2",
-    "standard": "^10.0.3"
+    "standard": "^11.0.0"
   },
   "engines": {
     "node": ">= 8.9.4",
