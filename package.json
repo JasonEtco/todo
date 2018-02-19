@@ -6,7 +6,8 @@
   "license": "ISC",
   "repository": "https://github.com/JasonEtco/todo.git",
   "scripts": {
-    "start": "probot run ./index.js",
+    "start": "PRIVATE_KEY=$(echo $PRIVATE_KEY | base64 -d) npm run start-probot",
+    "start-probot": "probot run ./index.js",
     "test": "jest --coverage && standard",
     "test:update": "jest -u",
     "test:pr": "jest pull-request-handler.test.js",
