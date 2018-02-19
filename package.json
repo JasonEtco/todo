@@ -6,10 +6,11 @@
   "license": "ISC",
   "repository": "https://github.com/JasonEtco/todo.git",
   "scripts": {
-    "start": "PRIVATE_KEY=$(echo $PRIVATE_KEY | base64 -d) npm run start-probot",
-    "start-probot": "probot run ./index.js",
+    "start": "probot run ./index.js",
     "test": "jest --coverage && standard",
-    "test:update": "jest -u"
+    "test:update": "jest -u",
+    "test:pr": "jest pull-request-handler.test.js",
+    "test:push": "jest push-handler.test.js"
   },
   "standard": {
     "env": {
@@ -32,14 +33,15 @@
     ]
   },
   "dependencies": {
-    "probot": "^5.0.0"
+    "hbs": "^4.0.1",
+    "probot": "^4.1.0"
   },
   "devDependencies": {
     "jest": "^22.1.2",
     "standard": "^11.0.0"
   },
   "engines": {
-    "node": ">= 8.6.0",
+    "node": ">= 8.9.4",
     "npm": ">= 5.0.0"
   },
   "now": {
