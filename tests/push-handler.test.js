@@ -124,4 +124,10 @@ describe('push-handler', () => {
     expect(github.issues.createComment).toHaveBeenCalledTimes(0)
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
+
+  it('does not show the blob if blobLines is false', async () => {
+    github.repos.getContent.mockReturnValueOnce(loadConfig('blobLinesFalse'))
+    await robot.receive(event)
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+  })
 })
