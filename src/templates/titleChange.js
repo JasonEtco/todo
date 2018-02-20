@@ -1,0 +1,1 @@
+module.exports = 'Please do not change the issue title! **todo** uses it to prevent duplicate issues from being opened. If you think this is an error, please [open an issue](https://github.com/jasonetco/todo)!'

@@ -13,7 +13,7 @@
     "test:pr": "jest pull-request-handler.test.js",
     "test:push": "jest push-handler.test.js",
     "build": "webpack -p",
-    "deploy": "npm run build"
+    "deploy": "npm run build && gcloud beta functions deploy todo-github-app --project todo-github-app --trigger-http --entry-point bot"
   },
   "standard": {
     "env": {
