@@ -1,18 +1,43 @@
-const pullRequestHandler = require('./lib/pull-request-handler')
-const pullRequestMergedHandler = require('./lib/pull-request-merged-handler')
-const pushHandler = require('./lib/push-handler')
-const issueRenameHandler = require('./lib/issue-rename-handler')
+const createProbot = require('probot-ts')
+const { bot } = require('./src')
 
-module.exports = robot => {
-  // PR handler (comments on pull requests)
-  robot.on(['pull_request.opened', 'pull_request.synchronize'], pullRequestHandler)
+const settings = require('./env.json')
+process.env.APP_NAME = 'todo'
 
-  // Merge handler (opens new issues)
-  robot.on('pull_request.closed', pullRequestMergedHandler)
+const probot = createProbot(settings)
 
-  // Push handler (opens new issues)
-  robot.on('push', pushHandler)
+// Creates a Bunyan Stackdriver Logging client
+const LoggingBunyan = require('@google-cloud/logging-bunyan')
+const loggingBunyan = new LoggingBunyan()
+probot.logger.addStream(loggingBunyan.stream())
 
-  // Prevent tampering with the issue title
-  robot.on('issues.edited', issueRenameHandler)
+probot.load(bot)
+
+/**
+ * Relay GitHub events to the bot
+ */
+exports.bot = (request, response) => {
+  const event = request.get('x-github-event') || request.get('X-GitHub-Event')
+  console.log(`Received event ${event}${request.body.action ? ('.' + request.body.action) : ''}`)
+  if (event) {
+    try {
+      probot.receive({
+        event: event,
+        payload: request.body
+      }).then(() => {
+        response.send({
+          statusCode: 200,
+          body: JSON.stringify({
+            message: 'Executed'
+          })
+        })
+      })
+    } catch (err) {
+      console.error(err)
+      response.sendStatus(500)
+    }
+  } else {
+    console.error(request)
+    response.sendStatus(400)
+  }
 }

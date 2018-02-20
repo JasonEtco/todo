@@ -1,6 +1,6 @@
-const { createRobot } = require('probot')
+const { createRobot } = require('probot-ts')
 const issueEdited = require('./fixtures/payloads/issues.edited.json')
-const plugin = require('../')
+const plugin = require('../src')
 
 describe('issue-rename-handler', () => {
   let robot, github, event
