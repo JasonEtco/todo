@@ -7,7 +7,7 @@
   "repository": "https://github.com/JasonEtco/todo.git",
   "scripts": {
     "start": "PRIVATE_KEY=$(echo $PRIVATE_KEY | base64 -d) npm run start-probot",
-    "start-probot": "probot run ./index.js",
+    "start-probot": "probot run ./src/index.js",
     "test": "jest --coverage && standard",
     "test:update": "jest -u",
     "test:pr": "jest pull-request-handler.test.js",
@@ -38,7 +38,7 @@
   "dependencies": {
     "@google-cloud/logging-bunyan": "^0.7.0",
     "hbs": "^4.0.1",
-    "probot": "^4.1.0",
+    "probot": "^5.0.1",
     "probot-ts": "^4.0.1-typescript"
   },
   "devDependencies": {
@@ -49,6 +49,7 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "jest": "^22.1.2",
+    "smee-client": "^1.0.1",
     "standard": "^11.0.0",
     "webpack": "^3.11.0"
   },
