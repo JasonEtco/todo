@@ -23,6 +23,7 @@
     "glob": "^7.1.2",
     "html-webpack-plugin": "^2.30.1",
     "ignore-loader": "^0.1.2",
+    "marked": "^0.3.16",
     "node-sass": "^4.5.3",
     "nodemon": "^1.12.1",
     "postcss-loader": "^2.0.6",
