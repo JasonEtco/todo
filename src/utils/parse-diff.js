@@ -17,7 +17,7 @@ module.exports = ({ match, context, config }) => {
     7: title
   } = match
 
-  context.log(`Match found for ${context.event}/${context.id}: ${title}`)  
+  context.log(`Match found for ${context.event}/${context.id}: ${title}`)
 
   // Get the line number that the matched line is on
   const addedLines = contents.split(/^-.*\n?/m).join('')
