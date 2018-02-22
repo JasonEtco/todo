@@ -28,7 +28,6 @@ module.exports = async context => {
 
   let match
   while ((match = regex.exec(endDiff(diff))) !== null) {
-    context.log('Match found')
     const parsed = parseDiff({ match, context, config })
 
     if (parsed.filename === '.github/config.yml') continue
@@ -50,6 +49,7 @@ module.exports = async context => {
       body: parsed.body
     }))
 
+    context.log(`Creating issue [${parsed.title}] in [${context.repo().owner}/${context.repo().repo}`)
     await context.github.issues.create(context.repo({ title: parsed.title, body, labels, ...assignFlow(config, parsed.username) }))
   }
 }

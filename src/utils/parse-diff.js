@@ -17,6 +17,8 @@ module.exports = ({ match, context, config }) => {
     7: title
   } = match
 
+  context.log(`Match found for ${context.event}/${context.id}: ${title}`)  
+
   // Get the line number that the matched line is on
   const addedLines = contents.split(/^-.*\n?/m).join('')
   const matchedLineForReg = new RegExp(`^${matchedLine.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&')}`, 'm')
@@ -58,6 +60,7 @@ module.exports = ({ match, context, config }) => {
   const bodyMatch = bodyReg.exec(contents)
   const body = bodyMatch ? bodyMatch[1] : null
 
+  context.log(`Finished parsing ${context.id}: ${title}`)
   return {
     title: truncate(title),
     body,

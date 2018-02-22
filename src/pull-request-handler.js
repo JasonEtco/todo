@@ -18,8 +18,6 @@ module.exports = async context => {
 
   let match
   while ((match = regex.exec(endDiff(diff))) !== null) {
-    context.log('Match found')
-
     const parsed = parseDiff({ match, context, config })
 
     if (parsed.filename === '.github/config.yml') continue
@@ -41,6 +39,7 @@ module.exports = async context => {
       keyword: parsed.keyword
     }))
 
+    context.log(`Creating comment [${parsed.title}] in [${context.repo().owner}/${context.repo().repo}#${parsed.number}`)
     await context.github.issues.createComment(context.issue({ body }))
   }
 }
