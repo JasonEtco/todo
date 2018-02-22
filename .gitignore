@@ -3,3 +3,6 @@ npm-debug.log
 *.pem
 .env
 coverage
+.DS_Store
+dist
+env.json
