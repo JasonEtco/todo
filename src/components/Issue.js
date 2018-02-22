@@ -83,7 +83,7 @@ export default class Issue extends Component {
                 <tbody className="d-block">
                   <tr className="d-block">
                     <td className="d-block comment-body markdown-body">
-                      {body && <p>{marked(body)}</p>}
+                      {body && <p dangerouslySetInnerHTML={{ __html: marked(body) }}></p>}
                       <Blob start={start} code={code} sha={c.sha} cfg={cfg} />
                       {generateFooter(cfg, keyword)}
                     </td>
