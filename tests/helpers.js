@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
-const {createRobot} = require('probot')
-const app = require('../')
+const {createRobot} = require('probot-ts')
+const app = require('../src')
 
 const loadDiff = exports.loadDiff = filename => {
   return Promise.resolve({

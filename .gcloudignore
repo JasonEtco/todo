@@ -1,0 +1,15 @@
+.gcloudignore
+.git
+.gitignore
+node_modules
+src
+coverage
+.github
+.env
+.env.example
+.travis.yml
+README.md
+webpack.config.js
+tests
+LICENSE
+.DS_Store
