@@ -14,9 +14,6 @@ const configOptions = [{
   name: 'bodyKeyword',
   type: 'string'
 }, {
-  name: 'caseSensitive',
-  type: 'boolean'
-}, {
   name: 'blobLines',
   type: 'number|boolean'
 }, {

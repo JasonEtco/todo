@@ -32,11 +32,11 @@ export default class Demo extends Component {
     const { code, cfg } = this.state
     const config = Object.assign({}, defaultConfig, this.state.cfg)
     const theOne = Array.isArray(cfg.keyword) ? cfg.keyword.find(keyword => {
-      const titleRe = new RegExp(`${keyword}\\s(.*)`, config.caseSensitive ? 'g' : 'gi')
+      const titleRe = new RegExp(`${keyword}\\s(.*)`, 'g')
       return code.search(titleRe) > -1
     }) : cfg.keyword
 
-    const titleRe = new RegExp(`${theOne}\\s(.*)`, config.caseSensitive ? 'g' : 'gi')
+    const titleRe = new RegExp(`${theOne}\\s(.*)`, 'g')
     const matches = code.match(titleRe)
 
     if (matches) {

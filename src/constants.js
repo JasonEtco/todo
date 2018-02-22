@@ -17,13 +17,12 @@ module.exports = ruleOverPunyHumans;
   sha: '45c96e1',
   cfg: {
     keyword: '@todo',
-    caseSensitive: false,
     blobLines: 5,
     autoAssign: true
   },
   config: `# These are the available config settings.
-keyword: ["@todo", "TODO:"] # string|string[]
-caseSensitive: false        # boolean
+keyword: ["@todo", "TODO"] # string|string[]
+bodyKeyword: ["@body", "BODY"] # string|string[]
 blobLines: 5                # number|boolean, 0 or false to disable
 autoAssign: true            # string|string[]|boolean
 label: true                 # boolean|string|string[]
