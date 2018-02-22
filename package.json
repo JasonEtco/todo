@@ -37,9 +37,11 @@
   },
   "dependencies": {
     "@google-cloud/logging-bunyan": "^0.7.0",
+    "github": "^13.1.0",
     "hbs": "^4.0.1",
     "probot": "^5.0.1",
-    "probot-ts": "^4.0.1-typescript"
+    "probot-ts": "^4.0.1-typescript",
+    "prompt": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
