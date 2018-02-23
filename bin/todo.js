@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const program = require('commander')
+const chalk = require('chalk')
 const GitHubAPI = require('github')
 const pushHandler = require('../src/push-handler')
 
@@ -41,7 +42,12 @@ const context = {
 
 pushHandler(context)
   .then(() => {
-    console.log(issues)
+    issues.forEach(issue => {
+      console.log(chalk.gray('---'))
+      console.log(chalk.gray('Title:'), chalk.bold(issue.title))
+      console.log(chalk.gray('Body:\n'), issue.body)
+      console.log(chalk.gray('---'))
+    })
   })
   .catch(e => {
     if (e.code === 404) {
