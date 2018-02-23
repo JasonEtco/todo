@@ -20,6 +20,9 @@
       "jest": true
     }
   },
+  "bin": {
+    "todo": "./bin/todo.js"
+  },
   "jest": {
     "modulePathIgnorePatterns": [
       "<rootDir>/tests/fixtures/",
@@ -37,11 +40,11 @@
   },
   "dependencies": {
     "@google-cloud/logging-bunyan": "^0.7.0",
+    "commander": "^2.14.1",
     "github": "^13.1.0",
     "hbs": "^4.0.1",
     "probot": "^5.0.1",
-    "probot-ts": "^4.0.1-typescript",
-    "prompt": "^1.0.0"
+    "probot-ts": "^4.0.1-typescript"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

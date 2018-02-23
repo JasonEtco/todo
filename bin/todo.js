@@ -1,54 +1,52 @@
-const prompt = require('prompt')
+#!/usr/bin/env node
+
+const program = require('commander')
 const GitHubAPI = require('github')
 const pushHandler = require('../src/push-handler')
 
-const schema = {
-  properties: {
-    owner: {
-      pattern: /^[a-zA-Z\s\-]+$/,
-      message: 'Name must be only letters, spaces, or dashes',
-      required: true
+program
+  .option('-o, --owner <owner>', 'owner')
+  .option('-r, --repo <repo>', 'repo')
+  .option('-s, --sha <sha>', 'sha')
+  .parse(process.argv)
+
+const issues = []
+const github = new GitHubAPI({})
+github.issues.create = issue => issues.push(issue)
+github.search.issues = () => ({ data: { total_count: 0 } })
+
+const { owner, repo, sha } = program
+
+const context = {
+  id: 1,
+  log: () => {},
+  config: (_, obj) => obj,
+  repo: (o) => ({ owner, repo, ...o }),
+  payload: {
+    ref: 'refs/heads/master',
+    repository: {
+      owner,
+      name: repo,
+      master_branch: 'master'
     },
-    repo: {
-      pattern: /^[a-zA-Z\s\-]+$/,
-      message: 'Name must be only letters, spaces, or dashes',
-      required: true
-    },
-    sha: {
-      required: true
+    head_commit: {
+      id: sha,
+      author: {
+        username: owner
+      }
     }
-  }
+  },
+  github
 }
 
-prompt.message = ''
-prompt.start()
-prompt.get(schema, async (err, { owner, repo, sha }) => {
-  if (err) console.error(err)
-
-  const github = new GitHubAPI({})
-  github.issues.create = (o) => console.log(o)
-
-  const context = {
-    id: 1,
-    log: console.log,
-    config: (_, obj) => obj,
-    repo: (o) => ({ owner, repo, ...o }),
-    payload: {
-      ref: 'refs/heads/master',
-      repository: {
-        owner,
-        name: repo,
-        master_branch: 'master'
-      },
-      head_commit: {
-        id: sha,
-        author: {
-          username: owner
-        }
-      }
-    },
-    github
-  }
-
-  await pushHandler(context)
-})
+pushHandler(context)
+  .then(() => {
+    console.log(issues)
+  })
+  .catch(e => {
+    if (e.code === 404) {
+      console.error('That combination of owner/repo/sha could not be found.')
+    } else {
+      console.error(e)
+    }
+  })
