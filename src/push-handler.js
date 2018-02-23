@@ -40,7 +40,7 @@ module.exports = async context => {
       continue
     }
 
-    const body = issue(context.repo({
+    let body = issue(context.repo({
       sha: parsed.sha,
       assignedToString: parsed.assignedToString,
       range: parsed.range,
@@ -49,7 +49,10 @@ module.exports = async context => {
       body: parsed.body
     }))
 
-    context.log(`Creating issue [${parsed.title}] in [${context.repo().owner}/${context.repo().repo}]`)
+    const replace_br_regEx = /\/?&lt;br(?:\s\/)?&gt;/g
+    body = body.replace(replace_br_regEx,'<br>')
+    context.log(body)
+    context.log(`Creating issue [${parsed.title}] in [${context.repo().owner}/${context.repo().repo}`)
     await context.github.issues.create(context.repo({ title: parsed.title, body, labels, ...assignFlow(config, parsed.username) }))
   }
 }
