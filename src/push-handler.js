@@ -51,7 +51,7 @@ module.exports = async context => {
 
     const replace_br_regEx = /\/?&lt;br(?:\s\/)?&gt;/g
     body = body.replace(replace_br_regEx,'<br>')
-    context.log(`Creating issue [${parsed.title}] in [${context.repo().owner}/${context.repo().repo}`)
+    context.log(`Creating issue [${parsed.title}] in [${context.repo().owner}/${context.repo().repo}]`)
     await context.github.issues.create(context.repo({ title: parsed.title, body, labels, ...assignFlow(config, parsed.username) }))
   }
 }
