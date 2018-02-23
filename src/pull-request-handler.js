@@ -39,7 +39,7 @@ module.exports = async context => {
       keyword: parsed.keyword
     }))
 
-    context.log(`Creating comment [${parsed.title}] in [${context.repo().owner}/${context.repo().repo}#${parsed.number}`)
+    context.log(`Creating comment [${parsed.title}] in [${context.repo().owner}/${context.repo().repo}#${parsed.number}]`)
     await context.github.issues.createComment(context.issue({ body }))
   }
 }

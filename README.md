@@ -57,6 +57,14 @@ todo:
 | label | `boolean`, `string`, `string[]` | Add a label to the new issue. If true, add the `todo` label. If false, don't add any label. You can also give it a label name or an array of label names. | true |
 | reopenClosed | `boolean` | If an issue already exists and is closed, reopen it. Note: if set to false, no new issue will be created. | true |
 
+## CLI
+
+There is a CLI tool in this repo that you can use to verify that **todo** is working on your commits. This tool will not actually create new issues, but will let you know what issues a commit _would_ create. Follow the setup instructions below, then run:
+
+```
+$ node ./bin/todo -o OWNER -r REPO -s SHA
+```
+
 ## Setup
 
 ```
