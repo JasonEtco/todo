@@ -49,7 +49,7 @@ module.exports = async context => {
       body: parsed.body
     }))
 
-    context.log(`Creating issue [${parsed.title}] in [${context.repo().owner}/${context.repo().repo}`)
+    context.log(`Creating issue [${parsed.title}] in [${context.repo().owner}/${context.repo().repo}]`)
     await context.github.issues.create(context.repo({ title: parsed.title, body, labels, ...assignFlow(config, parsed.username) }))
   }
 }
