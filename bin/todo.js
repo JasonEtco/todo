@@ -4,19 +4,26 @@ const program = require('commander')
 const chalk = require('chalk')
 const GitHubAPI = require('github')
 const pushHandler = require('../src/push-handler')
+const fs = require('fs')
+const path = require('path')
 
 program
   .option('-o, --owner <owner>', 'owner')
   .option('-r, --repo <repo>', 'repo')
   .option('-s, --sha <sha>', 'sha')
+  .option('-f, --file <file>', 'file')
   .parse(process.argv)
 
 const issues = []
+const { owner, repo, file } = program
+
 const github = new GitHubAPI({})
+if (file) {
+  github.repos.getCommit = () => ({ data: fs.readFileSync(path.resolve(file)) })
+  github.gitdata.getCommit = () => ({ data: { parents: [] } })
+}
 github.issues.create = issue => issues.push(issue)
 github.search.issues = () => ({ data: { total_count: 0 } })
-
-const { owner, repo, sha } = program
 
 const context = {
   id: 1,
@@ -31,7 +38,7 @@ const context = {
       master_branch: 'master'
     },
     head_commit: {
-      id: sha,
+      id: program.sha || 1,
       author: {
         username: owner
       }
