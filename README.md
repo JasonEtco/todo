@@ -65,6 +65,12 @@ There is a CLI tool in this repo that you can use to verify that **todo** is wor
 $ node ./bin/todo -o OWNER -r REPO -s SHA
 ```
 
+You can also parse a local file instead of a sha:
+
+```
+$ node ./bin/todo -o OWNER -r REPO -f ./path/to/file.txt
+```
+
 ## Setup
 
 ```
