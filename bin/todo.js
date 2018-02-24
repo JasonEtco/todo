@@ -26,6 +26,7 @@ github.issues.create = issue => issues.push(issue)
 github.search.issues = () => ({ data: { total_count: 0 } })
 
 const context = {
+  event: 'push',
   id: 1,
   log: () => {},
   config: (_, obj) => obj,
