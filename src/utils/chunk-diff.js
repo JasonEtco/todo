@@ -15,7 +15,8 @@ module.exports = async context => {
   }
 
   const diffWithEnd = endDiff(diff)
-  const reg = /^diff --git\s.+\n[\s\S]+?(?=^diff|\n^__END_OF_DIFF_PARSING__)/gm
+  const reg = /^diff --git\s.+\n[\s\S]+?(?=^diff|^__END_OF_DIFF_PARSING__)/gm
+
   const chunks = []
   let match
   while ((match = reg.exec(diffWithEnd)) !== null) {
