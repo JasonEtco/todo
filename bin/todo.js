@@ -19,7 +19,7 @@ const { owner, repo, file } = program
 
 const github = new GitHubAPI({})
 if (file) {
-  github.repos.getCommit = () => ({ data: fs.readFileSync(path.resolve(file)) })
+  github.repos.getCommit = () => ({ data: fs.readFileSync(path.resolve(file), 'utf8') })
   github.gitdata.getCommit = () => ({ data: { parents: [] } })
 }
 github.issues.create = issue => issues.push(issue)
