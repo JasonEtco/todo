@@ -18,11 +18,13 @@ probot.load(bot)
  */
 exports.bot = (request, response) => {
   const event = request.get('x-github-event') || request.get('X-GitHub-Event')
+  const id = request.get('x-github-delivery') || request.get('X-GitHub-Delivery')
   console.log(`Received event ${event}${request.body.action ? ('.' + request.body.action) : ''}`)
   if (event) {
     try {
       probot.receive({
         event: event,
+        id: id,
         payload: request.body
       }).then(() => {
         response.send({

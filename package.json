@@ -7,12 +7,13 @@
   "repository": "https://github.com/JasonEtco/todo.git",
   "scripts": {
     "start": "PRIVATE_KEY=$(echo $PRIVATE_KEY | base64 -d) npm run start-probot",
-    "start-probot": "probot run ./src/index.js",
+    "start-probot": "node ./node_modules/probot/bin/probot-run ./src/index.js",
     "test": "jest --coverage && standard",
     "test:update": "jest -u",
     "test:pr": "jest pull-request-handler.test.js",
     "test:push": "jest push-handler.test.js",
     "build": "webpack -p",
+    "now-build": "echo \"Don't build on Now\"",
     "deploy": "npm run build && gcloud beta functions deploy todo-github-app --project todo-github-app --trigger-http --entry-point bot"
   },
   "standard": {
@@ -57,7 +58,8 @@
     "jest": "^22.1.2",
     "smee-client": "^1.0.1",
     "standard": "^11.0.0",
-    "webpack": "^3.11.0"
+    "webpack": "^4.0.0",
+    "webpack-cli": "^2.0.8"
   },
   "engines": {
     "node": ">= 8.9.4",
