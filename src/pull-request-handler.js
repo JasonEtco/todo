@@ -1,5 +1,5 @@
 const handlerSetup = require('./utils/handler-setup')
-const parseDiff = require('./utils/parse-diff')
+const parseChunk = require('./utils/parse-chunk')
 const chunkDiff = require('./utils/chunk-diff')
 const { comment } = require('./templates')
 
@@ -19,7 +19,7 @@ module.exports = async context => {
 
     let match
     while ((match = regex.exec(chunk)) !== null) {
-      const parsed = parseDiff({ match, context, config })
+      const parsed = parseChunk({ match, context, config })
 
       if (parsed.filename === '.github/config.yml') continue
 

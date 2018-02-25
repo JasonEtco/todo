@@ -2,7 +2,7 @@ const checkForDuplicateIssue = require('./utils/check-for-duplicate-issue')
 const handlerSetup = require('./utils/handler-setup')
 const { assignFlow } = require('./utils/helpers')
 const chunkDiff = require('./utils/chunk-diff')
-const parseDiff = require('./utils/parse-diff')
+const parseChunk = require('./utils/parse-chunk')
 const reopenClosed = require('./utils/reopen-closed')
 const { issue } = require('./templates')
 
@@ -29,7 +29,7 @@ module.exports = async context => {
     const chunk = chunks[i]
 
     while ((match = regex.exec(chunk)) !== null) {
-      const parsed = parseDiff({ match, context, config })
+      const parsed = parseChunk({ match, context, config })
 
       if (parsed.filename === '.github/config.yml') continue
 
