@@ -1,6 +1,6 @@
 const checkForDuplicateIssue = require('./utils/check-for-duplicate-issue')
 const handlerSetup = require('./utils/handler-setup')
-const { assignFlow } = require('./utils/helpers')
+const { assignFlow, lineBreak } = require('./utils/helpers')
 const chunkDiff = require('./utils/chunk-diff')
 const parseChunk = require('./utils/parse-chunk')
 const reopenClosed = require('./utils/reopen-closed')
@@ -41,7 +41,7 @@ module.exports = async context => {
         continue
       }
 
-      const body = issue(context.repo({
+      let body = issue(context.repo({
         sha: parsed.sha,
         assignedToString: parsed.assignedToString,
         range: parsed.range,
@@ -50,6 +50,7 @@ module.exports = async context => {
         body: parsed.body
       }))
 
+      body = lineBreak(body)
       context.log(`Creating issue [${parsed.title}] in [${context.repo().owner}/${context.repo().repo}]`)
       await context.github.issues.create(context.repo({ title: parsed.title, body, labels, ...assignFlow(config, parsed.username) }))
     }

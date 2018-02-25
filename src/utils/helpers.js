@@ -36,3 +36,8 @@ exports.assignFlow = ({ autoAssign }, author) => {
 }
 
 exports.endDiff = diff => diff + '\n__END_OF_DIFF_PARSING__'
+
+exports.lineBreak = body => {
+  const regEx = /\/?&lt;br(?:\s\/)?&gt;/g // Regular expression to match all occurences of '&lt;br&gt'
+  return body.replace(regEx, '<br>')
+}

@@ -2,6 +2,7 @@ const handlerSetup = require('./utils/handler-setup')
 const parseChunk = require('./utils/parse-chunk')
 const chunkDiff = require('./utils/chunk-diff')
 const { comment } = require('./templates')
+const { lineBreak } = require('./utils/helpers')
 
 module.exports = async context => {
   const [
@@ -29,7 +30,7 @@ module.exports = async context => {
         continue
       }
 
-      const body = comment(context.repo({
+      let body = comment(context.repo({
         title: parsed.title,
         body: parsed.body,
         sha: parsed.sha,
@@ -40,6 +41,7 @@ module.exports = async context => {
         keyword: parsed.keyword
       }))
 
+      body = lineBreak(body)
       context.log(`Creating comment [${parsed.title}] in [${context.repo().owner}/${context.repo().repo}#${parsed.number}]`)
       await context.github.issues.createComment(context.issue({ body }))
     }
