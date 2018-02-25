@@ -27,7 +27,7 @@ describe('generate-label', () => {
   it('returns an array of the default label name', async () => {
     const labels = await generateLabel(context, { label: true })
     expect(Array.isArray(labels)).toBe(true)
-    expect(labels).toEqual(['todo'])
+    expect(labels).toEqual(['todo :spiral_notepad:'])
   })
 
   it('returns an empty array with label: false', async () => {

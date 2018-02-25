@@ -10,8 +10,8 @@ module.exports = async (context, cfg) => {
     return cfg.label
   } else {
     if (cfg.label) {
-      // Generate an label object
-      const newLabel = context.repo({name: 'todo', color: '00B0D8'})
+      // Generate a label object
+      const newLabel = context.repo({name: 'todo :spiral_notepad:', color: '00B0D8'})
 
       // This will catch if the label already exists
       try {
