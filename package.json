@@ -58,7 +58,7 @@
     "jest": "^22.1.2",
     "smee-client": "^1.0.1",
     "standard": "^11.0.0",
-    "webpack": "^3.11.0"
+    "webpack": "^4.0.0"
   },
   "engines": {
     "node": ">= 8.9.4",
