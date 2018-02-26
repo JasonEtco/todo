@@ -46,7 +46,7 @@
     "github": "^13.1.0",
     "hbs": "^4.0.1",
     "probot": "^5.0.1",
-    "probot-ts": "^4.0.1-typescript"
+    "probot-ts": "^5.0.2-typescript"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
