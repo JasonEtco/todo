@@ -9,7 +9,7 @@
 
 ## Usage
 
-Using **todo** should be really simple. Once you've installed it in your repository, simply push some code (to your default branch, a PR; doesn't matter). If the code you pushed includes the configured keyword (default is `@todo`), then the integration will create a new issue for you using the comment your wrote in your code!
+Using **todo** should be really simple. Once you've installed it in your repository, simply push some code (to your default branch, a PR; doesn't matter). If the code you pushed includes one of the configured keywords (defaults are `@todo` and `TODO`), then the integration will create a new issue for you using the comment your wrote in your code!
 
 If I pushed this:
 
