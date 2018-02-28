@@ -45,7 +45,7 @@
     "commander": "^2.14.1",
     "github": "^13.1.0",
     "hbs": "^4.0.1",
-    "probot": "^5.0.1",
+    "probot": "^6.0.0",
     "probot-ts": "^4.0.1-typescript"
   },
   "devDependencies": {
