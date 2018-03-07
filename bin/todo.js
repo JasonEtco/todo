@@ -2,7 +2,7 @@
 
 const program = require('commander')
 const chalk = require('chalk')
-const GitHubAPI = require('github')
+const octokit = require('@octokit/rest')()
 const pushHandler = require('../src/push-handler')
 const fs = require('fs')
 const path = require('path')
@@ -17,13 +17,12 @@ program
 const issues = []
 const { owner, repo, file } = program
 
-const github = new GitHubAPI({})
 if (file) {
-  github.repos.getCommit = () => ({ data: fs.readFileSync(path.resolve(file), 'utf8') })
-  github.gitdata.getCommit = () => ({ data: { parents: [] } })
+  octokit.repos.getCommit = () => ({ data: fs.readFileSync(path.resolve(file), 'utf8') })
+  octokit.gitdata.getCommit = () => ({ data: { parents: [] } })
 }
-github.issues.create = issue => issues.push(issue)
-github.search.issues = () => ({ data: { total_count: 0 } })
+octokit.issues.create = issue => issues.push(issue)
+octokit.search.issues = () => ({ data: { total_count: 0 } })
 
 const context = {
   event: 'push',
@@ -45,7 +44,7 @@ const context = {
       }
     }
   },
-  github
+  github: octokit
 }
 
 pushHandler(context)
