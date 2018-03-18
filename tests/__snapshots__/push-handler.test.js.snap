@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`push-handler closed a issue when TODO is removed 1`] = `
+exports[`push-handler closes an issue when a todo is removed 1`] = `
 Array [
   Object {
     "number": undefined,

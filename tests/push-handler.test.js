@@ -115,7 +115,7 @@ describe('push-handler', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
-  it('closed a issue when TODO is removed', async () => {
+  it('closes an issue when a todo is removed', async () => {
     github.search.issues.mockReturnValueOnce(
       Promise.resolve({
         data: {
