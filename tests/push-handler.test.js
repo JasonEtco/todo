@@ -120,17 +120,16 @@ describe('push-handler', () => {
       Promise.resolve({
         data: {
           total_count: 1,
-          items: [
-            { title: 'Write tests for removing TODO comments', state: 'open' }
-          ]
+          items: [{ title: 'Write tests for removing comments', state: 'open' }]
         }
       })
     )
+    github.repos.getCommit.mockReturnValueOnce(loadDiff('basic-removal'))
     await robot.receive(event)
     expect(github.issues.edit).toHaveBeenCalledTimes(1)
     expect(github.issues.edit.mock.calls[0]).toMatchSnapshot()
     expect(github.issues.create).toHaveBeenCalledTimes(0)
-    expect(github.issues.createComment).toHaveBeenCalledTimes(0)
+    expect(github.issues.createComment).toHaveBeenCalledTimes(1)
   })
 
   it('respects the reopenClosed config', async () => {
