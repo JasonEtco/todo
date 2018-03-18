@@ -115,6 +115,24 @@ describe('push-handler', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
+  it('closed a issue when TODO is removed', async () => {
+    github.search.issues.mockReturnValueOnce(
+      Promise.resolve({
+        data: {
+          total_count: 1,
+          items: [
+            { title: 'Write tests for removing TODO comments', state: 'open' }
+          ]
+        }
+      })
+    )
+    await robot.receive(event)
+    expect(github.issues.edit).toHaveBeenCalledTimes(1)
+    expect(github.issues.edit.mock.calls[0]).toMatchSnapshot()
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.createComment).toHaveBeenCalledTimes(0)
+  })
+
   it('respects the reopenClosed config', async () => {
     github.repos.getContent.mockReturnValueOnce(loadConfig('reopenClosedFalse'))
     github.search.issues.mockReturnValueOnce(Promise.resolve({
