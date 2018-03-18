@@ -132,6 +132,21 @@ describe('push-handler', () => {
     expect(github.issues.createComment).toHaveBeenCalledTimes(1)
   })
 
+  it('closes an issue and creates an issue in the same diff', async () => {
+    github.search.issues.mockReturnValueOnce(
+      Promise.resolve({
+        data: {
+          total_count: 1,
+          items: [{ title: 'Write tests for removing comments', state: 'open' }]
+        }
+      })
+    )
+    github.repos.getCommit.mockReturnValueOnce(loadDiff('remove-and-add'))
+    await robot.receive(event)
+    expect(github.issues.edit).toHaveBeenCalledTimes(1)
+    expect(github.issues.createComment).toHaveBeenCalledTimes(1)
+  })
+
   it('respects the reopenClosed config', async () => {
     github.repos.getContent.mockReturnValueOnce(loadConfig('reopenClosedFalse'))
     github.search.issues.mockReturnValueOnce(Promise.resolve({
