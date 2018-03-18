@@ -12,7 +12,6 @@ language: node_js
  notifications:
    disabled: true
 -  
-+ // TODO I am an example title
  branches:
    except:
      - /^vd+.d+.d+$/
