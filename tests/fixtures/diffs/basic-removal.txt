@@ -17,6 +17,7 @@ language: node_js
    except:
      - /^vd+.d+.d+$/
 -    
+- // TODO: Write tests for removing comments
  script:
    - npm test
    - codecov

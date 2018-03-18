@@ -4,6 +4,7 @@ const { assignFlow, lineBreak } = require('./utils/helpers')
 const chunkDiff = require('./utils/chunk-diff')
 const parseChunk = require('./utils/parse-chunk')
 const reopenClosed = require('./utils/reopen-closed')
+const close = require('./utils/close-issue')
 const { issue } = require('./templates')
 
 module.exports = async context => {
@@ -37,7 +38,11 @@ module.exports = async context => {
       const existingIssue = await checkForDuplicateIssue(context, parsed.title)
       if (existingIssue) {
         context.log(`Duplicate issue found with title [${parsed.title}]`)
-        await reopenClosed({ context, config, issue: existingIssue }, parsed)
+        if (parsed.prefix === '+') {
+          await reopenClosed({ context, config, issue: existingIssue }, parsed)
+        } else {
+          await close({ context, config, issue: existingIssue }, parsed)
+        }
         continue
       }
 

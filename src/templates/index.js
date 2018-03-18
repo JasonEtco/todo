@@ -8,5 +8,6 @@ module.exports = {
   issue: compile('issue'),
   issueFromMerge: compile('issueFromMerge'),
   titleChange: compile('titleChange'),
-  reopenClosed: compile('reopenClosed')
+  reopenClosed: compile('reopenClosed'),
+  close: compile('close')
 }
