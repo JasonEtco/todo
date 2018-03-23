@@ -46,7 +46,7 @@
     "commander": "^2.14.1",
     "hbs": "^4.0.1",
     "probot": "^5.0.1",
-    "probot-ts": "^4.0.1-typescript"
+    "probot-ts": "^5.0.3-typescript"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
