@@ -23,7 +23,7 @@ module.exports = async context => {
       const parsed = parseChunk({ match, context, config })
 
       if (parsed.filename === '.github/config.yml' || (config.exclude && parsed.filename.test(new RegExp(config.exclude)))) {
-          continue
+        continue
       }
 
       // This PR already has a comment for this item
