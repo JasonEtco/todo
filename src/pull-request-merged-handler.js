@@ -22,7 +22,9 @@ module.exports = async context => {
     while ((match = regex.exec(chunk)) !== null) {
       const parsed = parseChunk({ match, context, config })
 
-      if (parsed.filename === '.github/config.yml') continue
+      if (parsed.filename === '.github/config.yml' || (config.exclude && parsed.filename.test(new RegExp(config.exclude)))) {
+          continue
+      }
 
       // Prevent duplicates
       const existingIssue = await checkForDuplicateIssue(context, parsed.title)
