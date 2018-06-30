@@ -77,6 +77,13 @@ describe('push-handler', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
+  it('ignores changes to the bin directory', async () => {
+    github.repos.getCommit.mockReturnValueOnce(loadDiff('bin'))
+    github.repos.getContent.mockReturnValueOnce(loadConfig('excludeBin'))
+    await robot.receive(event)
+    expect(github.issues.create).toHaveBeenCalledTimes(0)
+  })
+
   it('ignores pushes not to master', async () => {
     const e = { event: event.event, payload: { ...event.payload, ref: 'not/the/master/branch' } }
     await robot.receive(e)

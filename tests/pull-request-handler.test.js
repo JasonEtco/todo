@@ -50,6 +50,13 @@ describe('pull-request-handler', () => {
     expect(github.issues.createComment).toHaveBeenCalledTimes(0)
   })
 
+  it('ignores changes to the bin directory', async () => {
+    github.pullRequests.get.mockReturnValueOnce(loadDiff('bin'))
+    github.repos.getContent.mockReturnValueOnce(loadConfig('excludeBin'))
+    await robot.receive(event)
+    expect(github.issues.createComment).toHaveBeenCalledTimes(0)
+  })
+
   it('works with a string as the keyword config', async () => {
     github.repos.getContent.mockReturnValueOnce(loadConfig('keywordsString'))
     await robot.receive(event)
