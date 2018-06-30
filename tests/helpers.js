@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
-const {createRobot} = require('probot-ts')
-const app = require('../src')
+const { Application } = require('probot')
+const plugin = require('../src')
 
 const loadDiff = exports.loadDiff = filename => {
   return Promise.resolve({
@@ -17,9 +17,8 @@ exports.loadConfig = filename => {
   })
 }
 
-exports.gimmeRobot = () => {
-  let robot
-  let github
+exports.gimmeApp = () => {
+  let app, github
 
   const logger = {
     trace: jest.fn(),
@@ -30,8 +29,8 @@ exports.gimmeRobot = () => {
     fatal: jest.fn()
   }
 
-  robot = createRobot({ logger })
-  app(robot)
+  app = new Application({ logger })
+  app.load(plugin)
 
   github = {
     issues: {
@@ -58,7 +57,7 @@ exports.gimmeRobot = () => {
       get: jest.fn(() => loadDiff('basic'))
     }
   }
-  // Passes the mocked out GitHub API into out robot instance
-  robot.auth = () => Promise.resolve(github)
-  return { robot, github }
+  // Passes the mocked out GitHub API into out app instance
+  app.auth = () => Promise.resolve(github)
+  return { app, github }
 }
