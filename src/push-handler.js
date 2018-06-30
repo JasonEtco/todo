@@ -34,10 +34,10 @@ module.exports = async context => {
       const parsed = parseChunk({ match, context, config })
 
       if (parsed.filename === '.github/config.yml') {
-        console.debug('Skipping .github/config.yml')
+        context.log.debug('Skipping .github/config.yml')
         continue
       } else if (excludePattern && new RegExp(excludePattern).test(parsed.filename)) {
-        console.debug('Skipping ' + parsed.filename + ' as it matches the exclude pattern ' + excludePattern)
+        context.log.debug('Skipping ' + parsed.filename + ' as it matches the exclude pattern ' + excludePattern)
         continue
       }
 
