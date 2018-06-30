@@ -36,7 +36,12 @@ exports.bot = (request, response) => {
       })
     } catch (err) {
       console.error(err)
-      response.sendStatus(500)
+      response.send({
+        statusCode: 500,
+        body: JSON.stringify({
+          message: err
+        })
+      })
     }
   } else {
     console.error(request)
