@@ -34,27 +34,27 @@ exports.gimmeApp = () => {
 
   github = {
     issues: {
-      create: jest.fn(),
-      createLabel: jest.fn(),
-      edit: jest.fn(),
-      createComment: jest.fn(),
-      getComments: jest.fn(() => Promise.resolve({ data: [] }))
+      create: jest.fn().mockName('issues.create'),
+      createLabel: jest.fn().mockName('issues.createLabel'),
+      edit: jest.fn().mockName('issues.edit'),
+      createComment: jest.fn().mockName('issues.createComment'),
+      getComments: jest.fn(() => Promise.resolve({ data: [] })).mockName('issues.getCommentse')
     },
     search: {
-      issues: jest.fn(() => Promise.resolve({ data: { total_count: 0, items: [] } }))
+      issues: jest.fn(() => Promise.resolve({ data: { total_count: 0, items: [] } })).mockName('search.issues')
     },
     gitdata: {
-      getCommit: jest.fn(() => Promise.resolve({ data: { parents: [1] } }))
+      getCommit: jest.fn(() => Promise.resolve({ data: { parents: [1] } })).mockName('gitdata.getCommit')
     },
     repos: {
       // Response for getting content from '.github/todo.yml'
       getContent: jest.fn(() => {
         throw { code: 404 } // eslint-disable-line
-      }),
-      getCommit: jest.fn(() => loadDiff('basic'))
+      }).mockName('repos.getContent'),
+      getCommit: jest.fn(() => loadDiff('basic')).mockName('repos.getCommit')
     },
     pullRequests: {
-      get: jest.fn(() => loadDiff('basic'))
+      get: jest.fn(() => loadDiff('basic')).mockName('pullRequests.get')
     }
   }
   // Passes the mocked out GitHub API into out app instance
