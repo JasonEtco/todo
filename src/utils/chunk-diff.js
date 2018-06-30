@@ -5,7 +5,7 @@ module.exports = async context => {
 
   if (context.event === 'push') {
     diff = (await context.github.repos.getCommit(context.repo({
-      sha: context.payload.head_commit.id,
+      commit_sha: context.payload.head_commit.id,
       headers: { Accept: 'application/vnd.github.diff' }
     }))).data
   } else {

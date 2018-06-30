@@ -13,7 +13,7 @@ module.exports = async context => {
   }
 
   // Do not trigger on merge commits
-  const commit = await context.github.gitdata.getCommit(context.repo({sha: context.payload.head_commit.id}))
+  const commit = await context.github.gitdata.getCommit(context.repo({commit_sha: context.payload.head_commit.id}))
   if (commit.data.parents.length > 1) return
 
   const [
