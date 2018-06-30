@@ -1,4 +1,4 @@
-const createProbot = require('probot-ts')
+const { createProbot } = require('probot')
 const { bot } = require('./dist')
 
 const settings = require('./env.json')
@@ -7,7 +7,7 @@ process.env.APP_NAME = 'todo'
 const probot = createProbot(settings)
 
 // Creates a Bunyan Stackdriver Logging client
-const LoggingBunyan = require('@google-cloud/logging-bunyan')
+const { LoggingBunyan } = require('@google-cloud/logging-bunyan')
 const loggingBunyan = new LoggingBunyan()
 probot.logger.addStream(loggingBunyan.stream())
 
@@ -36,7 +36,12 @@ exports.bot = (request, response) => {
       })
     } catch (err) {
       console.error(err)
-      response.sendStatus(500)
+      response.send({
+        statusCode: 500,
+        body: JSON.stringify({
+          message: err
+        })
+      })
     }
   } else {
     console.error(request)

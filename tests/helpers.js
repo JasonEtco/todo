@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
-const {createRobot} = require('probot-ts')
-const app = require('../src')
+const { Application } = require('probot')
+const plugin = require('../src')
 
 const loadDiff = exports.loadDiff = filename => {
   return Promise.resolve({
@@ -17,9 +17,8 @@ exports.loadConfig = filename => {
   })
 }
 
-exports.gimmeRobot = () => {
-  let robot
-  let github
+exports.gimmeApp = () => {
+  let app, github
 
   const logger = {
     trace: jest.fn(),
@@ -30,35 +29,35 @@ exports.gimmeRobot = () => {
     fatal: jest.fn()
   }
 
-  robot = createRobot({ logger })
-  app(robot)
+  app = new Application({ logger })
+  app.load(plugin)
 
   github = {
     issues: {
-      create: jest.fn(),
-      createLabel: jest.fn(),
-      edit: jest.fn(),
-      createComment: jest.fn(),
-      getComments: jest.fn(() => Promise.resolve({ data: [] }))
+      create: jest.fn().mockName('issues.create'),
+      createLabel: jest.fn().mockName('issues.createLabel'),
+      edit: jest.fn().mockName('issues.edit'),
+      createComment: jest.fn().mockName('issues.createComment'),
+      getComments: jest.fn(() => Promise.resolve({ data: [] })).mockName('issues.getComments')
     },
     search: {
-      issues: jest.fn(() => Promise.resolve({ data: { total_count: 0, items: [] } }))
+      issues: jest.fn(() => Promise.resolve({ data: { total_count: 0, items: [] } })).mockName('search.issues')
     },
     gitdata: {
-      getCommit: jest.fn(() => Promise.resolve({ data: { parents: [1] } }))
+      getCommit: jest.fn(() => Promise.resolve({ data: { parents: [1] } })).mockName('gitdata.getCommit')
     },
     repos: {
       // Response for getting content from '.github/todo.yml'
       getContent: jest.fn(() => {
         throw { code: 404 } // eslint-disable-line
-      }),
-      getCommit: jest.fn(() => loadDiff('basic'))
+      }).mockName('repos.getContent'),
+      getCommit: jest.fn(() => loadDiff('basic')).mockName('repos.getCommit')
     },
     pullRequests: {
-      get: jest.fn(() => loadDiff('basic'))
+      get: jest.fn(() => loadDiff('basic')).mockName('pullRequests.get')
     }
   }
-  // Passes the mocked out GitHub API into out robot instance
-  robot.auth = () => Promise.resolve(github)
-  return { robot, github }
+  // Passes the mocked out GitHub API into out app instance
+  app.auth = () => Promise.resolve(github)
+  return { app, github }
 }

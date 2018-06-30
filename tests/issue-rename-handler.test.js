@@ -1,12 +1,12 @@
-const { createRobot } = require('probot-ts')
+const { Application } = require('probot')
 const issueEdited = require('./fixtures/payloads/issues.edited.json')
 const plugin = require('../src')
 
 describe('issue-rename-handler', () => {
-  let robot, github, event
+  let app, github, event
 
   beforeEach(() => {
-    robot = createRobot()
+    app = new Application()
     event = { event: 'issues', payload: issueEdited }
 
     github = {
@@ -16,19 +16,19 @@ describe('issue-rename-handler', () => {
       }
     }
 
-    robot.auth = jest.fn(() => Promise.resolve(github))
-    plugin(robot)
+    app.auth = jest.fn(() => Promise.resolve(github))
+    app.load(plugin)
   })
 
   it('un-edits the issue title', async () => {
-    await robot.receive(event)
+    await app.receive(event)
     expect(github.issues.edit.mock.calls[0][0]).toMatchSnapshot()
     expect(github.issues.createComment.mock.calls[0][0]).toMatchSnapshot()
   })
 
   it('only acts if the title is edited', async () => {
     event.payload.changes = {}
-    await robot.receive(event)
+    await app.receive(event)
     expect(github.issues.edit).not.toHaveBeenCalled()
     expect(github.issues.createComment).not.toHaveBeenCalled()
   })
