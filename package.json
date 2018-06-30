@@ -54,7 +54,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
-    "jest": "^22.1.2",
+    "jest": "^23.2.0",
     "smee-client": "^1.0.1",
     "standard": "^11.0.0",
     "webpack": "^4.0.0",
