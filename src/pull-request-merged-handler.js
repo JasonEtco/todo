@@ -15,6 +15,8 @@ module.exports = async context => {
     chunkDiff(context)
   ])
 
+  const excludePattern = config.exclude
+
   for (let i = 0; i < chunks.length; i++) {
     const chunk = chunks[i]
 
@@ -22,7 +24,13 @@ module.exports = async context => {
     while ((match = regex.exec(chunk)) !== null) {
       const parsed = parseChunk({ match, context, config })
 
-      if (parsed.filename === '.github/config.yml') continue
+      if (parsed.filename === '.github/config.yml') {
+        context.log.debug('Skipping .github/config.yml')
+        continue
+      } else if (excludePattern && new RegExp(excludePattern).test(parsed.filename)) {
+        context.log.debug('Skipping ' + parsed.filename + ' as it matches the exclude pattern ' + excludePattern)
+        continue
+      }
 
       // Prevent duplicates
       const existingIssue = await checkForDuplicateIssue(context, parsed.title)

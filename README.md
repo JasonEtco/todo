@@ -56,6 +56,7 @@ todo:
 | caseSensitive | `boolean` | Should the keyword be case sensitive? | false |
 | label | `boolean`, `string`, `string[]` | Add a label to the new issue. If true, add the `todo` label. If false, don't add any label. You can also give it a label name or an array of label names. | true |
 | reopenClosed | `boolean` | If an issue already exists and is closed, reopen it. Note: if set to false, no new issue will be created. | true |
+| exclude | `RegExp` | Exclude certain files and/or directories. | null |
 
 ## CLI
 
