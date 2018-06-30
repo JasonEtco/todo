@@ -67,6 +67,13 @@ describe('pull-request-merged-handler', () => {
     await robot.receive(event)
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
+  
+  it('ignores changes to the bin directory', async () => {
+    github.pullRequests.get.mockReturnValueOnce(loadDiff('bin'))
+    github.repos.getContent.mockReturnValueOnce(loadConfig('excludeBin'))
+    await robot.receive(event)
+    expect(github.issues.createComment).toHaveBeenCalledTimes(0)
+  })
 
   it('creates an issue with a body line', async () => {
     github.pullRequests.get.mockReturnValueOnce(loadDiff('body'))

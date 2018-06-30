@@ -1,0 +1,22 @@
+diff --git a/bin/config.yml b/bin/config.yml
+index 0d43cbb..4e652e9 100644
+--- a/bin/config.yml
++++ b/bin/config.yml
+@@ -4,21 +4,22 @@
+language: node_js
+ 
+ node_js:
+   - "8"
+-  
++
+ notifications:
+   disabled: true
+-  
++ // TODO I am an example title
+ branches:
+   except:
+     - /^vd+.d+.d+$/
+-    
+ script:
+   - npm test
+   - codecov
