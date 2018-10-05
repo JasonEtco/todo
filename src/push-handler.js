@@ -18,9 +18,11 @@ module.exports = async context => {
 
   const [
     { regex, config, labels },
+    { data: comments },
     chunks
   ] = await Promise.all([
     handlerSetup(context),
+    context.github.issues.getComments(context.issue({})),
     chunkDiff(context)
   ])
 
@@ -38,6 +40,12 @@ module.exports = async context => {
         continue
       } else if (excludePattern && new RegExp(excludePattern).test(parsed.filename)) {
         context.log.debug('Skipping ' + parsed.filename + ' as it matches the exclude pattern ' + excludePattern)
+        continue
+      }
+
+      // This PR already has a comment for this item
+      if (comments.some(c => c.body.startsWith(`## ${parsed.title}`))) {
+        context.log(`Comment with title [${parsed.title}] already exists`)
         continue
       }
 
