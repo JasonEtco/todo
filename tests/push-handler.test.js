@@ -45,17 +45,11 @@ describe('push-handler', () => {
   it('does not create any issues if no todos are found', async () => {
     github.repos.getCommit.mockReturnValueOnce(loadDiff('none'))
     await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.create).not.toHaveBeenCalled()
   })
 
   it('does not create any issues if the push is not on the default branch', async () => {
-    await app.receive({
-      name: 'push',
-      payload: {
-        ...pushEvent,
-        ref: 'not-master'
-      }
-    })
+    await app.receive({ name: 'push', payload: { ...pushEvent, ref: 'not-master' } })
     expect(github.issues.create).not.toHaveBeenCalled()
   })
 
@@ -64,7 +58,7 @@ describe('push-handler', () => {
       data: { total_count: 1, items: [{ title: 'I am an example title', state: 'open' }] }
     }))
     await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.create).not.toHaveBeenCalled()
   })
 
   it('creates an issue if the search does not have an issue with the correct title', async () => {
@@ -85,20 +79,20 @@ describe('push-handler', () => {
   it('ignores changes to the config file', async () => {
     github.repos.getCommit.mockReturnValueOnce(loadDiff('config'))
     await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.create).not.toHaveBeenCalled()
   })
 
   it('ignores changes to the bin directory', async () => {
     github.repos.getCommit.mockReturnValueOnce(loadDiff('bin'))
     github.repos.getContent.mockReturnValueOnce(loadConfig('excludeBin'))
     await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.create).not.toHaveBeenCalled()
   })
 
   it('ignores pushes not to master', async () => {
     const e = { event: event.event, payload: { ...event.payload, ref: 'not/the/master/branch' } }
     await app.receive(e)
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.create).not.toHaveBeenCalled()
   })
 
   it('ignores merge commits', async () => {
@@ -106,7 +100,7 @@ describe('push-handler', () => {
       data: { parents: [1, 2] }
     }))
     await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.create).not.toHaveBeenCalled()
   })
 
   it('creates an issue with a body line', async () => {
@@ -130,7 +124,7 @@ describe('push-handler', () => {
     expect(github.issues.edit).toHaveBeenCalledTimes(1)
     expect(github.issues.createComment).toHaveBeenCalledTimes(1)
     expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.create).not.toHaveBeenCalled()
   })
 
   it('respects the reopenClosed config', async () => {
@@ -139,9 +133,9 @@ describe('push-handler', () => {
       data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
     }))
     await app.receive(event)
-    expect(github.issues.edit).toHaveBeenCalledTimes(0)
-    expect(github.issues.createComment).toHaveBeenCalledTimes(0)
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.edit).not.toHaveBeenCalled()
+    expect(github.issues.createComment).not.toHaveBeenCalled()
+    expect(github.issues.create).not.toHaveBeenCalled()
   })
 
   it('does not show the blob if blobLines is false', async () => {

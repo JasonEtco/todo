@@ -45,7 +45,7 @@ describe('pull-request-merged-handler', () => {
   it('does not create any issues if no todos are found', async () => {
     github.pullRequests.get.mockReturnValueOnce(loadDiff('none'))
     await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.create).not.toHaveBeenCalled()
   })
 
   it('does not create an issue that already exists', async () => {
@@ -53,7 +53,7 @@ describe('pull-request-merged-handler', () => {
       data: { total_count: 1, items: [{ title: 'I am an example title', state: 'open' }] }
     }))
     await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.create).not.toHaveBeenCalled()
   })
 
   it('creates many (5) issues', async () => {
@@ -65,14 +65,14 @@ describe('pull-request-merged-handler', () => {
   it('ignores changes to the config file', async () => {
     github.pullRequests.get.mockReturnValueOnce(loadDiff('config'))
     await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.create).not.toHaveBeenCalled()
   })
 
   it('ignores changes to the bin directory', async () => {
     github.pullRequests.get.mockReturnValueOnce(loadDiff('bin'))
     github.repos.getContent.mockReturnValueOnce(loadConfig('excludeBin'))
     await app.receive(event)
-    expect(github.issues.createComment).toHaveBeenCalledTimes(0)
+    expect(github.issues.createComment).not.toHaveBeenCalled()
   })
 
   it('creates an issue with a body line', async () => {
@@ -89,7 +89,7 @@ describe('pull-request-merged-handler', () => {
     expect(github.issues.edit).toHaveBeenCalledTimes(1)
     expect(github.issues.createComment).toHaveBeenCalledTimes(1)
     expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.create).not.toHaveBeenCalled()
   })
 
   it('respects the reopenClosed config', async () => {
@@ -98,8 +98,8 @@ describe('pull-request-merged-handler', () => {
       data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
     }))
     await app.receive(event)
-    expect(github.issues.edit).toHaveBeenCalledTimes(0)
-    expect(github.issues.createComment).toHaveBeenCalledTimes(0)
-    expect(github.issues.create).toHaveBeenCalledTimes(0)
+    expect(github.issues.edit).not.toHaveBeenCalled()
+    expect(github.issues.createComment).not.toHaveBeenCalled()
+    expect(github.issues.create).not.toHaveBeenCalled()
   })
 })
