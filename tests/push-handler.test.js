@@ -3,7 +3,7 @@ const { gimmeApp, loadConfig, loadDiff } = require('./helpers')
 
 describe('push-handler', () => {
   let app, github
-  const event = { event: 'push', payload: pushEvent }
+  const event = { name: 'push', payload: pushEvent }
 
   beforeEach(() => {
     const gimme = gimmeApp()

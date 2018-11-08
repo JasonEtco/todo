@@ -3,7 +3,7 @@ const { gimmeApp, loadConfig, loadDiff } = require('./helpers')
 
 describe('pull-request-merged-handler', () => {
   let app, github
-  const event = { event: 'pull_request', payload: pullRequestClosed }
+  const event = { name: 'pull_request', payload: pullRequestClosed }
 
   beforeEach(() => {
     const gimme = gimmeApp()

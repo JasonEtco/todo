@@ -3,7 +3,7 @@ const pullRequestOpened = require('./fixtures/payloads/pull_request.opened.json'
 
 describe('pull-request-handler', () => {
   let app, github
-  const event = { event: 'pull_request', payload: pullRequestOpened }
+  const event = { name: 'pull_request', payload: pullRequestOpened }
 
   beforeEach(() => {
     const gimme = gimmeApp()
