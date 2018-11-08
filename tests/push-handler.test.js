@@ -48,6 +48,17 @@ describe('push-handler', () => {
     expect(github.issues.create).toHaveBeenCalledTimes(0)
   })
 
+  it('does not create any issues if the push is not on the default branch', async () => {
+    await app.receive({
+      name: 'push',
+      payload: {
+        ...pushEvent,
+        ref: 'not-master'
+      }
+    })
+    expect(github.issues.create).not.toHaveBeenCalled()
+  })
+
   it('does not create an issue that already exists', async () => {
     github.search.issues.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 1, items: [{ title: 'I am an example title', state: 'open' }] }
