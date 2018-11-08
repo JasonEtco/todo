@@ -10,8 +10,6 @@
     "start-probot": "node ./node_modules/probot/bin/probot-run ./src/index.js",
     "test": "jest --coverage && standard",
     "test:update": "jest -u",
-    "test:pr": "jest pull-request-handler.test.js",
-    "test:push": "jest push-handler.test.js",
     "build": "webpack -p",
     "now-build": "echo \"Don't build on Now\"",
     "deploy": "npm run build && gcloud beta functions deploy todo-github-app --project todo-github-app --trigger-http --entry-point bot"
@@ -45,10 +43,10 @@
     "chalk": "^2.3.1",
     "commander": "^2.14.1",
     "hbs": "^4.0.1",
-    "probot": "^7.0.0"
+    "probot": "^7.3.1"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -57,7 +55,7 @@
     "jest": "^23.2.0",
     "smee-client": "^1.0.1",
     "standard": "^11.0.0",
-    "webpack": "^4.0.0",
+    "webpack": "^4.25.1",
     "webpack-cli": "^3.0.8"
   },
   "engines": {

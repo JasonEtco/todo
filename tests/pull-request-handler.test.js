@@ -3,7 +3,7 @@ const pullRequestOpened = require('./fixtures/payloads/pull_request.opened.json'
 
 describe('pull-request-handler', () => {
   let app, github
-  const event = { event: 'pull_request', payload: pullRequestOpened }
+  const event = { name: 'pull_request', payload: pullRequestOpened }
 
   beforeEach(() => {
     const gimme = gimmeApp()
@@ -35,7 +35,7 @@ describe('pull-request-handler', () => {
     }] }))
 
     await app.receive(event)
-    expect(github.issues.createComment).toHaveBeenCalledTimes(0)
+    expect(github.issues.createComment).not.toHaveBeenCalled()
   })
 
   it('creates many (5) comments', async () => {
@@ -47,14 +47,14 @@ describe('pull-request-handler', () => {
   it('ignores changes to the config file', async () => {
     github.pullRequests.get.mockReturnValueOnce(loadDiff('config'))
     await app.receive(event)
-    expect(github.issues.createComment).toHaveBeenCalledTimes(0)
+    expect(github.issues.createComment).not.toHaveBeenCalled()
   })
 
   it('ignores changes to the bin directory', async () => {
     github.pullRequests.get.mockReturnValueOnce(loadDiff('bin'))
     github.repos.getContent.mockReturnValueOnce(loadConfig('excludeBin'))
     await app.receive(event)
-    expect(github.issues.createComment).toHaveBeenCalledTimes(0)
+    expect(github.issues.createComment).not.toHaveBeenCalled()
   })
 
   it('works with a string as the keyword config', async () => {

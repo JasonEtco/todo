@@ -7,7 +7,7 @@ describe('issue-rename-handler', () => {
 
   beforeEach(() => {
     app = new Application()
-    event = { event: 'issues', payload: issueEdited }
+    event = { name: 'issues', payload: issueEdited }
 
     github = {
       issues: {
