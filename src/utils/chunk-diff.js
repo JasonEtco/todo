@@ -1,4 +1,4 @@
-const { endDiff } = require('./helpers')
+const parseDiff = require('parse-diff')
 
 module.exports = async context => {
   let diff
@@ -14,14 +14,5 @@ module.exports = async context => {
     }))).data
   }
 
-  const diffWithEnd = endDiff(diff)
-  const reg = /^diff --git\s.+\n[\s\S]+?(?=^diff|^__END_OF_DIFF_PARSING__)/gm
-
-  const chunks = []
-  let match
-  while ((match = reg.exec(diffWithEnd)) !== null) {
-    chunks.push(match[0])
-  }
-
-  return chunks
+  return parseDiff(diff)
 }
