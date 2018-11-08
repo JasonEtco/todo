@@ -48,7 +48,7 @@
     "probot": "^7.3.1"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -57,7 +57,7 @@
     "jest": "^23.2.0",
     "smee-client": "^1.0.1",
     "standard": "^11.0.0",
-    "webpack": "^4.0.0",
+    "webpack": "^4.25.1",
     "webpack-cli": "^3.0.8"
   },
   "engines": {
