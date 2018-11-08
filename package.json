@@ -10,8 +10,6 @@
     "start-probot": "node ./node_modules/probot/bin/probot-run ./src/index.js",
     "test": "jest --coverage && standard",
     "test:update": "jest -u",
-    "test:pr": "jest pull-request-handler.test.js",
-    "test:push": "jest push-handler.test.js",
     "build": "webpack -p",
     "now-build": "echo \"Don't build on Now\"",
     "deploy": "npm run build && gcloud beta functions deploy todo-github-app --project todo-github-app --trigger-http --entry-point bot"
