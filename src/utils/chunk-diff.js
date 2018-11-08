@@ -3,7 +3,7 @@ const { endDiff } = require('./helpers')
 module.exports = async context => {
   let diff
 
-  if (context.event.event === 'push') {
+  if (context.event === 'push') {
     diff = (await context.github.repos.getCommit(context.repo({
       commit_sha: context.payload.head_commit.id,
       headers: { Accept: 'application/vnd.github.diff' }
