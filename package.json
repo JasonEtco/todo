@@ -43,7 +43,7 @@
     "probot": "^7.3.1"
   },
   "devDependencies": {
-    "jest": "^23.2.0",
+    "jest": "^23.6.0",
     "smee-client": "^1.0.1",
     "standard": "^11.0.0"
   },
