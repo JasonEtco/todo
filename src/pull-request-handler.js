@@ -8,16 +8,11 @@ module.exports = async context => {
 
   return theLoop(context, async ({
     title,
-    config,
     keyword,
     sha,
     filename,
     assignedToString,
-    chunk,
-    index,
     range,
-    labels,
-    username,
     bodyComment
   }) => {
     // This PR already has a comment for this item

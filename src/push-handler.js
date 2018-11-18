@@ -22,8 +22,6 @@ module.exports = async context => {
     sha,
     filename,
     assignedToString,
-    chunk,
-    index,
     range,
     labels,
     username,
