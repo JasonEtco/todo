@@ -6,13 +6,10 @@
   "license": "ISC",
   "repository": "https://github.com/JasonEtco/todo.git",
   "scripts": {
-    "start": "PRIVATE_KEY=$(echo $PRIVATE_KEY | base64 -d) npm run start-probot",
-    "start-probot": "node ./node_modules/probot/bin/probot-run ./src/index.js",
+    "dev": "nodemon",
+    "start": "probot run ./index.js",
     "test": "jest --coverage && standard",
-    "test:update": "jest -u",
-    "build": "webpack -p",
-    "now-build": "echo \"Don't build on Now\"",
-    "deploy": "npm run build && gcloud beta functions deploy todo-github-app --project todo-github-app --trigger-http --entry-point bot"
+    "test:update": "jest -u"
   },
   "standard": {
     "env": {
@@ -71,5 +68,12 @@
       "PRIVATE_KEY": "@private-key",
       "WEBHOOK_SECRET": "@webhook-secret"
     }
+  },
+  "nodemonConfig": {
+    "exec": "npm start",
+    "watch": [
+      ".env",
+      "."
+    ]
   }
 }
