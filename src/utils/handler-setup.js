@@ -10,7 +10,7 @@ module.exports = async context => {
   const config = await context.config('config.yml')
   const cfg = config && config.todo ? Object.assign({}, defaultConfig, config.todo) : defaultConfig
   const labels = await generateLabel(context, cfg)
-  const keywords = Array.isArray(config.keyword) ? config.keyword : [config.keyword]
+  const keywords = Array.isArray(cfg.keyword) ? cfg.keyword : [cfg.keyword]
 
   return {
     config: cfg,
