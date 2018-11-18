@@ -10,12 +10,11 @@ module.exports = async context => {
   const config = await context.config('config.yml')
   const cfg = config && config.todo ? Object.assign({}, defaultConfig, config.todo) : defaultConfig
   const labels = await generateLabel(context, cfg)
-  const keywords = Array.isArray(cfg.keyword) ? cfg.keyword : [cfg.keyword]
-  const reg = new RegExp(`^diff --git a\\/.+ b\\/(.+)[\\s\\S]+?^@{2}.+\\+(\\d+).+@{2}([\\s\\S]+?(^(\\+).*(${keywords.join('|')})(?:[:-\\s]+)?\\s(.*))[\\s\\S]+)`, 'gm')
+  const keywords = Array.isArray(config.keyword) ? config.keyword : [config.keyword]
 
   return {
     config: cfg,
-    regex: reg,
+    regex: new RegExp(`.+()\\s(?<keyword>${keywords.join('|')})\\s(?<title>.*)`),
     labels
   }
 }
