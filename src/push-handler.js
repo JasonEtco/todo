@@ -49,7 +49,7 @@ module.exports = async context => {
 
         const { title, keyword } = matches.groups
 
-        const deets = getDeets(context, config, change.ln || change.ln2)
+        const deets = getDeets({ context, config, chunk, line: change.ln || change.ln2 })
 
         // Prevent duplicates
         const existingIssue = await checkForDuplicateIssue(context, title)

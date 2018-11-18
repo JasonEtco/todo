@@ -1,6 +1,13 @@
 const generateAssignedTo = require('./generate-assigned-to')
 
-module.exports = (context, config, n) => {
+function getFileBoundaries (lastChange, line, padding = 2) {
+  const end = Math.min(line + padding, lastChange.ln || lastChange.ln2)
+
+  // Gotta add one because diffs are weird
+  return { start: line + 1, end: end + 1 }
+}
+
+module.exports = ({ context, chunk, config, line }) => {
   const number = context.payload.pull_request ? context.payload.pull_request.number : null
 
   let username, sha
@@ -19,7 +26,9 @@ module.exports = (context, config, n) => {
     // Don't show the blob
     range = false
   } else {
-    range = `L${n + 1}-L${n + 1 + config.blobLines}`
+    const lastChange = chunk.changes[chunk.changes.length - 1]
+    const { start, end } = getFileBoundaries(lastChange, line, config.blobLines)
+    range = start === end ? `L${start}` : `L${start}-L${end}`
   }
 
   return {
