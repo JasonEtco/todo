@@ -41,14 +41,14 @@ module.exports = async context => {
     }
 
     for (const chunk of file.chunks) {
-      for (const index in chunk.changes) {
+      for (const indexStr in chunk.changes) {
+        const index = parseInt(indexStr, 10)
         const change = chunk.changes[index]
         const matches = TITLE_REG.exec(change.content)
         if (!matches) continue
 
         const { title, keyword } = matches.groups
 
-        console.log(change)
         const deets = getDeets(context, config, change.ln || change.ln2)
 
         // Prevent duplicates
