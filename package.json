@@ -35,7 +35,6 @@
     ]
   },
   "dependencies": {
-    "@google-cloud/logging-bunyan": "^0.8.2",
     "@octokit/rest": "^15.1.7",
     "chalk": "^2.3.1",
     "commander": "^2.14.1",
@@ -44,17 +43,9 @@
     "probot": "^7.3.1"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
     "jest": "^23.2.0",
     "smee-client": "^1.0.1",
-    "standard": "^11.0.0",
-    "webpack": "^4.25.1",
-    "webpack-cli": "^3.0.8"
+    "standard": "^11.0.0"
   },
   "engines": {
     "node": ">= 8.9.4",
