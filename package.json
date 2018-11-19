@@ -48,17 +48,8 @@
     "standard": "^11.0.0"
   },
   "engines": {
-    "node": ">= 8.9.4",
-    "npm": ">= 5.0.0"
-  },
-  "now": {
-    "alias": "todo",
-    "env": {
-      "APP_ID": "@app-id",
-      "NODE_ENV": "production",
-      "PRIVATE_KEY": "@private-key",
-      "WEBHOOK_SECRET": "@webhook-secret"
-    }
+    "node": ">= 10.13.x",
+    "npm": ">= 6.0.0"
   },
   "nodemonConfig": {
     "exec": "npm start",
