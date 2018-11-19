@@ -48,8 +48,8 @@
     "standard": "^11.0.0"
   },
   "engines": {
-    "node": ">= 10.13.x",
-    "npm": ">= 6.0.0"
+    "node": "10.13.x",
+    "npm": "6.x.X"
   },
   "nodemonConfig": {
     "exec": "npm start",
