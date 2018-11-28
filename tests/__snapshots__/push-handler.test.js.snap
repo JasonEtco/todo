@@ -4,7 +4,7 @@ exports[`push-handler creates an issue 1`] = `
 Array [
   Object {
     "assignee": "JasonEtco",
-    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L11-L16
+    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L10-L15
 
 ---
 
@@ -23,7 +23,7 @@ exports[`push-handler creates an issue and assigns the configured user 1`] = `
 Array [
   Object {
     "assignee": "matchai",
-    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L11-L16
+    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L10-L15
 
 ---
 
@@ -46,7 +46,7 @@ Array [
       "matchai",
       "defunkt",
     ],
-    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L11-L16
+    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L10-L15
 
 ---
 
@@ -69,7 +69,7 @@ Array [
 
 ---
 
-https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L11-L16
+https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L10-L15
 
 ---
 
@@ -92,7 +92,7 @@ Array [
 
 ---
 
-https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L11-L16
+https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L10-L15
 
 ---
 
@@ -111,7 +111,7 @@ exports[`push-handler creates an issue with a truncated title 1`] = `
 Array [
   Object {
     "assignee": "JasonEtco",
-    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L11-L16
+    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L10-L15
 
 ---
 
@@ -129,7 +129,7 @@ Array [
 exports[`push-handler creates an issue without assigning anyone 1`] = `
 Array [
   Object {
-    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L11-L16
+    "body": "https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L10-L15
 
 ---
 
@@ -237,7 +237,7 @@ Array [
 
 ---
 
-https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L11
+https://github.com/JasonEtco/tests/blob/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af/.travis.yml#L10-L12
 
 ---
 

@@ -3,7 +3,7 @@
 const program = require('commander')
 const chalk = require('chalk')
 const octokit = require('@octokit/rest')()
-const pushHandler = require('../src/push-handler')
+const pushHandler = require('../lib/push-handler')
 const fs = require('fs')
 const path = require('path')
 

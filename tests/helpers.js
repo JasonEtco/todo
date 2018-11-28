@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const { Application } = require('probot')
-const plugin = require('../src')
+const plugin = require('..')
 
 const loadDiff = exports.loadDiff = filename => {
   return Promise.resolve({

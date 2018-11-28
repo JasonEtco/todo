@@ -1,6 +1,6 @@
 const { Application } = require('probot')
 const issueEdited = require('./fixtures/payloads/issues.edited.json')
-const plugin = require('../src')
+const plugin = require('..')
 
 describe('issue-rename-handler', () => {
   let app, github, event
