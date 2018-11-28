@@ -11,6 +11,18 @@ describe('pull-request-merged-handler', () => {
     github = gimme.github
   })
 
+  it('does nothing on an unmerged, closed PR', async () => {
+    await app.receive({
+      ...event,
+      payload: {
+        ...event.payload,
+        pull_request: { merged: false }
+      }
+    })
+
+    expect(github.issues.create).not.toHaveBeenCalled()
+  })
+
   it('creates an issue', async () => {
     await app.receive(event)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
