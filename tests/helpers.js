@@ -55,6 +55,9 @@ exports.gimmeApp = () => {
     },
     pullRequests: {
       get: jest.fn(() => loadDiff('basic')).mockName('pullRequests.get')
+    },
+    hook: {
+      before: jest.fn()
     }
   }
   // Passes the mocked out GitHub API into out app instance
