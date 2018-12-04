@@ -7,6 +7,8 @@ describe('main-loop', () => {
   beforeEach(() => {
     context = {
       event: 'push',
+      payload: require('../fixtures/payloads/push.json'),
+      log: f => f,
       repo: (obj) => ({
         owner: 'JasonEtco',
         repo: 'todo',
