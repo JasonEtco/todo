@@ -46,9 +46,9 @@ describe('check-for-body', () => {
     const pizza = checkForBody(changes, 0, config)
     expect(pizza).toBe('This is a pizza')
 
-    changes[1].content = '// text This is a text'
+    changes[1].content = '// text This is a test'
     const text = checkForBody(changes, 0, config)
-    expect(text).toBe('This is a text')
+    expect(text).toBe('This is a test')
   })
 
   it('Allows multiple consecutive BODY lines', () => {
