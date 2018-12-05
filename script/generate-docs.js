@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const chalk = require('chalk')
 const schema = require('../lib/utils/config-schema')
 
 const START = '<!--DOC GENERATOR-->'
@@ -47,6 +48,7 @@ function updateReadme () {
   const table = generateTable()
   const newContents = contents.replace(REG, `${START}\n${table}\n${END}`)
   fs.writeFileSync(pathToReadme, newContents)
+  console.log(chalk.green(chalk.bold('✨  README docs updated!')))
 }
 
 updateReadme()
