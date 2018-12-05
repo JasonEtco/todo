@@ -50,7 +50,7 @@ todo:
 <!--DOC GENERATOR-->
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
-| `autoAssign` | `boolean, string[], string` | Should **todo** automatically assign a user to the new issue? If `true`, it'll assign whoever pushed the code.If a string, it'll assign that user by username. You can also give it an array of usernames or `false` to not assign anyone. | `true` |
+| `autoAssign` | `boolean, string[], string` | Should **todo** automatically assign a user to the new issue? If `true`, it'll assign whoever pushed the code. If a string, it'll assign that user by username. You can also give it an array of usernames or `false` to not assign anyone. | `true` |
 | `keyword` | `string[]` | The keyword(s) to use to generate issue titles | `['@todo','TODO']` |
 | `bodyKeyword` | `string[]` | If this is in the line right after the main keyword, it will become the generated issue body. | `['@body','BODY']` |
 | `blobLines` | `number, boolean` | The number of lines of code to show, starting from the keyword. | `5` |
