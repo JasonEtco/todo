@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`main-loop throws on an invalid config 1`] = `[ValidationError: "pizza" is not allowed]`;
