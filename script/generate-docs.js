@@ -35,7 +35,7 @@ function generateTable () {
   const rows = Object.keys(describedSchema.children).map(key => {
     const opt = describedSchema.children[key]
     const type = serializeType(opt)
-    return `| ${key} | ${type} | ${opt.description} | ${JSON.stringify(opt.flags.default).replace(/"/g, "'")} |`
+    return `| \`${key}\` | \`${type}\` | ${opt.description} | \`${JSON.stringify(opt.flags.default).replace(/"/g, "'")}\` |`
   })
 
   return [tableHeaders, separator, ...rows].join('\n')
