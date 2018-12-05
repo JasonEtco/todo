@@ -50,4 +50,29 @@ describe('check-for-body', () => {
     const text = checkForBody(changes, 0, config)
     expect(text).toBe('This is a text')
   })
+
+  it('Allows multiple consecutive BODY lines', () => {
+    changes.push({
+      type: 'add',
+      ln: 259,
+      content: '+    // BODY: Another body line'
+    })
+    const body = checkForBody(changes, 0, config)
+    expect(body).toBe('A body Another body line')
+  })
+
+  it('Properly splits empty lines in multi-line BODY', () => {
+    changes.push({
+      type: 'add',
+      ln: 259,
+      content: '+    // BODY:'
+    })
+    changes.push({
+      type: 'add',
+      ln: 260,
+      content: '+    // BODY: Test'
+    })
+    const body = checkForBody(changes, 0, config)
+    expect(body).toBe('A body\nTest')
+  })
 })
