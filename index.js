@@ -5,7 +5,14 @@ const issueRenameHandler = require('./lib/issue-rename-handler')
 
 const handle = handler => {
   return async context => {
-    context.log(context.repo(), 'Receive event')
+    const { owner, repo } = context.repo()
+
+    if (process.env.IGNORED_REPOS) {
+      const repos = process.env.IGNORED_REPOS.split(',')
+      if (repos.includes(`${owner}/${repo}`)) return
+    }
+
+    context.log({ owner, repo }, 'Received event')
     return handler(context)
   }
 }
