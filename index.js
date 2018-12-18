@@ -9,7 +9,11 @@ const handle = handler => {
 
     if (process.env.IGNORED_REPOS) {
       const repos = process.env.IGNORED_REPOS.split(',')
-      if (repos.includes(`${owner}/${repo}`)) return
+      const fullName = `${owner}/${repo}`
+      if (repos.includes(fullName)) {
+        context.log(`Specifically ignoring ${fullName} based on IGNORED_REPOS`)
+        return
+      }
     }
 
     context.log({ owner, repo }, 'Received event')
