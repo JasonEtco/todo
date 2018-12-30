@@ -8,6 +8,7 @@ describe('main-loop', () => {
     context = {
       event: 'push',
       payload: require('../fixtures/payloads/push.json'),
+      config: jest.fn(),
       log: f => f,
       repo: (obj) => ({
         owner: 'JasonEtco',
@@ -49,6 +50,12 @@ describe('main-loop', () => {
       expect(err).toMatchSnapshot()
     }
 
+    expect(handler).not.toHaveBeenCalled()
+  })
+
+  it('does nothing if a title is only whitespace', async () => {
+    context.github.repos.getCommit.mockReturnValueOnce(Promise.resolve(loadDiff('title-with-whitespace')))
+    await mainLoop(context, handler)
     expect(handler).not.toHaveBeenCalled()
   })
 })
