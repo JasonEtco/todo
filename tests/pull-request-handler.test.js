@@ -75,12 +75,12 @@ describe('pull-request-handler', () => {
       body: '## I am an example title', id: 123
     }] }))
     await app.receive(event)
-    expect(github.issues.edit).toHaveBeenCalled()
-    expect(github.issues.edit).toHaveBeenCalledWith({
+    expect(github.issues.deleteComment).toHaveBeenCalled()
+    expect(github.issues.deleteComment).toHaveBeenCalledWith({
       comment_id: 123,
       owner: 'JasonEtco',
       repo: 'tests',
-      number: 1
+      number: pullRequestOpened.number
     })
   })
 
