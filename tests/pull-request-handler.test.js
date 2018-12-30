@@ -72,15 +72,16 @@ describe('pull-request-handler', () => {
   it('deletes a comment on a removed TODO', async () => {
     github.pullRequests.get.mockReturnValueOnce(loadDiff('remove-todo'))
     github.issues.getComments.mockReturnValueOnce(Promise.resolve({ data: [{
-      body: '## I am an example title', id: 123
+      body: '## I am an example title\n\nHi!', id: 123
     }] }))
     await app.receive(event)
-    expect(github.issues.deleteComment).toHaveBeenCalled()
-    expect(github.issues.deleteComment).toHaveBeenCalledWith({
+    expect(github.issues.editComment).toHaveBeenCalled()
+    expect(github.issues.editComment).toHaveBeenCalledWith({
       comment_id: 123,
       owner: 'JasonEtco',
       repo: 'tests',
-      number: pullRequestOpened.number
+      number: pullRequestOpened.number,
+      body: '<details><summary><strong>I am an example title</strong> ✅</summary>\n\n## I am an example title\n\nHi!</details>'
     })
   })
 
@@ -90,6 +91,6 @@ describe('pull-request-handler', () => {
       body: '## I am not an example title'
     }] }))
     await app.receive(event)
-    expect(github.issues.deleteComment).not.toHaveBeenCalled()
+    expect(github.issues.editComment).not.toHaveBeenCalled()
   })
 })
