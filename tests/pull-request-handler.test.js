@@ -68,4 +68,28 @@ describe('pull-request-handler', () => {
     await app.receive(event)
     expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
   })
+
+  it('deletes a comment on a removed TODO', async () => {
+    github.pullRequests.get.mockReturnValueOnce(loadDiff('remove-todo'))
+    github.issues.getComments.mockReturnValueOnce(Promise.resolve({ data: [{
+      body: '## I am an example title', id: 123
+    }] }))
+    await app.receive(event)
+    expect(github.issues.edit).toHaveBeenCalled()
+    expect(github.issues.edit).toHaveBeenCalledWith({
+      comment_id: 123,
+      owner: 'JasonEtco',
+      repo: 'tests',
+      number: 1
+    })
+  })
+
+  it('does nothing on a non-existant comment on a removed TODO', async () => {
+    github.pullRequests.get.mockReturnValueOnce(loadDiff('remove-todo'))
+    github.issues.getComments.mockReturnValueOnce(Promise.resolve({ data: [{
+      body: '## I am not an example title'
+    }] }))
+    await app.receive(event)
+    expect(github.issues.deleteComment).not.toHaveBeenCalled()
+  })
 })
