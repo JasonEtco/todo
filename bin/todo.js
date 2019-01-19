@@ -26,7 +26,7 @@ if (file) {
 octokit.issues.create = issue => issues.push(issue)
 octokit.search.issues = () => ({ data: { total_count: 0 } })
 
-let promise;
+let promise
 if (program.sha) {
   let context = {
     event: 'push',
@@ -49,41 +49,42 @@ if (program.sha) {
       }
     },
     github: octokit
-  };
+  }
   promise = pushHandler(context)
 } else {
-  async function get_pull() {
-    let result = await octokit.pullRequests.get({owner, repo, number: program.pr});
-    let context = {
-      event: 'pull_request.closed',
-      id: 1,
-      log: console.log,
-      config: (_, obj) => obj,
-      repo: (o) => ({ owner, repo, ...o }),
-      issue: (o) => ({ owner, repo, number: program.pr, ...o }),
-      payload: {
-        repository: {
-          owner,
-          name: repo,
-          master_branch: 'master'
-        },
-        pull_request: result.data,
+  promise = getPull()
+}
+
+async function getPull () {
+  let result = await octokit.pullRequests.get({owner, repo, number: program.pr})
+  let context = {
+    event: 'pull_request.closed',
+    id: 1,
+    log: console.log,
+    config: (_, obj) => obj,
+    repo: (o) => ({ owner, repo, ...o }),
+    issue: (o) => ({ owner, repo, number: program.pr, ...o }),
+    payload: {
+      repository: {
+        owner,
+        name: repo,
+        master_branch: 'master'
       },
-      github: octokit
-    }
-    return await pullRequestMergedHandler(context);
+      pull_request: result.data
+    },
+    github: octokit
   }
-  promise = get_pull();
+  return pullRequestMergedHandler(context)
 }
 
 promise.then(() => {
-    issues.forEach(issue => {
-      console.log(chalk.gray('---'))
-      console.log(chalk.gray('Title:'), chalk.bold(issue.title))
-      console.log(chalk.gray('Body:\n'), issue.body)
-      console.log(chalk.gray('---'))
-    })
+  issues.forEach(issue => {
+    console.log(chalk.gray('---'))
+    console.log(chalk.gray('Title:'), chalk.bold(issue.title))
+    console.log(chalk.gray('Body:\n'), issue.body)
+    console.log(chalk.gray('---'))
   })
+})
   .catch(e => {
     if (e.code === 404) {
       console.error('That combination of owner/repo/sha could not be found.')
