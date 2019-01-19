@@ -1,6 +1,6 @@
 <p align="center">
   <img src="https://avatars2.githubusercontent.com/in/5534?s=128&v=4" width="64">
-  <h3 align="center"><a href="https://todo.jasonet.co">todo</a></h3>
+  <h3 align="center"><a href="https://todo.jasonet.co">todo[bot]</a></h3>
   <p align="center">A GitHub App built with <a href="https://github.com/probot/probot">Probot</a> that creates new issues based on actionable comments in your code.<p>
   <p align="center"><a href="https://travis-ci.org/JasonEtco/todo"><img src="https://img.shields.io/travis/JasonEtco/todo/master.svg" alt="Build Status"></a> <a href="https://codecov.io/gh/JasonEtco/todo/"><img src="https://img.shields.io/codecov/c/github/JasonEtco/todo.svg" alt="Codecov"></a>
   </p>
