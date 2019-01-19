@@ -4,6 +4,7 @@ const program = require('commander')
 const chalk = require('chalk')
 const octokit = require('@octokit/rest')()
 const pushHandler = require('../lib/push-handler')
+const pullRequestMergedHandler = require('../lib/pull-request-merged-handler')
 const fs = require('fs')
 const path = require('path')
 
@@ -11,6 +12,7 @@ program
   .option('-o, --owner <owner>', 'owner')
   .option('-r, --repo <repo>', 'repo')
   .option('-s, --sha <sha>', 'sha')
+  .option('-p, --pr <PR>', 'pr')
   .option('-f, --file <file>', 'file')
   .parse(process.argv)
 
@@ -24,31 +26,57 @@ if (file) {
 octokit.issues.create = issue => issues.push(issue)
 octokit.search.issues = () => ({ data: { total_count: 0 } })
 
-const context = {
-  event: 'push',
-  id: 1,
-  log: () => {},
-  config: (_, obj) => obj,
-  repo: (o) => ({ owner, repo, ...o }),
-  payload: {
-    ref: 'refs/heads/master',
-    repository: {
-      owner,
-      name: repo,
-      master_branch: 'master'
-    },
-    head_commit: {
-      id: program.sha || 1,
-      author: {
-        username: owner
+let promise;
+if (program.sha) {
+  let context = {
+    event: 'push',
+    id: 1,
+    log: () => {},
+    config: (_, obj) => obj,
+    repo: (o) => ({ owner, repo, ...o }),
+    payload: {
+      ref: 'refs/heads/master',
+      repository: {
+        owner,
+        name: repo,
+        master_branch: 'master'
+      },
+      head_commit: {
+        id: program.sha || 1,
+        author: {
+          username: owner
+        }
       }
+    },
+    github: octokit
+  };
+  promise = pushHandler(context)
+} else {
+  async function get_pull() {
+    let result = await octokit.pullRequests.get({owner, repo, number: program.pr});
+    let context = {
+      event: 'pull_request.closed',
+      id: 1,
+      log: console.log,
+      config: (_, obj) => obj,
+      repo: (o) => ({ owner, repo, ...o }),
+      issue: (o) => ({ owner, repo, number: program.pr, ...o }),
+      payload: {
+        repository: {
+          owner,
+          name: repo,
+          master_branch: 'master'
+        },
+        pull_request: result.data,
+      },
+      github: octokit
     }
-  },
-  github: octokit
+    return await pullRequestMergedHandler(context);
+  }
+  promise = get_pull();
 }
 
-pushHandler(context)
-  .then(() => {
+promise.then(() => {
     issues.forEach(issue => {
       console.log(chalk.gray('---'))
       console.log(chalk.gray('Title:'), chalk.bold(issue.title))
