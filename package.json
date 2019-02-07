@@ -36,7 +36,7 @@
     ]
   },
   "dependencies": {
-    "@octokit/rest": "^15.18.0",
+    "@octokit/rest": "^16.15.0",
     "hbs": "^4.0.1",
     "joi": "^14.3.0",
     "parse-diff": "^0.5.1",
