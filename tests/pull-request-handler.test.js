@@ -18,19 +18,19 @@ describe('pull-request-handler', () => {
   })
 
   it('comments on a pull request and mentions the assigned user', async () => {
-    github.repos.getContent.mockReturnValueOnce(loadConfig('autoAssignString'))
+    github.repos.getContents.mockReturnValueOnce(loadConfig('autoAssignString'))
     await app.receive(event)
     expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
   })
 
   it('comments on a pull request and mentions the assigned users', async () => {
-    github.repos.getContent.mockReturnValueOnce(loadConfig('autoAssignArr'))
+    github.repos.getContents.mockReturnValueOnce(loadConfig('autoAssignArr'))
     await app.receive(event)
     expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
   })
 
   it('does not create duplicate comments', async () => {
-    github.issues.getComments.mockReturnValueOnce(Promise.resolve({ data: [{
+    github.issues.listComments.mockReturnValueOnce(Promise.resolve({ data: [{
       body: '## I am an example title'
     }] }))
 
@@ -39,32 +39,32 @@ describe('pull-request-handler', () => {
   })
 
   it('creates many (5) comments', async () => {
-    github.pullRequests.get.mockReturnValueOnce(loadDiff('many'))
+    github.pulls.get.mockReturnValueOnce(loadDiff('many'))
     await app.receive(event)
     expect(github.issues.createComment).toHaveBeenCalledTimes(5)
   })
 
   it('ignores changes to the config file', async () => {
-    github.pullRequests.get.mockReturnValueOnce(loadDiff('config'))
+    github.pulls.get.mockReturnValueOnce(loadDiff('config'))
     await app.receive(event)
     expect(github.issues.createComment).not.toHaveBeenCalled()
   })
 
   it('ignores changes to the bin directory', async () => {
-    github.pullRequests.get.mockReturnValueOnce(loadDiff('bin'))
-    github.repos.getContent.mockReturnValueOnce(loadConfig('excludeBin'))
+    github.pulls.get.mockReturnValueOnce(loadDiff('bin'))
+    github.repos.getContents.mockReturnValueOnce(loadConfig('excludeBin'))
     await app.receive(event)
     expect(github.issues.createComment).not.toHaveBeenCalled()
   })
 
   it('works with a string as the keyword config', async () => {
-    github.repos.getContent.mockReturnValueOnce(loadConfig('keywordsString'))
+    github.repos.getContents.mockReturnValueOnce(loadConfig('keywordsString'))
     await app.receive(event)
     expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
   })
 
   it('creates a comment with a body line', async () => {
-    github.pullRequests.get.mockReturnValueOnce(loadDiff('body'))
+    github.pulls.get.mockReturnValueOnce(loadDiff('body'))
     await app.receive(event)
     expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
   })
