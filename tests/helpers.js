@@ -41,7 +41,7 @@ exports.gimmeApp = () => {
       listComments: jest.fn(() => Promise.resolve({ data: [] })).mockName('issues.listComments')
     },
     search: {
-      issues: jest.fn(() => Promise.resolve({ data: { total_count: 0, items: [] } })).mockName('search.issues')
+      issues: jest.fn(() => Promise.resolve({ data: { total_count: 0, items: [] } })).mockName('search.issuesAndPullRequests')
     },
     git: {
       getCommit: jest.fn(() => Promise.resolve({ data: { parents: [1] } })).mockName('git.getCommit')

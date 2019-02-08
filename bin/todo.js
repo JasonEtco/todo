@@ -24,7 +24,7 @@ if (file) {
   octokit.gitdata.getCommit = () => ({ data: { parents: [] } })
 }
 octokit.issues.create = issue => issues.push(issue)
-octokit.search.issues = () => ({ data: { total_count: 0 } })
+octokit.search.issuesAndPullRequests = () => ({ data: { total_count: 0 } })
 
 const context = {
   event: 'push',

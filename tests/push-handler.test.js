@@ -54,7 +54,7 @@ describe('push-handler', () => {
   })
 
   it('does not create an issue that already exists', async () => {
-    github.search.issues.mockReturnValueOnce(Promise.resolve({
+    github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 1, items: [{ title: 'I am an example title', state: 'open' }] }
     }))
     await app.receive(event)
@@ -62,7 +62,7 @@ describe('push-handler', () => {
   })
 
   it('creates an issue if the search does not have an issue with the correct title', async () => {
-    github.search.issues.mockReturnValueOnce(Promise.resolve({
+    github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 1, items: [{ title: 'Not found', state: 'open' }] }
     }))
     await app.receive(event)
@@ -117,7 +117,7 @@ describe('push-handler', () => {
   })
 
   it('reopens a closed issue', async () => {
-    github.search.issues.mockReturnValueOnce(Promise.resolve({
+    github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
     }))
     await app.receive(event)
@@ -129,7 +129,7 @@ describe('push-handler', () => {
 
   it('respects the reopenClosed config', async () => {
     github.repos.getContents.mockReturnValueOnce(loadConfig('reopenClosedFalse'))
-    github.search.issues.mockReturnValueOnce(Promise.resolve({
+    github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
     }))
     await app.receive(event)

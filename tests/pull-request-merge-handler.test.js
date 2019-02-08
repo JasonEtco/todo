@@ -61,7 +61,7 @@ describe('pull-request-merged-handler', () => {
   })
 
   it('does not create an issue that already exists', async () => {
-    github.search.issues.mockReturnValueOnce(Promise.resolve({
+    github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 1, items: [{ title: 'I am an example title', state: 'open' }] }
     }))
     await app.receive(event)
@@ -94,7 +94,7 @@ describe('pull-request-merged-handler', () => {
   })
 
   it('reopens a closed issue', async () => {
-    github.search.issues.mockReturnValueOnce(Promise.resolve({
+    github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
     }))
     await app.receive(event)
@@ -106,7 +106,7 @@ describe('pull-request-merged-handler', () => {
 
   it('respects the reopenClosed config', async () => {
     github.repos.getContents.mockReturnValueOnce(loadConfig('reopenClosedFalse'))
-    github.search.issues.mockReturnValueOnce(Promise.resolve({
+    github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
     }))
     await app.receive(event)
