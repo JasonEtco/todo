@@ -11,7 +11,7 @@ describe('issue-rename-handler', () => {
 
     github = {
       issues: {
-        edit: jest.fn(),
+        update: jest.fn(),
         createComment: jest.fn()
       }
     }
@@ -22,14 +22,14 @@ describe('issue-rename-handler', () => {
 
   it('un-edits the issue title', async () => {
     await app.receive(event)
-    expect(github.issues.edit.mock.calls[0][0]).toMatchSnapshot()
+    expect(github.issues.update.mock.calls[0][0]).toMatchSnapshot()
     expect(github.issues.createComment.mock.calls[0][0]).toMatchSnapshot()
   })
 
   it('only acts if the title is edited', async () => {
     event.payload.changes = {}
     await app.receive(event)
-    expect(github.issues.edit).not.toHaveBeenCalled()
+    expect(github.issues.update).not.toHaveBeenCalled()
     expect(github.issues.createComment).not.toHaveBeenCalled()
   })
 })
