@@ -61,7 +61,7 @@ describe('push-handler', () => {
     expect(github.issues.create).not.toHaveBeenCalled()
   })
 
-  it.only('does not create the same issue twice in the same run', async () => {
+  it('does not create the same issue twice in the same run', async () => {
     github.repos.getCommit.mockReturnValueOnce(loadDiff('duplicate'))
     await app.receive(event)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
