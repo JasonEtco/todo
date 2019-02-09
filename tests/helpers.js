@@ -34,7 +34,7 @@ exports.gimmeApp = () => {
 
   github = {
     issues: {
-      create: jest.fn().mockName('issues.create'),
+      create: jest.fn(data => Promise.resolve({ data })).mockName('issues.create'),
       createLabel: jest.fn().mockName('issues.createLabel'),
       update: jest.fn().mockName('issues.update'),
       createComment: jest.fn().mockName('issues.createComment'),
