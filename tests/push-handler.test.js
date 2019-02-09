@@ -151,13 +151,13 @@ describe('push-handler', () => {
   })
 
   it('closes an issue on a removed TODO', async () => {
-    github.search.issues.mockReturnValueOnce(Promise.resolve({
+    github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 1, items: [{ title: 'I am an example title', number: 1 }] }
     }))
     github.repos.getCommit.mockReturnValueOnce(loadDiff('remove-todo'))
     await app.receive(event)
-    expect(github.issues.edit).toHaveBeenCalled()
-    expect(github.issues.edit).toHaveBeenCalledWith({
+    expect(github.issues.update).toHaveBeenCalled()
+    expect(github.issues.update).toHaveBeenCalledWith({
       number: 1,
       owner: 'JasonEtco',
       repo: 'tests',
@@ -166,11 +166,11 @@ describe('push-handler', () => {
   })
 
   it('does nothing on a non-existant issue on a removed TODO', async () => {
-    github.search.issues.mockReturnValueOnce(Promise.resolve({
+    github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 0, items: [] }
     }))
     github.repos.getCommit.mockReturnValueOnce(loadDiff('remove-todo'))
     await app.receive(event)
-    expect(github.issues.edit).not.toHaveBeenCalled()
+    expect(github.issues.update).not.toHaveBeenCalled()
   })
 })

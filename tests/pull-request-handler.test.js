@@ -70,8 +70,8 @@ describe('pull-request-handler', () => {
   })
 
   it('deletes a comment on a removed TODO', async () => {
-    github.pullRequests.get.mockReturnValueOnce(loadDiff('remove-todo'))
-    github.issues.getComments.mockReturnValueOnce(Promise.resolve({ data: [{
+    github.pulls.get.mockReturnValueOnce(loadDiff('remove-todo'))
+    github.issues.listComments.mockReturnValueOnce(Promise.resolve({ data: [{
       body: '## I am an example title\n\nHi!', id: 123
     }] }))
     await app.receive(event)
@@ -86,8 +86,8 @@ describe('pull-request-handler', () => {
   })
 
   it('does nothing on a non-existant comment on a removed TODO', async () => {
-    github.pullRequests.get.mockReturnValueOnce(loadDiff('remove-todo'))
-    github.issues.getComments.mockReturnValueOnce(Promise.resolve({ data: [{
+    github.pulls.get.mockReturnValueOnce(loadDiff('remove-todo'))
+    github.issues.listComments.mockReturnValueOnce(Promise.resolve({ data: [{
       body: '## I am not an example title'
     }] }))
     await app.receive(event)
