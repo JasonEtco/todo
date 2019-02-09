@@ -75,8 +75,8 @@ describe('pull-request-handler', () => {
       body: '## I am an example title\n\nHi!', id: 123
     }] }))
     await app.receive(event)
-    expect(github.issues.editComment).toHaveBeenCalled()
-    expect(github.issues.editComment).toHaveBeenCalledWith({
+    expect(github.issues.updateComment).toHaveBeenCalled()
+    expect(github.issues.updateComment).toHaveBeenCalledWith({
       comment_id: 123,
       owner: 'JasonEtco',
       repo: 'tests',
@@ -91,6 +91,6 @@ describe('pull-request-handler', () => {
       body: '## I am not an example title'
     }] }))
     await app.receive(event)
-    expect(github.issues.editComment).not.toHaveBeenCalled()
+    expect(github.issues.updateComment).not.toHaveBeenCalled()
   })
 })

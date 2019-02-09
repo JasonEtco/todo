@@ -38,7 +38,7 @@ exports.gimmeApp = () => {
       createLabel: jest.fn().mockName('issues.createLabel'),
       update: jest.fn().mockName('issues.update'),
       createComment: jest.fn().mockName('issues.createComment'),
-      editComment: jest.fn().mockName('issues.editComment'),
+      updateComment: jest.fn().mockName('issues.updateComment'),
       listComments: jest.fn(() => Promise.resolve({ data: [] })).mockName('issues.listComments')
     },
     search: {
