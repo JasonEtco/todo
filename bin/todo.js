@@ -2,10 +2,12 @@
 
 const program = require('commander')
 const chalk = require('chalk')
-const octokit = require('@octokit/rest')()
+const GitHubAPI = require('@octokit/rest')
 const pushHandler = require('../lib/push-handler')
 const fs = require('fs')
 const path = require('path')
+
+const octokit = new GitHubAPI()
 
 program
   .option('-o, --owner <owner>', 'owner')
@@ -22,7 +24,7 @@ if (file) {
   octokit.gitdata.getCommit = () => ({ data: { parents: [] } })
 }
 octokit.issues.create = issue => issues.push(issue)
-octokit.search.issues = () => ({ data: { total_count: 0 } })
+octokit.search.issuesAndPullRequests = () => ({ data: { total_count: 0 } })
 
 const context = {
   event: 'push',
