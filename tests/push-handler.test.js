@@ -61,6 +61,12 @@ describe('push-handler', () => {
     expect(github.issues.create).not.toHaveBeenCalled()
   })
 
+  it('does not create the same issue twice in the same run', async () => {
+    github.repos.getCommit.mockReturnValueOnce(loadDiff('duplicate'))
+    await app.receive(event)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
+  })
+
   it('creates an issue if the search does not have an issue with the correct title', async () => {
     github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 1, items: [{ title: 'Not found', state: 'open' }] }
