@@ -22,9 +22,9 @@ describe('check-for-duplicate-issue', () => {
   })
 
   it('returns the issue if a duplicate issue is found in context.todos', async () => {
-    context.todos.push({ data: { title: 'hello' } })
+    context.todos.push('hello')
     const actual = await checkForDuplicateIssue(context, 'hello')
-    expect(actual).toEqual({ title: 'hello' })
+    expect(actual).toBe('hello')
   })
 
   it('returns the issue if a duplicate issue is found by searching', async () => {
