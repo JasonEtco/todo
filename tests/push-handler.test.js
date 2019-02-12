@@ -155,4 +155,10 @@ describe('push-handler', () => {
     await app.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
+
+  it('does nothing with a diff over the max size', async () => {
+    github.repos.getCommit.mockReturnValueOnce(Promise.resolve({ data: { length: 2000001 } }))
+    await app.receive(event)
+    expect(github.issues.create).not.toHaveBeenCalled()
+  })
 })
