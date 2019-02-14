@@ -54,7 +54,7 @@ describe('main-loop', () => {
   })
 
   it('does nothing if a title is only whitespace', async () => {
-    context.github.repos.getCommit.mockReturnValueOnce(Promise.resolve(loadDiff('title-with-whitespace')))
+    context.github.repos.getCommit.mockReturnValue(Promise.resolve(loadDiff('title-with-whitespace')))
     await mainLoop(context, handler)
     expect(handler).not.toHaveBeenCalled()
   })

@@ -18,7 +18,7 @@ describe('push-handler', () => {
   })
 
   it('creates an issue with a truncated title', async () => {
-    github.repos.getCommit.mockReturnValueOnce(loadDiff('long-title'))
+    github.repos.getCommit.mockReturnValue(loadDiff('long-title'))
     await app.receive(event)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
@@ -43,7 +43,7 @@ describe('push-handler', () => {
   })
 
   it('does not create any issues if no todos are found', async () => {
-    github.repos.getCommit.mockReturnValueOnce(loadDiff('none'))
+    github.repos.getCommit.mockReturnValue(loadDiff('none'))
     await app.receive(event)
     expect(github.issues.create).not.toHaveBeenCalled()
   })
@@ -62,7 +62,7 @@ describe('push-handler', () => {
   })
 
   it('does not create the same issue twice in the same run', async () => {
-    github.repos.getCommit.mockReturnValueOnce(loadDiff('duplicate'))
+    github.repos.getCommit.mockReturnValue(loadDiff('duplicate'))
     await app.receive(event)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
   })
@@ -76,20 +76,20 @@ describe('push-handler', () => {
   })
 
   it('creates many (5) issues', async () => {
-    github.repos.getCommit.mockReturnValueOnce(loadDiff('many'))
+    github.repos.getCommit.mockReturnValue(loadDiff('many'))
     await app.receive(event)
     expect(github.issues.create).toHaveBeenCalledTimes(5)
     expect(github.issues.create.mock.calls).toMatchSnapshot()
   })
 
   it('ignores changes to the config file', async () => {
-    github.repos.getCommit.mockReturnValueOnce(loadDiff('config'))
+    github.repos.getCommit.mockReturnValue(loadDiff('config'))
     await app.receive(event)
     expect(github.issues.create).not.toHaveBeenCalled()
   })
 
   it('ignores changes to the bin directory', async () => {
-    github.repos.getCommit.mockReturnValueOnce(loadDiff('bin'))
+    github.repos.getCommit.mockReturnValue(loadDiff('bin'))
     github.repos.getContents.mockReturnValueOnce(loadConfig('excludeBin'))
     await app.receive(event)
     expect(github.issues.create).not.toHaveBeenCalled()
@@ -110,13 +110,13 @@ describe('push-handler', () => {
   })
 
   it('creates an issue with a body line', async () => {
-    github.repos.getCommit.mockReturnValueOnce(loadDiff('body'))
+    github.repos.getCommit.mockReturnValue(loadDiff('body'))
     await app.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('creates an issue with a body line with one body keyword', async () => {
-    github.repos.getCommit.mockReturnValueOnce(loadDiff('body'))
+    github.repos.getCommit.mockReturnValue(loadDiff('body'))
     github.repos.getContents.mockReturnValueOnce(loadConfig('bodyString'))
     await app.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
@@ -151,8 +151,14 @@ describe('push-handler', () => {
   })
 
   it('cuts the blobLines', async () => {
-    github.repos.getCommit.mockReturnValueOnce(loadDiff('blob-past-end'))
+    github.repos.getCommit.mockReturnValue(loadDiff('blob-past-end'))
     await app.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+  })
+
+  it('does nothing with a diff over the max size', async () => {
+    github.repos.getCommit.mockReturnValue(Promise.resolve({ headers: { 'content-length': 2000001 } }))
+    await app.receive(event)
+    expect(github.issues.create).not.toHaveBeenCalled()
   })
 })
