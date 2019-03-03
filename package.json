@@ -52,7 +52,7 @@
   },
   "engines": {
     "node": "10.x.x",
-    "npm": "6.x.X"
+    "npm": "6.x.x"
   },
   "nodemonConfig": {
     "exec": "npm start",
