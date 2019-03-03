@@ -51,7 +51,7 @@
     "standard": "^11.0.0"
   },
   "engines": {
-    "node": "10.13.x",
+    "node": "10.x.x",
     "npm": "6.x.X"
   },
   "nodemonConfig": {
