@@ -40,7 +40,7 @@
     "hbs": "^4.0.2",
     "joi": "^14.3.0",
     "parse-diff": "^0.5.1",
-    "probot": "^8.0.1"
+    "probot": "^8.0.2"
   },
   "devDependencies": {
     "chalk": "^2.4.1",
