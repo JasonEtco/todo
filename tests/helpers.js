@@ -50,7 +50,7 @@ exports.gimmeApp = () => {
     repos: {
       // Response for getting content from '.github/todo.yml'
       getContents: jest.fn(() => {
-        throw { code: 404 } // eslint-disable-line
+        throw { status: 404 } // eslint-disable-line
       }).mockName('repos.getContents'),
       getCommit: jest.fn(() => loadDiff('basic')).mockName('repos.getCommit')
     },
