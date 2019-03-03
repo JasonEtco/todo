@@ -4,6 +4,9 @@ const pushHandler = require('./lib/push-handler')
 const issueRenameHandler = require('./lib/issue-rename-handler')
 const ignoreRepos = require('./lib/ignore-repos')
 
+/**
+ * @param {import('probot').Application} app
+ */
 module.exports = app => {
   // PR handler (comments on pull requests)
   app.on(['pull_request.opened', 'pull_request.synchronize'], ignoreRepos(pullRequestHandler))
