@@ -40,7 +40,7 @@
     "hbs": "^4.0.2",
     "joi": "^14.3.0",
     "parse-diff": "^0.5.1",
-    "probot": "^8.0.0-beta.9"
+    "probot": "^8.0.2"
   },
   "devDependencies": {
     "chalk": "^2.4.1",
@@ -51,8 +51,8 @@
     "standard": "^11.0.0"
   },
   "engines": {
-    "node": "10.13.x",
-    "npm": "6.x.X"
+    "node": "10.x.x",
+    "npm": "6.x.x"
   },
   "nodemonConfig": {
     "exec": "npm start",
