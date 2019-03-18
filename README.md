@@ -74,6 +74,12 @@ You can also parse a local file instead of a sha:
 $ node ./bin/todo -o OWNER -r REPO -f ./path/to/file.txt
 ```
 
+Or check a merged PR:
+
+```
+$ node ./bin/todo -o OWNER -r REPO --pr NUMBER
+```
+
 ## Setup
 
 ```

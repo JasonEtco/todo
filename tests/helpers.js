@@ -5,7 +5,8 @@ const plugin = require('..')
 
 const loadDiff = exports.loadDiff = filename => {
   return Promise.resolve({
-    data: fs.readFileSync(path.join(__dirname, 'fixtures', 'diffs', filename + '.txt'), 'utf8')
+    data: fs.readFileSync(path.join(__dirname, 'fixtures', 'diffs', filename + '.txt'), 'utf8'),
+    headers: { 'content-length': 1 }
   })
 }
 
@@ -34,7 +35,7 @@ exports.gimmeApp = () => {
 
   github = {
     issues: {
-      create: jest.fn().mockName('issues.create'),
+      create: jest.fn(data => Promise.resolve({ data })).mockName('issues.create'),
       createLabel: jest.fn().mockName('issues.createLabel'),
       update: jest.fn().mockName('issues.update'),
       createComment: jest.fn().mockName('issues.createComment'),
@@ -50,7 +51,7 @@ exports.gimmeApp = () => {
     repos: {
       // Response for getting content from '.github/todo.yml'
       getContents: jest.fn(() => {
-        throw { code: 404 } // eslint-disable-line
+        throw { status: 404 } // eslint-disable-line
       }).mockName('repos.getContents'),
       getCommit: jest.fn(() => loadDiff('basic')).mockName('repos.getCommit')
     },

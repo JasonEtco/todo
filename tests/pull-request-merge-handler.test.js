@@ -30,7 +30,7 @@ describe('pull-request-merged-handler', () => {
   })
 
   it('creates an issue with a truncated title', async () => {
-    github.pulls.get.mockReturnValueOnce(loadDiff('long-title'))
+    github.pulls.get.mockReturnValue(loadDiff('long-title'))
     await app.receive(event)
     expect(github.issues.create).toHaveBeenCalledTimes(1)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
@@ -55,7 +55,7 @@ describe('pull-request-merged-handler', () => {
   })
 
   it('does not create any issues if no todos are found', async () => {
-    github.pulls.get.mockReturnValueOnce(loadDiff('none'))
+    github.pulls.get.mockReturnValue(loadDiff('none'))
     await app.receive(event)
     expect(github.issues.create).not.toHaveBeenCalled()
   })
@@ -69,26 +69,26 @@ describe('pull-request-merged-handler', () => {
   })
 
   it('creates many (5) issues', async () => {
-    github.pulls.get.mockReturnValueOnce(loadDiff('many'))
+    github.pulls.get.mockReturnValue(loadDiff('many'))
     await app.receive(event)
     expect(github.issues.create).toHaveBeenCalledTimes(5)
   })
 
   it('ignores changes to the config file', async () => {
-    github.pulls.get.mockReturnValueOnce(loadDiff('config'))
+    github.pulls.get.mockReturnValue(loadDiff('config'))
     await app.receive(event)
     expect(github.issues.create).not.toHaveBeenCalled()
   })
 
   it('ignores changes to the bin directory', async () => {
-    github.pulls.get.mockReturnValueOnce(loadDiff('bin'))
+    github.pulls.get.mockReturnValue(loadDiff('bin'))
     github.repos.getContents.mockReturnValueOnce(loadConfig('excludeBin'))
     await app.receive(event)
     expect(github.issues.createComment).not.toHaveBeenCalled()
   })
 
   it('creates an issue with a body line', async () => {
-    github.pulls.get.mockReturnValueOnce(loadDiff('body'))
+    github.pulls.get.mockReturnValue(loadDiff('body'))
     await app.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })

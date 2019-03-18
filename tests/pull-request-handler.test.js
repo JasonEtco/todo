@@ -39,19 +39,19 @@ describe('pull-request-handler', () => {
   })
 
   it('creates many (5) comments', async () => {
-    github.pulls.get.mockReturnValueOnce(loadDiff('many'))
+    github.pulls.get.mockReturnValue(loadDiff('many'))
     await app.receive(event)
     expect(github.issues.createComment).toHaveBeenCalledTimes(5)
   })
 
   it('ignores changes to the config file', async () => {
-    github.pulls.get.mockReturnValueOnce(loadDiff('config'))
+    github.pulls.get.mockReturnValue(loadDiff('config'))
     await app.receive(event)
     expect(github.issues.createComment).not.toHaveBeenCalled()
   })
 
   it('ignores changes to the bin directory', async () => {
-    github.pulls.get.mockReturnValueOnce(loadDiff('bin'))
+    github.pulls.get.mockReturnValue(loadDiff('bin'))
     github.repos.getContents.mockReturnValueOnce(loadConfig('excludeBin'))
     await app.receive(event)
     expect(github.issues.createComment).not.toHaveBeenCalled()
@@ -64,7 +64,7 @@ describe('pull-request-handler', () => {
   })
 
   it('creates a comment with a body line', async () => {
-    github.pulls.get.mockReturnValueOnce(loadDiff('body'))
+    github.pulls.get.mockReturnValue(loadDiff('body'))
     await app.receive(event)
     expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
   })
