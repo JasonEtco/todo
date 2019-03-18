@@ -2,13 +2,13 @@
 
 const program = require('commander')
 const chalk = require('chalk')
-const GitHubAPI = require('@octokit/rest')
+const { GitHubAPI } = require('probot/lib/github')
 const pushHandler = require('../lib/push-handler')
 const pullRequestMergedHandler = require('../lib/pull-request-merged-handler')
 const fs = require('fs')
 const path = require('path')
 
-const octokit = new GitHubAPI()
+const github = new GitHubAPI()
 
 program
   .option('-o, --owner <owner>', 'owner')
@@ -22,64 +22,57 @@ const issues = []
 const { owner, repo, file } = program
 
 if (file) {
-  octokit.repos.getCommit = () => ({ data: fs.readFileSync(path.resolve(file), 'utf8') })
-  octokit.gitdata.getCommit = () => ({ data: { parents: [] } })
+  github.repos.getCommit = () => ({ data: fs.readFileSync(path.resolve(file), 'utf8') })
+  github.gitdata.getCommit = () => ({ data: { parents: [] } })
 }
-octokit.issues.create = issue => issues.push(issue)
-octokit.search.issuesAndPullRequests = () => ({ data: { total_count: 0 } })
 
-let promise
-if (program.sha) {
-  let context = {
+github.issues.create = issue => issues.push(issue)
+github.search.issuesAndPullRequests = () => ({ data: { total_count: 0 } })
+
+const shared = {
+  github,
+  id: 1,
+  log: console.log,
+  config: (_, obj) => obj,
+  repo: (o) => ({ owner, repo, ...o }),
+  payload: {
+    repository: {
+      owner,
+      name: repo,
+      master_branch: 'master'
+    }
+  }
+}
+
+async function getPush () {
+  return pushHandler({
+    ...shared,
     event: 'push',
-    id: 1,
-    log: () => {},
-    config: (_, obj) => obj,
-    repo: (o) => ({ owner, repo, ...o }),
     payload: {
+      ...shared.payload,
       ref: 'refs/heads/master',
-      repository: {
-        owner,
-        name: repo,
-        master_branch: 'master'
-      },
       head_commit: {
         id: program.sha || 1,
-        author: {
-          username: owner
-        }
+        author: { username: owner }
       }
-    },
-    github: octokit
-  }
-  promise = pushHandler(context)
-} else {
-  promise = getPull()
+    }
+  })
 }
 
 async function getPull () {
-  let result = await octokit.pullRequests.get({owner, repo, number: program.pr})
-  let context = {
+  const result = await github.pulls.get({owner, repo, number: program.pr})
+  return pullRequestMergedHandler({
+    ...shared,
     event: 'pull_request.closed',
-    id: 1,
-    log: console.log,
-    config: (_, obj) => obj,
-    repo: (o) => ({ owner, repo, ...o }),
     issue: (o) => ({ owner, repo, number: program.pr, ...o }),
     payload: {
-      repository: {
-        owner,
-        name: repo,
-        master_branch: 'master'
-      },
-      pull_request: result.data
-    },
-    github: octokit
-  }
-  return pullRequestMergedHandler(context)
+      pull_request: result.data,
+      ...shared.payload
+    }
+  })
 }
 
-promise.then(() => {
+(program.sha ? getPush() : getPull()).then(() => {
   issues.forEach(issue => {
     console.log(chalk.gray('---'))
     console.log(chalk.gray('Title:'), chalk.bold(issue.title))
