@@ -35,7 +35,9 @@ To reduce noise and keep your **todo** notes in the right context, **todo** comm
 
 ## Configuring for your project
 
-There are a couple of configuration options in case you need to change the default behaviour. Note that the defaults are likely fine for most projects, so you might not need to change them.
+There are a couple of configuration options in case you need to change the default behaviour.
+
+**Note**: Adding a configuration file is **completely optional**. The defaults are likely fine for most projects, so you might not need to change them.
 
 Add a **todo** object in your `.github/config.yml` file (and make the file if you don't already have it) like this:
 
