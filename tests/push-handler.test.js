@@ -61,6 +61,15 @@ describe('push-handler', () => {
     expect(github.issues.create).not.toHaveBeenCalled()
   })
 
+  it('updates an issue that already exists', async () => {
+    github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
+      data: { total_count: 1, items: [{ title: 'I am an example title', state: 'open' }] }
+    }))
+    await app.receive(event)
+    expect(github.issues.update).toHaveBeenCalled()
+    expect(github.issues.update.mock.calls[0][0]).toMatchSnapshot()
+  })
+
   it('does not create the same issue twice in the same run', async () => {
     github.repos.getCommit.mockReturnValue(loadDiff('duplicate'))
     await app.receive(event)
