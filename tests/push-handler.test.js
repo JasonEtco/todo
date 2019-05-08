@@ -48,6 +48,12 @@ describe('push-handler', () => {
     expect(github.issues.create).not.toHaveBeenCalled()
   })
 
+  it('does not create any issues if no todos are found in terms of another language', async () => {
+    github.repos.getCommit.mockReturnValue(loadDiff('terms-another-language'))
+    await app.receive(event)
+    expect(github.issues.create).not.toHaveBeenCalled()
+  })
+
   it('does not create any issues if the push is not on the default branch', async () => {
     await app.receive({ name: 'push', payload: { ...pushEvent, ref: 'not-master' } })
     expect(github.issues.create).not.toHaveBeenCalled()
