@@ -36,11 +36,11 @@
     ]
   },
   "dependencies": {
-    "@octokit/rest": "^16.28.7",
+    "@octokit/rest": "^16.16.0",
     "hbs": "^4.0.2",
     "joi": "^14.3.0",
     "parse-diff": "^0.5.1",
-    "probot": "^9.2.20"
+    "probot": "^8.0.2"
   },
   "devDependencies": {
     "chalk": "^2.4.1",
