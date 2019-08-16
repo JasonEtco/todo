@@ -73,6 +73,6 @@ describe('check-for-body', () => {
       content: '+    // BODY: Test'
     })
     const body = checkForBody(changes, 0, config)
-    expect(body).toBe('A body\nTest')
+    expect(body).toBe('A body\n\nTest')
   })
 })
