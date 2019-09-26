@@ -161,4 +161,12 @@ describe('push-handler', () => {
     await app.receive(event)
     expect(github.issues.create).not.toHaveBeenCalled()
   })
+
+  it('creates an issue and respects GHE_HOST', async () => {
+    process.env.GHE_HOST = 'fakegittillyoumakegit.com'
+    await app.receive(event)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+    delete process.env.GHE_HOST
+  })
 })
