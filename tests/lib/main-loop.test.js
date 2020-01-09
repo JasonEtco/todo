@@ -58,4 +58,10 @@ describe('main-loop', () => {
     await mainLoop(context, handler)
     expect(handler).not.toHaveBeenCalled()
   })
+
+  it('does nothing if a keyword is in the middle of a sentence', async () => {
+    context.github.repos.getCommit.mockReturnValue(Promise.resolve(loadDiff('middle-of-sentence')))
+    await mainLoop(context, handler)
+    expect(handler).not.toHaveBeenCalled()
+  })
 })
