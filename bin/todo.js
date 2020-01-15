@@ -60,7 +60,7 @@ async function getPush () {
 }
 
 async function getPull () {
-  const result = await github.pulls.get({ owner, repo, number: program.pr })
+  const result = await github.pulls.get({ owner, repo, pull_number: program.pr })
   return pullRequestMergedHandler({
     ...shared,
     event: 'pull_request.closed',
