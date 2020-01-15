@@ -36,9 +36,9 @@
     ]
   },
   "dependencies": {
+    "@hapi/joi": "^17.0.2",
     "@octokit/rest": "^16.36.0",
     "hbs": "^4.1.0",
-    "joi": "^14.3.1",
     "parse-diff": "^0.6.0",
     "probot": "^9.9.0"
   },
