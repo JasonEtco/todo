@@ -19,8 +19,6 @@ exports.loadConfig = filename => {
 }
 
 exports.gimmeApp = () => {
-  let app, github
-
   const logger = {
     trace: jest.fn(),
     debug: jest.fn(),
@@ -30,10 +28,16 @@ exports.gimmeApp = () => {
     fatal: jest.fn()
   }
 
-  app = new Application({ logger })
+  const app = new Application({
+    logger,
+    app: {
+      getInstallationAccessToken: jest.fn().mockResolvedValue('test'),
+      getSignedJsonWebToken: jest.fn().mockReturnValue('test')
+    }
+  })
   app.load(plugin)
 
-  github = {
+  const github = {
     issues: {
       create: jest.fn(data => Promise.resolve({ data })).mockName('issues.create'),
       createLabel: jest.fn().mockName('issues.createLabel'),
