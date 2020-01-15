@@ -30,9 +30,11 @@ describe('pull-request-handler', () => {
   })
 
   it('does not create duplicate comments', async () => {
-    github.issues.listComments.mockReturnValueOnce(Promise.resolve({ data: [{
-      body: '## I am an example title'
-    }] }))
+    github.issues.listComments.mockReturnValueOnce(Promise.resolve({
+      data: [{
+        body: '## I am an example title'
+      }]
+    }))
 
     await app.receive(event)
     expect(github.issues.createComment).not.toHaveBeenCalled()
