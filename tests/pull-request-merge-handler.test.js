@@ -95,7 +95,7 @@ describe('pull-request-merged-handler', () => {
 
   it('reopens a closed issue', async () => {
     github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
-      data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
+      data: { total_count: 1, items: [{ number: 1, title: 'I am an example title', state: 'closed' }] }
     }))
     await app.receive(event)
     expect(github.issues.update).toHaveBeenCalledTimes(1)
