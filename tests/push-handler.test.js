@@ -17,6 +17,13 @@ describe('push-handler', () => {
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
+  it('creates an issue with an @todo comment', async () => {
+    github.repos.getCommit.mockReturnValue(loadDiff('at-todo'))
+    await app.receive(event)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+  })
+
   it('creates an issue with a truncated title', async () => {
     github.repos.getCommit.mockReturnValue(loadDiff('long-title'))
     await app.receive(event)
