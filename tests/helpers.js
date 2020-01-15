@@ -13,7 +13,7 @@ const loadDiff = exports.loadDiff = filename => {
 exports.loadConfig = filename => {
   return Promise.resolve({
     data: {
-      content: Buffer.from(fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', filename + '.yml'), 'utf8'))
+      content: fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', filename + '.yml'), 'base64')
     }
   })
 }
