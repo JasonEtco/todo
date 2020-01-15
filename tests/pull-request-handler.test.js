@@ -61,6 +61,7 @@ describe('pull-request-handler', () => {
 
   it('works with a string as the keyword config', async () => {
     github.repos.getContents.mockReturnValueOnce(loadConfig('keywordsString'))
+    github.pulls.get.mockReturnValue(loadDiff('custom-keyword'))
     await app.receive(event)
     expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
   })

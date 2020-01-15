@@ -122,6 +122,13 @@ describe('push-handler', () => {
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
+  it('creates an issue with a custom keyword config', async () => {
+    github.repos.getCommit.mockReturnValue(loadDiff('custom-keyword'))
+    github.repos.getContents.mockReturnValueOnce(loadConfig('keywordsString'))
+    await app.receive(event)
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+  })
+
   it('creates an issue with a body line with one body keyword', async () => {
     github.repos.getCommit.mockReturnValue(loadDiff('body'))
     github.repos.getContents.mockReturnValueOnce(loadConfig('bodyString'))
