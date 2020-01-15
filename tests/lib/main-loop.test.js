@@ -38,18 +38,13 @@ describe('main-loop', () => {
   })
 
   it('throws on an invalid config', async () => {
-    expect.assertions(2)
-
     context.config = jest.fn(() => Promise.resolve({
       todo: { pizza: true }
     }))
 
-    try {
-      await mainLoop(context, handler)
-    } catch (err) {
-      expect(err).toMatchSnapshot()
-    }
-
+    await expect(mainLoop(context, handler))
+      .rejects
+      .toThrowErrorMatchingSnapshot()
     expect(handler).not.toHaveBeenCalled()
   })
 

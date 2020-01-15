@@ -30,9 +30,11 @@ describe('pull-request-handler', () => {
   })
 
   it('does not create duplicate comments', async () => {
-    github.issues.listComments.mockReturnValueOnce(Promise.resolve({ data: [{
-      body: '## I am an example title'
-    }] }))
+    github.issues.listComments.mockReturnValueOnce(Promise.resolve({
+      data: [{
+        body: '## I am an example title'
+      }]
+    }))
 
     await app.receive(event)
     expect(github.issues.createComment).not.toHaveBeenCalled()
@@ -59,6 +61,7 @@ describe('pull-request-handler', () => {
 
   it('works with a string as the keyword config', async () => {
     github.repos.getContents.mockReturnValueOnce(loadConfig('keywordsString'))
+    github.pulls.get.mockReturnValue(loadDiff('custom-keyword'))
     await app.receive(event)
     expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
   })

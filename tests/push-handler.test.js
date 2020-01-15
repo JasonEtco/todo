@@ -17,6 +17,13 @@ describe('push-handler', () => {
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
+  it('creates an issue with an @todo comment', async () => {
+    github.repos.getCommit.mockReturnValue(loadDiff('at-todo'))
+    await app.receive(event)
+    expect(github.issues.create).toHaveBeenCalledTimes(1)
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+  })
+
   it('creates an issue with a truncated title', async () => {
     github.repos.getCommit.mockReturnValue(loadDiff('long-title'))
     await app.receive(event)
@@ -115,6 +122,13 @@ describe('push-handler', () => {
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
+  it('creates an issue with a custom keyword config', async () => {
+    github.repos.getCommit.mockReturnValue(loadDiff('custom-keyword'))
+    github.repos.getContents.mockReturnValueOnce(loadConfig('keywordsString'))
+    await app.receive(event)
+    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+  })
+
   it('creates an issue with a body line with one body keyword', async () => {
     github.repos.getCommit.mockReturnValue(loadDiff('body'))
     github.repos.getContents.mockReturnValueOnce(loadConfig('bodyString'))
@@ -124,7 +138,7 @@ describe('push-handler', () => {
 
   it('reopens a closed issue', async () => {
     github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
-      data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
+      data: { total_count: 1, items: [{ number: 1, title: 'I am an example title', state: 'closed' }] }
     }))
     await app.receive(event)
     expect(github.issues.update).toHaveBeenCalledTimes(1)

@@ -36,23 +36,19 @@
     ]
   },
   "dependencies": {
-    "@octokit/rest": "^16.16.0",
-    "hbs": "^4.0.2",
-    "joi": "^14.3.0",
-    "parse-diff": "^0.5.1",
-    "probot": "^8.0.2"
+    "@hapi/joi": "^17.0.2",
+    "@octokit/rest": "^16.36.0",
+    "hbs": "^4.1.0",
+    "parse-diff": "^0.6.0",
+    "probot": "^9.9.0"
   },
   "devDependencies": {
-    "chalk": "^2.4.1",
-    "commander": "^2.19.0",
-    "jest": "^24.1.0",
-    "nodemon": "1.18.5",
-    "smee-client": "^1.0.1",
-    "standard": "^11.0.0"
-  },
-  "engines": {
-    "node": "10.x.x",
-    "npm": "6.x.x"
+    "chalk": "^3.0.0",
+    "commander": "^4.1.0",
+    "jest": "^24.9.0",
+    "nodemon": "2.0.2",
+    "smee-client": "^1.1.0",
+    "standard": "^14.3.1"
   },
   "nodemonConfig": {
     "exec": "npm start",

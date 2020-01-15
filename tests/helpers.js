@@ -13,14 +13,12 @@ const loadDiff = exports.loadDiff = filename => {
 exports.loadConfig = filename => {
   return Promise.resolve({
     data: {
-      content: Buffer.from(fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', filename + '.yml'), 'utf8'))
+      content: fs.readFileSync(path.join(__dirname, 'fixtures', 'configs', filename + '.yml'), 'base64')
     }
   })
 }
 
 exports.gimmeApp = () => {
-  let app, github
-
   const logger = {
     trace: jest.fn(),
     debug: jest.fn(),
@@ -30,10 +28,16 @@ exports.gimmeApp = () => {
     fatal: jest.fn()
   }
 
-  app = new Application({ logger })
+  const app = new Application({
+    logger,
+    app: {
+      getInstallationAccessToken: jest.fn().mockResolvedValue('test'),
+      getSignedJsonWebToken: jest.fn().mockReturnValue('test')
+    }
+  })
   app.load(plugin)
 
-  github = {
+  const github = {
     issues: {
       create: jest.fn(data => Promise.resolve({ data })).mockName('issues.create'),
       createLabel: jest.fn().mockName('issues.createLabel'),
