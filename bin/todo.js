@@ -81,7 +81,7 @@ async function getPull () {
   })
 })
   .catch(e => {
-    if (e.code === 404) {
+    if (e.status === 404) {
       console.error('That combination of owner/repo/sha could not be found.')
     } else {
       console.error(e)
