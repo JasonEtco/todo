@@ -37,19 +37,19 @@ describe('pull-request-merged-handler', () => {
   })
 
   it('creates an issue without assigning anyone', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('autoAssignFalse'))
+    github.request.mockReturnValueOnce(loadConfig('autoAssignFalse'))
     await app.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('creates an issue and assigns the configured user', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('autoAssignString'))
+    github.request.mockReturnValueOnce(loadConfig('autoAssignString'))
     await app.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('creates an issue and assigns the configured users', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('autoAssignArr'))
+    github.request.mockReturnValueOnce(loadConfig('autoAssignArr'))
     await app.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
@@ -82,7 +82,7 @@ describe('pull-request-merged-handler', () => {
 
   it('ignores changes to the bin directory', async () => {
     github.pulls.get.mockReturnValue(loadDiff('bin'))
-    github.repos.getContents.mockReturnValueOnce(loadConfig('excludeBin'))
+    github.request.mockReturnValueOnce(loadConfig('excludeBin'))
     await app.receive(event)
     expect(github.issues.createComment).not.toHaveBeenCalled()
   })
@@ -105,7 +105,7 @@ describe('pull-request-merged-handler', () => {
   })
 
   it('respects the reopenClosed config', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('reopenClosedFalse'))
+    github.request.mockReturnValueOnce(loadConfig('reopenClosedFalse'))
     github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
     }))

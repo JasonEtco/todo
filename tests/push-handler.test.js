@@ -32,19 +32,19 @@ describe('push-handler', () => {
   })
 
   it('creates an issue without assigning anyone', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('autoAssignFalse'))
+    github.request.mockReturnValueOnce(loadConfig('autoAssignFalse'))
     await app.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('creates an issue and assigns the configured user', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('autoAssignString'))
+    github.request.mockReturnValueOnce(loadConfig('autoAssignString'))
     await app.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('creates an issue and assigns the configured users', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('autoAssignArr'))
+    github.request.mockReturnValueOnce(loadConfig('autoAssignArr'))
     await app.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
@@ -97,7 +97,7 @@ describe('push-handler', () => {
 
   it('ignores changes to the bin directory', async () => {
     github.repos.getCommit.mockReturnValue(loadDiff('bin'))
-    github.repos.getContents.mockReturnValueOnce(loadConfig('excludeBin'))
+    github.request.mockReturnValueOnce(loadConfig('excludeBin'))
     await app.receive(event)
     expect(github.issues.create).not.toHaveBeenCalled()
   })
@@ -124,14 +124,14 @@ describe('push-handler', () => {
 
   it('creates an issue with a custom keyword config', async () => {
     github.repos.getCommit.mockReturnValue(loadDiff('custom-keyword'))
-    github.repos.getContents.mockReturnValueOnce(loadConfig('keywordsString'))
+    github.request.mockReturnValueOnce(loadConfig('keywordsString'))
     await app.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
 
   it('creates an issue with a body line with one body keyword', async () => {
     github.repos.getCommit.mockReturnValue(loadDiff('body'))
-    github.repos.getContents.mockReturnValueOnce(loadConfig('bodyString'))
+    github.request.mockReturnValueOnce(loadConfig('bodyString'))
     await app.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })
@@ -148,7 +148,7 @@ describe('push-handler', () => {
   })
 
   it('respects the reopenClosed config', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('reopenClosedFalse'))
+    github.request.mockReturnValueOnce(loadConfig('reopenClosedFalse'))
     github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
       data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
     }))
@@ -159,7 +159,7 @@ describe('push-handler', () => {
   })
 
   it('does not show the blob if blobLines is false', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('blobLinesFalse'))
+    github.request.mockReturnValueOnce(loadConfig('blobLinesFalse'))
     await app.receive(event)
     expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
   })

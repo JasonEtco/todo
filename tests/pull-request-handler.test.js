@@ -18,13 +18,13 @@ describe('pull-request-handler', () => {
   })
 
   it('comments on a pull request and mentions the assigned user', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('autoAssignString'))
+    github.request.mockReturnValueOnce(loadConfig('autoAssignString'))
     await app.receive(event)
     expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
   })
 
   it('comments on a pull request and mentions the assigned users', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('autoAssignArr'))
+    github.request.mockReturnValueOnce(loadConfig('autoAssignArr'))
     await app.receive(event)
     expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
   })
@@ -54,13 +54,13 @@ describe('pull-request-handler', () => {
 
   it('ignores changes to the bin directory', async () => {
     github.pulls.get.mockReturnValue(loadDiff('bin'))
-    github.repos.getContents.mockReturnValueOnce(loadConfig('excludeBin'))
+    github.request.mockReturnValueOnce(loadConfig('excludeBin'))
     await app.receive(event)
     expect(github.issues.createComment).not.toHaveBeenCalled()
   })
 
   it('works with a string as the keyword config', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('keywordsString'))
+    github.request.mockReturnValueOnce(loadConfig('keywordsString'))
     github.pulls.get.mockReturnValue(loadDiff('custom-keyword'))
     await app.receive(event)
     expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()

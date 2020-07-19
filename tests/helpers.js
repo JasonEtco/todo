@@ -38,6 +38,11 @@ exports.gimmeApp = () => {
   app.load(plugin)
 
   const github = {
+    // Response for getting content from '.github/todo.yml'
+    request: jest.fn(() => {
+      throw { status: 404 } // eslint-disable-line
+    }).mockName('request'),
+
     issues: {
       create: jest.fn(data => Promise.resolve({ data })).mockName('issues.create'),
       createLabel: jest.fn().mockName('issues.createLabel'),
@@ -52,10 +57,6 @@ exports.gimmeApp = () => {
       getCommit: jest.fn(() => Promise.resolve({ data: { parents: [1] } })).mockName('git.getCommit')
     },
     repos: {
-      // Response for getting content from '.github/todo.yml'
-      getContents: jest.fn(() => {
-        throw { status: 404 } // eslint-disable-line
-      }).mockName('repos.getContents'),
       getCommit: jest.fn(() => loadDiff('basic')).mockName('repos.getCommit')
     },
     pulls: {
