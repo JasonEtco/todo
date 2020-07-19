@@ -40,7 +40,7 @@
     "@octokit/rest": "^16.36.0",
     "hbs": "^4.1.0",
     "parse-diff": "^0.6.0",
-    "probot": "^9.9.0"
+    "probot": "file:../probot"
   },
   "devDependencies": {
     "chalk": "^3.0.0",
