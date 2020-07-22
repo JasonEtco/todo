@@ -1,35 +1,43 @@
-const { Application } = require('probot')
+const nock = require('nock')
+const { Probot } = require('probot')
 const issueEdited = require('./fixtures/payloads/issues.edited.json')
 const plugin = require('..')
 
 describe('issue-rename-handler', () => {
-  let app, github, event
+  const event = { name: 'issues', payload: issueEdited }
+  let probot
 
   beforeEach(() => {
-    app = new Application()
-    event = { name: 'issues', payload: issueEdited }
-
-    github = {
-      issues: {
-        update: jest.fn(),
-        createComment: jest.fn()
+    probot = new Probot({
+      id: 1,
+      githubToken: 'secret',
+      throttleOptions: {
+        enabled: false
       }
-    }
-
-    app.auth = jest.fn(() => Promise.resolve(github))
-    app.load(plugin)
+    })
+    probot.load(plugin)
   })
 
   it('un-edits the issue title', async () => {
-    await app.receive(event)
-    expect(github.issues.update.mock.calls[0][0]).toMatchSnapshot()
-    expect(github.issues.createComment.mock.calls[0][0]).toMatchSnapshot()
+    const mock = nock('https://api.github.com')
+      .patch('/repos/JasonEtco/tests/issues/35', parameters => {
+        expect(parameters).toMatchSnapshot()
+        return true
+      })
+      .reply(200, {})
+
+      .post('/repos/JasonEtco/tests/issues/35/comments', parameters => {
+        expect(parameters).toMatchSnapshot()
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('only acts if the title is edited', async () => {
     event.payload.changes = {}
-    await app.receive(event)
-    expect(github.issues.update).not.toHaveBeenCalled()
-    expect(github.issues.createComment).not.toHaveBeenCalled()
+    await probot.receive(event)
   })
 })
