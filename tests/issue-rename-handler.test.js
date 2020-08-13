@@ -1,5 +1,5 @@
 const nock = require('nock')
-const { Probot } = require('probot')
+const { Probot, ProbotOctokit } = require('probot')
 const issueEdited = require('./fixtures/payloads/issues.edited.json')
 const plugin = require('..')
 
@@ -11,9 +11,10 @@ describe('issue-rename-handler', () => {
     probot = new Probot({
       id: 1,
       githubToken: 'secret',
-      throttleOptions: {
-        enabled: false
-      }
+      Octokit: ProbotOctokit.defaults({
+        retry: { enabled: false },
+        throttle: { enabled: false }
+      })
     })
     probot.load(plugin)
   })

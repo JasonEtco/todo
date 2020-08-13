@@ -38,7 +38,7 @@
   "dependencies": {
     "@hapi/joi": "^17.0.2",
     "@octokit/rest": "^16.36.0",
-    "hbs": "^4.1.0",
+    "hbs": "^4.1.1",
     "parse-diff": "^0.6.0",
     "probot": "^10.0.0-beta.27"
   },
@@ -46,8 +46,8 @@
     "chalk": "^3.0.0",
     "commander": "^4.1.0",
     "jest": "^24.9.0",
-    "nock": "^13.0.2",
-    "nodemon": "2.0.2",
+    "nock": "^13.0.4",
+    "nodemon": "^2.0.4",
     "smee-client": "^1.1.0",
     "standard": "^14.3.1"
   },

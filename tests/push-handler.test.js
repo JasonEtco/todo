@@ -1,5 +1,5 @@
 const nock = require('nock')
-const { Probot } = require('probot')
+const { Probot, ProbotOctokit } = require('probot')
 
 const { loadConfig, loadDiff } = require('./helpers')
 const pushEvent = require('./fixtures/payloads/push.json')
@@ -13,9 +13,10 @@ describe('push-handler', () => {
     probot = new Probot({
       id: 1,
       githubToken: 'secret',
-      throttleOptions: {
-        enabled: false
-      }
+      Octokit: ProbotOctokit.defaults({
+        retry: { enabled: false },
+        throttle: { enabled: false }
+      })
     })
     probot.load(plugin)
   })
@@ -40,9 +41,9 @@ describe('push-handler', () => {
         items: []
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
       .post('/repos/JasonEtco/tests/issues', parameters => {
@@ -76,9 +77,9 @@ describe('push-handler', () => {
         items: []
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
       .post('/repos/JasonEtco/tests/issues', parameters => {
@@ -112,9 +113,9 @@ describe('push-handler', () => {
         items: []
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
       .post('/repos/JasonEtco/tests/issues', parameters => {
@@ -148,7 +149,7 @@ describe('push-handler', () => {
         items: []
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(200, {
         content: loadConfig('autoAssignFalse')
       })
@@ -184,7 +185,7 @@ describe('push-handler', () => {
         items: []
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(200, {
         content: loadConfig('autoAssignString')
       })
@@ -220,7 +221,7 @@ describe('push-handler', () => {
         items: []
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(200, {
         content: loadConfig('autoAssignArr')
       })
@@ -250,9 +251,9 @@ describe('push-handler', () => {
       .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
       .reply(200, loadDiff('none'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
     await probot.receive(event)
@@ -284,9 +285,9 @@ describe('push-handler', () => {
         items: [{ title: 'I am an example title', state: 'open' }]
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
     await probot.receive(event)
@@ -313,9 +314,9 @@ describe('push-handler', () => {
         items: []
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
       .post('/repos/JasonEtco/tests/issues', parameters => {
@@ -349,9 +350,9 @@ describe('push-handler', () => {
         items: [{ title: 'Not found', state: 'open' }]
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
       .post('/repos/JasonEtco/tests/issues', parameters => {
@@ -386,9 +387,9 @@ describe('push-handler', () => {
         items: []
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
       .post('/repos/JasonEtco/tests/issues', parameters => {
@@ -417,9 +418,9 @@ describe('push-handler', () => {
       .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
       .reply(200, loadDiff('config'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
     await probot.receive(event)
@@ -440,7 +441,7 @@ describe('push-handler', () => {
       .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
       .reply(200, loadDiff('bin'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(200, {
         content: loadConfig('excludeBin')
       })
@@ -451,7 +452,7 @@ describe('push-handler', () => {
 
   it('ignores pushes not to master', async () => {
     nock('https://api.github.com')
-    await probot.receive({ event: event.event, payload: { ...event.payload, ref: 'not/the/master/branch' } })
+    await probot.receive({ name: event.name, payload: { ...event.payload, ref: 'not/the/master/branch' } })
   })
 
   it('ignores merge commits', async () => {
@@ -486,9 +487,9 @@ describe('push-handler', () => {
         items: []
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
       .post('/repos/JasonEtco/tests/issues', parameters => {
@@ -522,7 +523,7 @@ describe('push-handler', () => {
         items: []
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(200, {
         content: loadConfig('keywordsString')
       })
@@ -558,7 +559,7 @@ describe('push-handler', () => {
         items: []
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(200, {
         content: loadConfig('bodyString')
       })
@@ -594,9 +595,9 @@ describe('push-handler', () => {
         items: [{ number: 1, title: 'I am an example title', state: 'closed' }]
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
       .patch('/repos/JasonEtco/tests/issues/1', parameters => {
@@ -637,7 +638,7 @@ describe('push-handler', () => {
         items: [{ title: 'I am an example title', state: 'closed' }]
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(200, {
         content: loadConfig('reopenClosedFalse')
       })
@@ -666,7 +667,7 @@ describe('push-handler', () => {
         items: []
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(200, {
         content: loadConfig('blobLinesFalse')
       })
@@ -702,9 +703,9 @@ describe('push-handler', () => {
         items: []
       })
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
       .post('/repos/JasonEtco/tests/issues', parameters => {
@@ -736,8 +737,17 @@ describe('push-handler', () => {
     expect(mock.activeMocks()).toStrictEqual([])
   })
 
-  it('creates an issue and respects GHE_HOST', async () => {
-    process.env.GHE_HOST = 'fakegittillyoumakegit.com'
+  it.skip('creates an issue and respects GHE_HOST', async () => {
+    probot = new Probot({
+      id: 1,
+      githubToken: 'secret',
+      Octokit: ProbotOctokit.defaults({
+        baseUrl: 'https://fakegittillyoumakegit.com/api/v3',
+        retry: { enabled: false },
+        throttle: { enabled: false }
+      })
+    })
+    probot.load(plugin)
 
     const mock = nock('https://fakegittillyoumakegit.com')
 
@@ -758,9 +768,9 @@ describe('push-handler', () => {
         items: []
       })
 
-      .get('/api/v3/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/api/v3/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/api/v3/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/api/v3/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
       .post('/api/v3/repos/JasonEtco/tests/issues', parameters => {

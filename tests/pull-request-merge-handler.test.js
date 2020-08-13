@@ -1,5 +1,5 @@
 const nock = require('nock')
-const { Probot } = require('probot')
+const { Probot, ProbotOctokit } = require('probot')
 
 const { loadConfig, loadDiff } = require('./helpers')
 const pullRequestClosed = require('./fixtures/payloads/pull_request.closed.json')
@@ -13,9 +13,10 @@ describe('pull-request-merged-handler', () => {
     probot = new Probot({
       id: 1,
       githubToken: 'secret',
-      throttleOptions: {
-        enabled: false
-      }
+      Octokit: ProbotOctokit.defaults({
+        retry: { enabled: false },
+        throttle: { enabled: false }
+      })
     })
     probot.load(plugin)
   })
@@ -32,7 +33,6 @@ describe('pull-request-merged-handler', () => {
 
   it('creates an issue', async () => {
     const mock = nock('https://api.github.com')
-
       .head('/repos/JasonEtco/tests/pulls/21')
       .reply(200)
 
@@ -46,12 +46,12 @@ describe('pull-request-merged-handler', () => {
       .matchHeader('accept', 'application/vnd.github.diff')
       .reply(200, loadDiff('basic'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
-      .post('/repos/JasonEtco/tests/issues', parameters => {
+      .post('/repos/JasonEtco/tests/issues', (parameters) => {
         expect(parameters).toMatchSnapshot()
 
         return true
@@ -64,7 +64,6 @@ describe('pull-request-merged-handler', () => {
 
   it('creates an issue with a truncated title', async () => {
     const mock = nock('https://api.github.com')
-
       .head('/repos/JasonEtco/tests/pulls/21')
       .reply(200)
 
@@ -78,12 +77,12 @@ describe('pull-request-merged-handler', () => {
       .matchHeader('accept', 'application/vnd.github.diff')
       .reply(200, loadDiff('long-title'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
-      .post('/repos/JasonEtco/tests/issues', parameters => {
+      .post('/repos/JasonEtco/tests/issues', (parameters) => {
         expect(parameters).toMatchSnapshot()
 
         return true
@@ -96,7 +95,6 @@ describe('pull-request-merged-handler', () => {
 
   it('creates an issue without assigning anyone', async () => {
     const mock = nock('https://api.github.com')
-
       .head('/repos/JasonEtco/tests/pulls/21')
       .reply(200)
 
@@ -110,12 +108,12 @@ describe('pull-request-merged-handler', () => {
       .matchHeader('accept', 'application/vnd.github.diff')
       .reply(200, loadDiff('basic'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(200, {
         content: loadConfig('autoAssignFalse')
       })
 
-      .post('/repos/JasonEtco/tests/issues', parameters => {
+      .post('/repos/JasonEtco/tests/issues', (parameters) => {
         expect(parameters).toMatchSnapshot()
 
         return true
@@ -128,7 +126,6 @@ describe('pull-request-merged-handler', () => {
 
   it('creates an issue and assigns the configured user', async () => {
     const mock = nock('https://api.github.com')
-
       .head('/repos/JasonEtco/tests/pulls/21')
       .reply(200)
 
@@ -142,12 +139,12 @@ describe('pull-request-merged-handler', () => {
       .matchHeader('accept', 'application/vnd.github.diff')
       .reply(200, loadDiff('basic'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(200, {
         content: loadConfig('autoAssignString')
       })
 
-      .post('/repos/JasonEtco/tests/issues', parameters => {
+      .post('/repos/JasonEtco/tests/issues', (parameters) => {
         expect(parameters).toMatchSnapshot()
 
         return true
@@ -160,7 +157,6 @@ describe('pull-request-merged-handler', () => {
 
   it('creates an issue and assigns the configured users', async () => {
     const mock = nock('https://api.github.com')
-
       .head('/repos/JasonEtco/tests/pulls/21')
       .reply(200)
 
@@ -174,12 +170,12 @@ describe('pull-request-merged-handler', () => {
       .matchHeader('accept', 'application/vnd.github.diff')
       .reply(200, loadDiff('basic'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(200, {
         content: loadConfig('autoAssignArr')
       })
 
-      .post('/repos/JasonEtco/tests/issues', parameters => {
+      .post('/repos/JasonEtco/tests/issues', (parameters) => {
         expect(parameters).toMatchSnapshot()
 
         return true
@@ -192,7 +188,6 @@ describe('pull-request-merged-handler', () => {
 
   it('does not create any issues if no todos are found', async () => {
     const mock = nock('https://api.github.com')
-
       .head('/repos/JasonEtco/tests/pulls/21')
       .reply(200)
 
@@ -200,9 +195,9 @@ describe('pull-request-merged-handler', () => {
       .matchHeader('accept', 'application/vnd.github.diff')
       .reply(200, loadDiff('none'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
     await probot.receive(event)
@@ -211,7 +206,6 @@ describe('pull-request-merged-handler', () => {
 
   it('does not create an issue that already exists', async () => {
     const mock = nock('https://api.github.com')
-
       .head('/repos/JasonEtco/tests/pulls/21')
       .reply(200)
 
@@ -225,9 +219,9 @@ describe('pull-request-merged-handler', () => {
       .matchHeader('accept', 'application/vnd.github.diff')
       .reply(200, loadDiff('basic'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
     await probot.receive(event)
@@ -236,7 +230,6 @@ describe('pull-request-merged-handler', () => {
 
   it('creates many (5) issues', async () => {
     const mock = nock('https://api.github.com')
-
       .head('/repos/JasonEtco/tests/pulls/21')
       .reply(200)
 
@@ -251,12 +244,12 @@ describe('pull-request-merged-handler', () => {
       .matchHeader('accept', 'application/vnd.github.diff')
       .reply(200, loadDiff('many'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
-      .post('/repos/JasonEtco/tests/issues', parameters => {
+      .post('/repos/JasonEtco/tests/issues', (parameters) => {
         expect(parameters).toMatchSnapshot()
 
         return true
@@ -270,7 +263,6 @@ describe('pull-request-merged-handler', () => {
 
   it('ignores changes to the config file', async () => {
     const mock = nock('https://api.github.com')
-
       .head('/repos/JasonEtco/tests/pulls/21')
       .reply(200)
 
@@ -278,9 +270,9 @@ describe('pull-request-merged-handler', () => {
       .matchHeader('accept', 'application/vnd.github.diff')
       .reply(200, loadDiff('config'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
     await probot.receive(event)
@@ -289,7 +281,6 @@ describe('pull-request-merged-handler', () => {
 
   it('ignores changes to the bin directory', async () => {
     const mock = nock('https://api.github.com')
-
       .head('/repos/JasonEtco/tests/pulls/21')
       .reply(200)
 
@@ -297,7 +288,7 @@ describe('pull-request-merged-handler', () => {
       .matchHeader('accept', 'application/vnd.github.diff')
       .reply(200, loadDiff('bin'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(200, {
         content: loadConfig('excludeBin')
       })
@@ -308,7 +299,6 @@ describe('pull-request-merged-handler', () => {
 
   it('creates an issue with a body line', async () => {
     const mock = nock('https://api.github.com')
-
       .head('/repos/JasonEtco/tests/pulls/21')
       .reply(200)
 
@@ -322,12 +312,12 @@ describe('pull-request-merged-handler', () => {
       .matchHeader('accept', 'application/vnd.github.diff')
       .reply(200, loadDiff('body'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
-      .post('/repos/JasonEtco/tests/issues', parameters => {
+      .post('/repos/JasonEtco/tests/issues', (parameters) => {
         expect(parameters).toMatchSnapshot()
 
         return true
@@ -338,9 +328,8 @@ describe('pull-request-merged-handler', () => {
     expect(mock.activeMocks()).toStrictEqual([])
   })
 
-  it.only('reopens a closed issue', async () => {
+  it('reopens a closed issue', async () => {
     const mock = nock('https://api.github.com')
-
       .head('/repos/JasonEtco/tests/pulls/21')
       .reply(200)
 
@@ -354,19 +343,19 @@ describe('pull-request-merged-handler', () => {
       .matchHeader('accept', 'application/vnd.github.diff')
       .reply(200, loadDiff('basic'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(404, {})
-      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .get('/repos/JasonEtco/.github/contents/.github%2Fconfig.yml')
       .reply(404, {})
 
-      .patch('/repos/JasonEtco/tests/issues/1', parameters => {
+      .patch('/repos/JasonEtco/tests/issues/1', (parameters) => {
         expect(parameters).toMatchSnapshot()
 
         return true
       })
       .reply(201, {})
 
-      .post('/repos/JasonEtco/tests/issues/1/comments', parameters => {
+      .post('/repos/JasonEtco/tests/issues/1/comments', (parameters) => {
         expect(parameters).toMatchSnapshot()
 
         return true
@@ -379,7 +368,6 @@ describe('pull-request-merged-handler', () => {
 
   it('respects the reopenClosed config', async () => {
     const mock = nock('https://api.github.com')
-
       .head('/repos/JasonEtco/tests/pulls/21')
       .reply(200)
 
@@ -393,7 +381,7 @@ describe('pull-request-merged-handler', () => {
       .matchHeader('accept', 'application/vnd.github.diff')
       .reply(200, loadDiff('basic'))
 
-      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .get('/repos/JasonEtco/tests/contents/.github%2Fconfig.yml')
       .reply(200, {
         content: loadConfig('reopenClosedFalse')
       })
