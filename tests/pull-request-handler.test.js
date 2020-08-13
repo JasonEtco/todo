@@ -31,7 +31,7 @@ describe('pull-request-handler', () => {
 
       .get('/repos/JasonEtco/tests/pulls/32')
       .matchHeader('accept', 'application/vnd.github.diff')
-      .reply(200, (await loadDiff('basic')).data)
+      .reply(200, loadDiff('basic'))
 
       .get('/repos/JasonEtco/tests/contents/.github/config.yml')
       .reply(404, {})
@@ -60,11 +60,11 @@ describe('pull-request-handler', () => {
 
       .get('/repos/JasonEtco/tests/pulls/32')
       .matchHeader('accept', 'application/vnd.github.diff')
-      .reply(200, (await loadDiff('basic')).data)
+      .reply(200, loadDiff('basic'))
 
       .get('/repos/JasonEtco/tests/contents/.github/config.yml')
       .reply(200, {
-        content: loadConfig('autoAssignString').toString('base64')
+        content: loadConfig('autoAssignString')
       })
 
       .post('/repos/JasonEtco/tests/issues/32/comments', parameters => {
@@ -89,11 +89,11 @@ describe('pull-request-handler', () => {
 
       .get('/repos/JasonEtco/tests/pulls/32')
       .matchHeader('accept', 'application/vnd.github.diff')
-      .reply(200, (await loadDiff('basic')).data)
+      .reply(200, loadDiff('basic'))
 
       .get('/repos/JasonEtco/tests/contents/.github/config.yml')
       .reply(200, {
-        content: loadConfig('autoAssignArr').toString('base64')
+        content: loadConfig('autoAssignArr')
       })
 
       .post('/repos/JasonEtco/tests/issues/32/comments', parameters => {
@@ -120,11 +120,11 @@ describe('pull-request-handler', () => {
 
       .get('/repos/JasonEtco/tests/pulls/32')
       .matchHeader('accept', 'application/vnd.github.diff')
-      .reply(200, (await loadDiff('basic')).data)
+      .reply(200, loadDiff('basic'))
 
       .get('/repos/JasonEtco/tests/contents/.github/config.yml')
       .reply(200, {
-        content: loadConfig('autoAssignArr').toString('base64')
+        content: loadConfig('autoAssignArr')
       })
 
     await probot.receive(event)
@@ -142,7 +142,7 @@ describe('pull-request-handler', () => {
 
       .get('/repos/JasonEtco/tests/pulls/32')
       .matchHeader('accept', 'application/vnd.github.diff')
-      .reply(200, (await loadDiff('many')).data)
+      .reply(200, loadDiff('many'))
 
       .get('/repos/JasonEtco/tests/contents/.github/config.yml')
       .reply(404, {})
@@ -172,7 +172,7 @@ describe('pull-request-handler', () => {
 
       .get('/repos/JasonEtco/tests/pulls/32')
       .matchHeader('accept', 'application/vnd.github.diff')
-      .reply(200, (await loadDiff('config')).data)
+      .reply(200, loadDiff('config'))
 
       .get('/repos/JasonEtco/tests/contents/.github/config.yml')
       .reply(404, {})
@@ -194,11 +194,11 @@ describe('pull-request-handler', () => {
 
       .get('/repos/JasonEtco/tests/pulls/32')
       .matchHeader('accept', 'application/vnd.github.diff')
-      .reply(200, (await loadDiff('bin')).data)
+      .reply(200, loadDiff('bin'))
 
       .get('/repos/JasonEtco/tests/contents/.github/config.yml')
       .reply(200, {
-        content: loadConfig('excludeBin').toString('base64')
+        content: loadConfig('excludeBin')
       })
 
     await probot.receive(event)
@@ -216,11 +216,11 @@ describe('pull-request-handler', () => {
 
       .get('/repos/JasonEtco/tests/pulls/32')
       .matchHeader('accept', 'application/vnd.github.diff')
-      .reply(200, (await loadDiff('custom-keyword')).data)
+      .reply(200, loadDiff('custom-keyword'))
 
       .get('/repos/JasonEtco/tests/contents/.github/config.yml')
       .reply(200, {
-        content: loadConfig('keywordsString').toString('base64')
+        content: loadConfig('keywordsString')
       })
 
       .post('/repos/JasonEtco/tests/issues/32/comments', parameters => {
@@ -245,7 +245,7 @@ describe('pull-request-handler', () => {
 
       .get('/repos/JasonEtco/tests/pulls/32')
       .matchHeader('accept', 'application/vnd.github.diff')
-      .reply(200, (await loadDiff('body')).data)
+      .reply(200, loadDiff('body'))
 
       .get('/repos/JasonEtco/tests/contents/.github/config.yml')
       .reply(404, {})

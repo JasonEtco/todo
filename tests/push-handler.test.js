@@ -1,186 +1,776 @@
+const nock = require('nock')
+const { Probot } = require('probot')
+
+const { loadConfig, loadDiff } = require('./helpers')
 const pushEvent = require('./fixtures/payloads/push.json')
-const { gimmeApp, loadConfig, loadDiff } = require('./helpers')
+const plugin = require('..')
 
 describe('push-handler', () => {
-  let app, github
+  let probot
   const event = { name: 'push', payload: pushEvent }
 
   beforeEach(() => {
-    const gimme = gimmeApp()
-    app = gimme.app
-    github = gimme.github
+    probot = new Probot({
+      id: 1,
+      githubToken: 'secret',
+      throttleOptions: {
+        enabled: false
+      }
+    })
+    probot.load(plugin)
   })
 
   it('creates an issue', async () => {
-    await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('basic'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: []
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(404, {})
+      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .reply(404, {})
+
+      .post('/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('creates an issue with an @todo comment', async () => {
-    github.repos.getCommit.mockReturnValue(loadDiff('at-todo'))
-    await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('at-todo'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: []
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(404, {})
+      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .reply(404, {})
+
+      .post('/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('creates an issue with a truncated title', async () => {
-    github.repos.getCommit.mockReturnValue(loadDiff('long-title'))
-    await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('long-title'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: []
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(404, {})
+      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .reply(404, {})
+
+      .post('/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('creates an issue without assigning anyone', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('autoAssignFalse'))
-    await app.receive(event)
-    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('basic'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: []
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(200, {
+        content: loadConfig('autoAssignFalse')
+      })
+
+      .post('/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('creates an issue and assigns the configured user', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('autoAssignString'))
-    await app.receive(event)
-    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('basic'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: []
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(200, {
+        content: loadConfig('autoAssignString')
+      })
+
+      .post('/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('creates an issue and assigns the configured users', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('autoAssignArr'))
-    await app.receive(event)
-    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('basic'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: []
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(200, {
+        content: loadConfig('autoAssignArr')
+      })
+
+      .post('/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('does not create any issues if no todos are found', async () => {
-    github.repos.getCommit.mockReturnValue(loadDiff('none'))
-    await app.receive(event)
-    expect(github.issues.create).not.toHaveBeenCalled()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('none'))
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(404, {})
+      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .reply(404, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('does not create any issues if the push is not on the default branch', async () => {
-    await app.receive({ name: 'push', payload: { ...pushEvent, ref: 'not-master' } })
-    expect(github.issues.create).not.toHaveBeenCalled()
+    nock('https://api.github.com')
+    await probot.receive({ name: 'push', payload: { ...pushEvent, ref: 'not-master' } })
   })
 
   it('does not create an issue that already exists', async () => {
-    github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
-      data: { total_count: 1, items: [{ title: 'I am an example title', state: 'open' }] }
-    }))
-    await app.receive(event)
-    expect(github.issues.create).not.toHaveBeenCalled()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('basic'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: [{ title: 'I am an example title', state: 'open' }]
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(404, {})
+      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .reply(404, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('does not create the same issue twice in the same run', async () => {
-    github.repos.getCommit.mockReturnValue(loadDiff('duplicate'))
-    await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(1)
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('duplicate'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: []
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(404, {})
+      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .reply(404, {})
+
+      .post('/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('creates an issue if the search does not have an issue with the correct title', async () => {
-    github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
-      data: { total_count: 1, items: [{ title: 'Not found', state: 'open' }] }
-    }))
-    await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(1)
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('basic'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: [{ title: 'Not found', state: 'open' }]
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(404, {})
+      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .reply(404, {})
+
+      .post('/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('creates many (5) issues', async () => {
-    github.repos.getCommit.mockReturnValue(loadDiff('many'))
-    await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(5)
-    expect(github.issues.create.mock.calls).toMatchSnapshot()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('many'))
+
+      .get('/search/issues')
+      .query(true)
+      .times(5)
+      .reply(200, {
+        items: []
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(404, {})
+      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .reply(404, {})
+
+      .post('/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .times(5)
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('ignores changes to the config file', async () => {
-    github.repos.getCommit.mockReturnValue(loadDiff('config'))
-    await app.receive(event)
-    expect(github.issues.create).not.toHaveBeenCalled()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('config'))
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(404, {})
+      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .reply(404, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('ignores changes to the bin directory', async () => {
-    github.repos.getCommit.mockReturnValue(loadDiff('bin'))
-    github.repos.getContents.mockReturnValueOnce(loadConfig('excludeBin'))
-    await app.receive(event)
-    expect(github.issues.create).not.toHaveBeenCalled()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('bin'))
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(200, {
+        content: loadConfig('excludeBin')
+      })
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('ignores pushes not to master', async () => {
-    const e = { event: event.event, payload: { ...event.payload, ref: 'not/the/master/branch' } }
-    await app.receive(e)
-    expect(github.issues.create).not.toHaveBeenCalled()
+    nock('https://api.github.com')
+    await probot.receive({ event: event.event, payload: { ...event.payload, ref: 'not/the/master/branch' } })
   })
 
   it('ignores merge commits', async () => {
-    github.git.getCommit.mockReturnValueOnce(Promise.resolve({
-      data: { parents: [1, 2] }
-    }))
-    await app.receive(event)
-    expect(github.issues.create).not.toHaveBeenCalled()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: [1, 2]
+      })
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('creates an issue with a body line', async () => {
-    github.repos.getCommit.mockReturnValue(loadDiff('body'))
-    await app.receive(event)
-    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('body'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: []
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(404, {})
+      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .reply(404, {})
+
+      .post('/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('creates an issue with a custom keyword config', async () => {
-    github.repos.getCommit.mockReturnValue(loadDiff('custom-keyword'))
-    github.repos.getContents.mockReturnValueOnce(loadConfig('keywordsString'))
-    await app.receive(event)
-    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('custom-keyword'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: []
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(200, {
+        content: loadConfig('keywordsString')
+      })
+
+      .post('/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('creates an issue with a body line with one body keyword', async () => {
-    github.repos.getCommit.mockReturnValue(loadDiff('body'))
-    github.repos.getContents.mockReturnValueOnce(loadConfig('bodyString'))
-    await app.receive(event)
-    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('body'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: []
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(200, {
+        content: loadConfig('bodyString')
+      })
+
+      .post('/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('reopens a closed issue', async () => {
-    github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
-      data: { total_count: 1, items: [{ number: 1, title: 'I am an example title', state: 'closed' }] }
-    }))
-    await app.receive(event)
-    expect(github.issues.update).toHaveBeenCalledTimes(1)
-    expect(github.issues.createComment).toHaveBeenCalledTimes(1)
-    expect(github.issues.createComment.mock.calls[0]).toMatchSnapshot()
-    expect(github.issues.create).not.toHaveBeenCalled()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('basic'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: [{ number: 1, title: 'I am an example title', state: 'closed' }]
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(404, {})
+      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .reply(404, {})
+
+      .patch('/repos/JasonEtco/tests/issues/1', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+      .post('/repos/JasonEtco/tests/issues/1/comments', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('respects the reopenClosed config', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('reopenClosedFalse'))
-    github.search.issuesAndPullRequests.mockReturnValueOnce(Promise.resolve({
-      data: { total_count: 1, items: [{ title: 'I am an example title', state: 'closed' }] }
-    }))
-    await app.receive(event)
-    expect(github.issues.update).not.toHaveBeenCalled()
-    expect(github.issues.createComment).not.toHaveBeenCalled()
-    expect(github.issues.create).not.toHaveBeenCalled()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('basic'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: [{ title: 'I am an example title', state: 'closed' }]
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(200, {
+        content: loadConfig('reopenClosedFalse')
+      })
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('does not show the blob if blobLines is false', async () => {
-    github.repos.getContents.mockReturnValueOnce(loadConfig('blobLinesFalse'))
-    await app.receive(event)
-    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('basic'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: []
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(200, {
+        content: loadConfig('blobLinesFalse')
+      })
+
+      .post('/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('cuts the blobLines', async () => {
-    github.repos.getCommit.mockReturnValue(loadDiff('blob-past-end'))
-    await app.receive(event)
-    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('blob-past-end'))
+
+      .get('/search/issues')
+      .query(true)
+      .reply(200, {
+        items: []
+      })
+
+      .get('/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(404, {})
+      .get('/repos/JasonEtco/.github/contents/.github/config.yml')
+      .reply(404, {})
+
+      .post('/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('does nothing with a diff over the max size', async () => {
-    github.repos.getCommit.mockReturnValue(Promise.resolve({ headers: { 'content-length': 2000001 } }))
-    await app.receive(event)
-    expect(github.issues.create).not.toHaveBeenCalled()
+    const mock = nock('https://api.github.com')
+
+      .get('/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, '', { 'content-length': 2000001 })
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 
   it('creates an issue and respects GHE_HOST', async () => {
     process.env.GHE_HOST = 'fakegittillyoumakegit.com'
-    await app.receive(event)
-    expect(github.issues.create).toHaveBeenCalledTimes(1)
-    expect(github.issues.create.mock.calls[0]).toMatchSnapshot()
-    delete process.env.GHE_HOST
+
+    const mock = nock('https://fakegittillyoumakegit.com')
+
+      .get('/api/v3/repos/JasonEtco/tests/git/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, {
+        parents: []
+      })
+
+      .head('/api/v3/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200)
+
+      .get('/api/v3/repos/JasonEtco/tests/commits/e06c237a0c041f5a0a61f1c361f7a1d6f3d669af')
+      .reply(200, loadDiff('basic'))
+
+      .get('/api/v3/search/issues')
+      .query(true)
+      .reply(200, {
+        items: []
+      })
+
+      .get('/api/v3/repos/JasonEtco/tests/contents/.github/config.yml')
+      .reply(404, {})
+      .get('/api/v3/repos/JasonEtco/.github/contents/.github/config.yml')
+      .reply(404, {})
+
+      .post('/api/v3/repos/JasonEtco/tests/issues', parameters => {
+        expect(parameters).toMatchSnapshot()
+
+        return true
+      })
+      .reply(201, {})
+
+    await probot.receive(event)
+    expect(mock.activeMocks()).toStrictEqual([])
   })
 })

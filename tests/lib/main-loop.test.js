@@ -1,7 +1,7 @@
 const mainLoop = require('../../lib/utils/main-loop')
 const { loadDiff } = require('../helpers')
 
-describe('main-loop', () => {
+describe.skip('main-loop', () => {
   let context, handler
 
   beforeEach(() => {
