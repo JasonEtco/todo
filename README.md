@@ -1,3 +1,9 @@
+<h1>This repository has been archived</h1>
+
+See [this discussion](https://github.com/JasonEtco/todo/discussions/293) for details on why!
+
+---
+
 <p align="center">
   <img src="https://avatars2.githubusercontent.com/in/5534?s=128&v=4" width="64">
   <h3 align="center"><a href="https://todo.jasonet.co">todo[bot]</a></h3>
